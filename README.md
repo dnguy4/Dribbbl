@@ -11,7 +11,10 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 ### Students
 
 * Ace Kaung, kaung006@umn.edu
-* ...
+* David Nguyen, nguy3482@umn.edu
+* Julia Pan, pan00079@umn.edu
+* Ishan Joshi, joshi304@umn.edu
+* Sai Tallapragada, talla037@umn.edu 
 
 
 ## Key Features
