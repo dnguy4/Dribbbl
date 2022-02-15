@@ -47,7 +47,7 @@ In this space please either provide images (around 4) showing your prototypes, O
 
 **[Add images/photos that show your paper prototype (around 4)](https://stackoverflow.com/questions/10189356/how-to-add-screenshot-to-readmes-in-github-repository) along with a very brief caption:**
 
-![](https://media.giphy.com/media/26ufnwz3wDUli7GU0/giphy.gif)
+[Online Prototype](https://www.figma.com/proto/Z6p2ELqO6YclZcascV2NvU/Lo-Fi?node-id=1%3A2&scaling=scale-down&page-id=0%3A1&starting-point-node-id=1%3A2)
 
 
 ## External Dependencies
