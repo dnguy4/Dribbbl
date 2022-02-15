@@ -47,7 +47,13 @@ In this space please either provide images (around 4) showing your prototypes, O
 
 **[Add images/photos that show your paper prototype (around 4)](https://stackoverflow.com/questions/10189356/how-to-add-screenshot-to-readmes-in-github-repository) along with a very brief caption:**
 
-[Online Prototype](https://www.figma.com/proto/Z6p2ELqO6YclZcascV2NvU/Lo-Fi?node-id=1%3A2&scaling=scale-down&page-id=0%3A1&starting-point-node-id=1%3A2)
+**[Online Prototype](https://www.figma.com/proto/Z6p2ELqO6YclZcascV2NvU/Lo-Fi?node-id=1%3A2&scaling=scale-down&page-id=0%3A1&starting-point-node-id=1%3A2)**
+
+# A few notes:
+* Some pages will have minor layout adjustments depending on whether or not the user is logged in. For example, the user will not see "edit" icon for their posts if they are not logged in, nor they will have a "draw" icon in their header. 
+* The editing page will have pop-up if the user clicks "delete the drawing," asking the user if they are sure they want to remove their drawing from our website. 
+* Likewise, the user will have a popup for "submit" button on the drawing page. 
+* The search page will appear once user types the tag they are looking for in the search bar. 
 
 
 ## External Dependencies
