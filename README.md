@@ -16,6 +16,12 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 * Ishan Joshi, joshi304@umn.edu
 * Sai Tallapragada, talla037@umn.edu 
 
+## For Windows
+```
+$env:FLASK_ENV = "development"
+$env:FLASK_APP = "app.py"
+```
+
 
 ## Key Features
 
