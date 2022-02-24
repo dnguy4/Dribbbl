@@ -47,12 +47,21 @@ def get_db_cursor(commit=False):
 
 
 #TODO ADD DB FUNCTIONS
-def add_user(name):
+def add_user(user_id, name):
     # Since we're using connection pooling, it's not as big of a deal to have
     # lots of short-lived cursors (I think -- worth testing if we ever go big)
     with get_db_cursor(True) as cur:
         current_app.logger.info("Adding person %s", name)
-        cur.execute("INSERT INTO user (name) values (%s)", (name,))
+        cur.execute("INSERT INTO users (u_id, name) values (%s, %s)", (user_id, name))
+
+def get_username(user_id):
+     with get_db_cursor(True) as cur:
+        cur.execute("SELECT name FROM users WHERE u_id = %s", (user_id,))
+        return cur.fetchone()['name']
+
+def edit_username(user_id, name):
+    with get_db_cursor(True) as cur:
+        cur.execute("UPDATE users SET (name) = (%s) WHERE u_id = %s", (name, user_id))
 
 
 def get_post(page = 0, post_per_page = 10):
