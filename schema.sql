@@ -13,6 +13,7 @@ create table posts (
     post_id SERIAL PRIMARY KEY,
     title varchar(127) not null,
     upload_time timestamp default now(),
+    post_image bytea,
     descrip text,
     hint text,
     solution text not null,
