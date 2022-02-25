@@ -1,5 +1,5 @@
 import json
-from os import environ as env
+import os
 import urllib
 from flask import Flask, render_template, request, g, redirect, url_for, jsonify, send_file, session
 from authlib.integrations.flask_client import OAuth
@@ -10,9 +10,9 @@ app = Flask(__name__)
 app.secret_key = "can be anything, just random"
 oauth = OAuth(app)
 
-auth0clientid = env["client_id"]
-auth0clientsecret = env["client_secret"]
-auth0domain = env["auth0_domain"]
+auth0clientid = os.getenv("client_id")
+auth0clientsecret = os.getenv("client_secret")
+auth0domain = os.getenv("auth0_domain")
 
 auth0 = oauth.register(
     'auth0',
@@ -90,3 +90,7 @@ def landing_page():
 def profile_page(user_id):
     username = db.get_username(user_id)
     return render_template("profile.html", name=username)
+
+@app.route('/search')
+def search_page():
+    return render_template("search.html")
