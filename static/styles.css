@@ -1,26 +1,27 @@
 .post-gallery {
-    left: 2rem;
+    left           : 2rem;
     justify-content: center;
-    height:auto;
+    height         : auto;
 }
 
 .post-container[class*="pure-u"] {
     background-color: rgb(28, 77, 151);
-    /* padding: 1rem; */
-    height: fit-content;
+    /* padding      : 1rem; */
+    height          : fit-content;
 }
 
 .post {
     background-color: rgb(224, 224, 133);
-    aspect-ratio: 4 / 3;
-    /* height: 300px; */
-    max-width: 30rem;
-    border: 3px solid red;
-    padding: 1rem 2rem;
-    /* text-align: center; */
-    margin: 0 auto;
+    aspect-ratio    : 4 / 3;
+    /* height       : 300px; */
+    max-width       : 30rem;
+    border          : 3px solid red;
+    padding         : 1rem 2rem;
+    /* text-align   : center; */
+    margin          : 0 auto;
 }
-.post > * {
+
+.post>* {
     margin: 1rem 0;
 }
 
@@ -30,31 +31,197 @@
 
 .post-img.pure-img {
     max-height: 100%;
-    margin: auto;
+    margin    : auto;
 }
 
 #floating-rules-side {
-    display: inline-block;
-    margin-left: -150px; /* "#menu" width */
-    width: 150px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 1000; /* so the menu or its navicon stays above all content */
-    background: #191818;
-    overflow-y: auto;
-    /* float: right;
-    top:2rem;
-    left: 90%;
-    margin:0;
-    width:fit-content;
+    display         : inline-block;
+    margin-left     : -150px;
+    /* "#menu" width */
+    width           : 150px;
+    position        : fixed;
+    top             : 0;
+    left            : 0;
+    bottom          : 0;
+    z-index         : 1000;
+    /* so the menu or its navicon stays above all content */
+    background      : #191818;
+    overflow-y      : auto;
+    /* float        : right;
+    top             :2rem;
+    left            : 90%;
+    margin          :0;
+    width           :fit-content;
     background-color: yellow;
-    position: fixed; */
+    position        : fixed; */
 }
 
 @media screen and (max-width: 768px) {
 
-    .floating-rules-side {display: none;}
-    
+    .floating-rules-side {
+        display: none;
+    }
+
 }
+
+/* ============================================================= */
+.solver_content {
+    /* margin-left        : auto;
+    margin-right       : auto; */
+    /* width              : 110em; */
+    width              : 100%;
+    height             : 100%;
+    /* background-color: aqua; */
+}
+
+/* @media only screen and (min-width: 48em) { */
+.solver_container {
+    margin-top      : 1em;
+    margin-bottom   : 1em;
+    padding-top     : 0.5em;
+    padding-bottom  : 1em;
+    border-radius   : 10px;
+    margin-left     : auto;
+    margin-right    : auto;
+    width           : 70em;
+    aspect-ratio    : 1;
+    background-color: lightgray;
+}
+
+.solver_author_content {
+    margin-left     : auto;
+    margin-right    : auto;
+    padding-bottom  : 1em;
+    width           : 50em;
+    height          : auto;
+    /* background-color: red; */
+}
+
+.solver_users_content {
+    margin-left     : auto;
+    margin-right    : auto;
+    width           : 50em;
+    /* height          : 30em; */
+    /* background-color: blue; */
+}
+
+.solver_title {
+    margin-left : 5%;
+    margin-right: 5%;
+}
+
+.solver_title h1 {
+    font-size: 3em;
+}
+
+.solver_picture {
+    margin-top  : -1.5em;
+    margin-left : auto;
+    margin-right: auto;
+    width       : 90%;
+    border-style: solid;
+    border-width: 1px;
+    aspect-ratio: 4 / 3;
+}
+
+.solver_description_div {
+    /* margin-top  : .5em; */
+    margin-left : auto;
+    margin-right: auto;
+    width       : 90%;
+    height      : auto;
+    /* border-style: solid;
+    border-width: 1px; */
+    line-height : 40%;
+}
+
+.solver_content hr {
+    margin-top: -1em;
+    margin-bottom: -0.5em;
+    height          : 0.1em;
+    width           : 95%;
+    background-color: black;
+}
+
+.solver_user_input_div {
+    /* margin-top  : 0.5em; */
+    margin-left : auto;
+    margin-right: auto;
+    margin-bottom: -2em;
+    width       : 90%;
+    height      : auto;
+    /* border-style: solid;
+    border-width: 1px; */
+    line-height : 40%;
+}
+
+.solver_user_input_div button {
+    margin-top: 0.5em;
+}
+
+.solver_button_success {
+    color        : white;
+    border-radius: 4px;
+    text-shadow  : 0 1px 1px rgba(0, 0, 0, 0.2);
+    background   : rgb(28, 184, 65);
+    float        : right;
+}
+
+.solver_other_user_answers {
+    margin-top  : 0.5em;
+    margin-left : auto;
+    margin-right: auto;
+    /* width       : 100%; */
+    /* height      : auto; */
+    /* border-style: solid;
+    border-width: 1px; */
+}
+
+.solver_each_user_all_data {
+    /* background-color: pink; */
+    width: auto;
+}
+
+.solver_each_user_profile{
+
+    /* display: inline-block; */
+    float: left;
+    /* background-color: aqua; */
+    width: 5%;
+
+
+    /* float: left; */
+    /* margin-right: auto; */
+    /* width: 5%; */
+}
+
+.solver_profile_pic{
+    /* position:absolute; */
+    border-radius: 50%;
+    width: 2em;
+    height: 2em;
+
+    /* margin-top: auto; */
+}
+
+
+.solver_each_user_answer_div {
+    display: inline-block;
+    /* width: 95%;
+    height: auto;
+    margin-left: auto; */
+    background-color: rgb(160, 160, 160);
+    border-radius: 10px;
+    /* margin-top: -0.5em; */
+    margin-bottom: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+
+
+    /* float: right; */
+}
+.solver_username, .solver_answer {
+    line-height: 40%;
+}
+
+/* } */
