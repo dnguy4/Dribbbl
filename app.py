@@ -1,8 +1,12 @@
 import json
 import os
 import urllib
-from flask import Flask, render_template, request, g, redirect, url_for, jsonify, send_file, session
+import io
+import psycopg2.errors
+from flask import Flask, render_template, request, g, redirect, url_for, \
+    jsonify, send_file, session, flash
 from authlib.integrations.flask_client import OAuth
+from functools import wraps
 
 import db
 
@@ -38,7 +42,7 @@ def callback_handling():
     auth0.authorize_access_token()
     resp = auth0.get('userinfo')
     userinfo = resp.json()
-    print(userinfo, flush=True)
+    #print(userinfo, flush=True)
 
     # Store the user information in flask session.
     session['jwt_payload'] = userinfo
@@ -46,14 +50,16 @@ def callback_handling():
     session['profile'] = {
         'user_id': userinfo['sub'],
         'name': userinfo['name'],
-        'picture': userinfo['picture']
+        'picture': userinfo['picture'],
+        'email': userinfo['email']
     }
 
-    if userinfo['http://dribbbl.io/is_new']: #new user rooute, TODO
-        #db.add_user(userinfo['sub'], userinfo['name'])
-        #return redirect(url_for("profile_page"))
-        return redirect(url_for("landing_page"))
+    username = db.get_username(userinfo['sub'])
+    if userinfo['http://dribbbl.io/is_new'] or not username: #new user
+        db.add_user(userinfo['sub'], userinfo['email'])
+        return redirect(url_for("profile_page", username=userinfo['email']))
     else:
+        session['profile']['name'] = username
         return redirect(url_for("landing_page"))
 
 
@@ -84,12 +90,27 @@ def requires_auth(f):
 @app.route('/')
 def landing_page():
     userInfo = session.get("profile", None)
-    return render_template('landing.html',  userinfo=userInfo)
+    with db.get_db_cursor() as cur:
+        posts = db.get_posts()
+        return render_template('landing.html',  userinfo=userInfo, posts=posts)
 
-@app.route('/user/<user_id>', methods=['GET'])
-def profile_page(user_id):
-    username = db.get_username(user_id)
-    return render_template("profile.html", name=username)
+@app.route('/user/<username>', methods=['GET', 'POST'])
+def profile_page(username):
+    uid = db.get_uid(username) #if uid dne, return 404
+    if request.method == 'GET':
+        return render_template("profile.html", uid=uid, username=username)
+    else:
+        #POST, trying to change username
+        new_username = request.form.get('username')
+        try:
+            db.edit_username(uid, new_username)
+            session['profile']['name'] = new_username
+            return redirect(url_for('profile_page', username=new_username))
+        except psycopg2.Error as e:
+            flash("Username already taken.")
+            #print(e.pgerror)
+            return redirect(url_for('profile_page', username=username))
+
 
 @app.route('/search')
 def search_page():
@@ -98,3 +119,47 @@ def search_page():
 @app.route('/solver')
 def solver_page():
     return render_template("solver.html")
+
+### IMAGES
+### TODO replace them with the proper function route names
+@app.route('/images/<int:post_id>')
+def view_post(post_id):
+    post_row = db.get_post(post_id)
+    stream = io.BytesIO(post_row["post_image"])
+         
+    # use special "send_file" function
+    return send_file(stream, attachment_filename=post_row["title"])
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ['png', 'jpg', "gif"]
+
+
+@app.route('/image', methods=['POST'])
+@requires_auth
+def upload_post():
+    # check if the post request has the file part
+    if 'post_image' not in request.files:
+        return redirect(url_for("image_gallery", status="Image Upload Failed: No selected file"))
+    file = request.files['post_image']
+    title = request.form['title']
+    desc = request.form['desc']
+    solution = request.form['solution']
+    hint = request.form['hint']
+
+    # if user does not select file, browser also
+    # submit an empty part without filename
+    if file.filename == '':
+        return redirect(url_for("image_gallery", status="Image Upload Failed: No selected file"))
+    if file and allowed_file(file.filename):
+        #filename = secure_filename(file.filename)
+        data = file.read()
+        db.upload_post(data, title, desc, hint, solution, 
+            session['profile']['user_id']) #todo: sanitize title
+    return redirect(url_for("image_gallery", status="Image Uploaded Succesfully"))
+
+@app.route('/image', methods=['GET'])
+def image_gallery():
+    with db.get_db_cursor() as cur:
+        image_ids = db.get_image_ids()
+        return render_template("uploader.html", image_ids = image_ids)

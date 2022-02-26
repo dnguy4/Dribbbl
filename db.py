@@ -46,45 +46,54 @@ def get_db_cursor(commit=False):
           cursor.close()
 
 
-#TODO ADD DB FUNCTIONS
-def add_user(user_id, name):
+def add_user(user_id, username):
     # Since we're using connection pooling, it's not as big of a deal to have
     # lots of short-lived cursors (I think -- worth testing if we ever go big)
     with get_db_cursor(True) as cur:
-        current_app.logger.info("Adding person %s", name)
-        cur.execute("INSERT INTO users (u_id, name) values (%s, %s)", (user_id, name))
+        current_app.logger.info("Adding person %s", username)
+        cur.execute("INSERT INTO users (u_id, username) values (%s, %s)", (user_id, username))
 
 def get_username(user_id):
      with get_db_cursor(True) as cur:
-        cur.execute("SELECT name FROM users WHERE u_id = %s", (user_id,))
-        return cur.fetchone()['name']
+        cur.execute("SELECT username FROM users WHERE u_id = %s", (user_id,))
+        res = cur.fetchone()
+        return res['username'] if res else res
 
-def edit_username(user_id, name):
+def get_uid(username):
+     with get_db_cursor(True) as cur:
+        cur.execute("SELECT u_id FROM users WHERE username = %s", (username,))
+        res = cur.fetchone()
+        return res['u_id'] if res else res
+
+def edit_username(user_id, username):
     with get_db_cursor(True) as cur:
-        cur.execute("UPDATE users SET (name) = (%s) WHERE u_id = %s", (name, user_id))
+        current_app.logger.info("Trying to add %s", username)
+        cur.execute("""UPDATE users SET username = %s WHERE u_id = %s""", (username, user_id))
 
 
-def get_post(page = 0, post_per_page = 10):
+def get_posts(page = 0, post_per_page = 10):
     ''' note -- result can be used as list of dictionaries'''
     limit = post_per_page
     offset = page*post_per_page
     with get_db_cursor() as cur:
-        cur.execute("select * from person order by person_id limit %s offset %s", (limit, offset))
+        cur.execute("select * from posts order by upload_time limit %s offset %s", (limit, offset))
         return cur.fetchall()
 
-
-def get_image(img_id):
+def get_post(post_id):
     with get_db_cursor() as cur:
-        cur.execute("SELECT * FROM images where image_id=%s", (img_id,))
+        cur.execute("SELECT * FROM posts where post_id=%s", (post_id,))
         return cur.fetchone()
 
-def upload_image(data, filename):
+def upload_post(data, title, desc, hint, sol, u_id):
     with get_db_cursor(True) as cur:
-        cur.execute("insert into images (filename, data) values (%s, %s)", (filename, data))
+        cur.execute("""insert into posts (title, post_image,
+        descrip, hint, solution, author) 
+        values (%s, %s, %s, %s, %s, %s)""",
+         (title, data, desc, hint, sol, u_id))
 
 def get_image_ids():
     with get_db_cursor() as cur:
-        cur.execute("select image_id from images;")
-        return [r['image_id'] for r in cur]
+        cur.execute("select post_id from posts;")
+        return [r['post_id'] for r in cur]
         
         

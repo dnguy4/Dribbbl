@@ -6,14 +6,13 @@
 
 .post-container[class*="pure-u"] {
     background-color: rgb(28, 77, 151);
-    /* padding      : 1rem; */
+    padding      : 1rem 0;
     height          : fit-content;
 }
 
 .post {
     background-color: rgb(224, 224, 133);
     aspect-ratio    : 4 / 3;
-    /* height       : 300px; */
     max-width       : 30rem;
     border          : 3px solid red;
     padding         : 1rem 2rem;
@@ -23,6 +22,11 @@
 
 .post>* {
     margin: 1rem 0;
+}
+
+.post:hover
+{
+    cursor: pointer;
 }
 
 .post-edit-btn {

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %} {{username}} {% endblock %}
+
+
+{% block content %}
+<div>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification is-danger">
+                {{ messages[0] }}.
+            </div>
+        {% endif %}
+    {% endwith %}
+    <form class="pure-form" method="post">
+        <fieldset>
+
+            <div class="pure-control-group">
+                <label for="username">Username:</label>
+                <input name="username" value={{username}}>
+            </div>
+            <button class = "pure-button pure-button-primary">Change Username</button>
+        </fieldset>
+    </form>
+</div>
+{% endblock %}

@@ -6,7 +6,7 @@ create table tags (
 -- Would like to make username unique, have to sort out what happens during collision
 create table users (
     u_id text PRIMARY KEY,
-    username varchar(127) not null 
+    username varchar(127) not null unique
 );
 
 create table posts (

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Images{% endblock %}
+{% block content %}
+
+<div class="imageGallery pure-g">
+  {% for id in image_ids %}
+    <img class="pure-u-1-6 image" src="{{url_for("view_post", post_id=id)}}"/>
+  
+  {% endfor %}
+</div>
+
+<h2>add Your own</h2> 
+<form class="pure-form" method="post" enctype="multipart/form-data" action="{{url_for("upload_post")}}">
+  <fieldset>
+      <input type="file" name="post_image" accept="image/jpeg,image/png,image/gif" />
+      <label>Title</label><input name="title">
+      <label>Solution</label><input name="solution">
+      <label>Desc</label><input name="desc">
+      <label>Hint</label><input name="hint">
+      <button type="submit" class="pure-button pure-button-primary">Submit</button>
+  </fieldset>
+</form>
+
+{% endblock %}
+
+
