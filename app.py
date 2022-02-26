@@ -94,3 +94,7 @@ def profile_page(user_id):
 @app.route('/search')
 def search_page():
     return render_template("search.html")
+
+@app.route('/solver')
+def solver_page():
+    return render_template("solver.html")
