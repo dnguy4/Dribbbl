@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}
+Drawing
+{% endblock %}
+
+{% block content %}
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous">
+</script>
+
+<div class="pure-g" id="desktop-drawing">
+    <div class="pure-u-1 pure-u-lg-3-5">
+        <div class="drawing-area">
+            <h1 class="drawing-header">Drawing Page</h1>
+            <div class="drawing-canvas" id="canvas-p5-container"></div>
+            <div class="drawing-panel" id="panel-p5-container">
+            </div>
+            <form class="drawing-title-form pure-form pure-form-stacked">
+                <fieldset>
+                    <label for="title">Title</label>
+                    <input id="stacked-title"/>
+                    <label for="Description">Description</label>
+                    <textarea id="stacked-description" rows="4"></textarea>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <div class="pure-u-1 pure-u-lg-2-5">
+      <div class="drawing-settings-box">
+        <form class="drawing-settings-form pure-form pure-form-stacked">
+            <fieldset>
+                <legend>Settings</legend>
+                <label for="drawing-tags">Enter your tags:</label>
+                <input id="stacked-drawing-tags"/>
+                <div id="drawing-selection">
+                    <label for="drawing-select-word">Select the word based on your tags:</label>
+                    <button type="drawing-word" class="pure-button pure-button-primary"></button>
+                    <button type="drawing-word" class="pure-button pure-button-primary"></button>
+                    <button type="drawing-word" class="pure-button pure-button-primary"></button>
+                </div>
+                <label for="drawing-hint">Add a hint:</label>
+                <input id="stacked-drawing-hint"/>
+                <label for="drawing-see-guesses" class="pure-checkbox">
+                    <input type="checkbox" id="drawing-see-guesses" /> Users can see other people's guesses.
+                </label>
+                <button type="submit" class="pure-button pure-button-primary">Submit</button>
+            </fieldset>
+        </form>
+      </div>
+    </div>
+</div>
+
+<script src="{{
+    url_for('static', filename='sketch.js') }}">
+
+</script>
+
+<script>
+    $('#stacked-drawing-tags').blur(function()
+    {
+        if( !$(this).val() ) {
+            $("#drawing-selection").hide();
+        }
+        else {
+            let inputTag = $(this).val();
+            console.log(inputTag);
+            $("#drawing-selection").show();
+        }
+    });
+
+    $('.drawing-canvas').click(function(e){
+    console.log( 'clicked on div' );
+    e.stopPropagation(); // Prevent bubbling
+    });
+    $('body').click(function(e){
+    console.log( 'clicked outside of div' );
+    });
+
+</script>
+
+{% endblock %}
