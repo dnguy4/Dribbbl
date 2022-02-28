@@ -30,10 +30,12 @@ auth0 = oauth.register(
     },
 )
 
+
 #Kluver's groovy DB setup
 @app.before_first_request
 def initialize():
     db.setup()
+
 
 ###### AUTH0 functions ######
 @app.route('/callback')
