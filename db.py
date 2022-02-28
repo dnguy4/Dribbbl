@@ -95,5 +95,9 @@ def get_image_ids():
     with get_db_cursor() as cur:
         cur.execute("select post_id from posts;")
         return [r['post_id'] for r in cur]
-        
+
+def get_tags():
+    with get_db_cursor() as cur:
+        cur.execute("SELECT post_id, textcat_all(tag_name || ',') FROM(SELECT * FROM (SELECT * FROM posts LEFT JOIN tagged ON post_id=post) AS joinedTags LEFT JOIN tags ON tag=tag_id) AS tag_labels GROUP BY post_id ;")
+        return cur.fetchall()
         

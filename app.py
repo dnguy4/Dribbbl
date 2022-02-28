@@ -29,7 +29,8 @@ auth0 = oauth.register(
         'scope': 'openid profile email',
     },
 )
-
+# https://stackoverflow.com/questions/5208252/ziplist1-list2-in-jinja2
+app.jinja_env.globals.update(zip=zip)
 
 #Kluver's groovy DB setup
 @app.before_first_request
@@ -118,8 +119,18 @@ def profile_page(username):
 def search_page():
     with db.get_db_cursor() as cur:
         posts = db.get_posts()
-        print(posts)
-    return render_template("search.html", posts=posts)
+        tags = db.get_tags()
+        for i in range(len(tags)):
+            tags[i]['textcat_all'] = tags[i]['textcat_all'][:-1]
+        # tags['textcat_all'] = [t[:-1] for t in tags['textcat_all']]
+
+        # for tag in tags:
+        #     # print(tag)
+        #     # print(tag['post_id'])
+        #     tag_list.append(tag['textcat_all'][:-1])
+        #     # tag_list = tag['textcat_all'].split(',')[:-1]
+        print(tags)
+    return render_template("search.html", posts=posts, tags=tags)
 
 @app.route('/solver')
 def solver_page():
