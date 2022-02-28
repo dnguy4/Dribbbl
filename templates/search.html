@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet"  href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Page</title>
 </head>
@@ -14,8 +15,8 @@
   text-align: center;
 }
 img{
-    width: 20em;
-    height: auto;
+    width: 250px;
+    height: 250px;
 }
 .searchbar{
     margin-top: 0.5em;
@@ -24,18 +25,18 @@ img{
 
 }
 </style>
-<body>
-    <div class="searchbar">
-    <input placeholder="Search an image"  type="text"> 
-    <button >Search</button>
-    </div>
+{% extends 'base.html' %}
+
+{% block title %} Dribbbl {% endblock %}
+{% block content %}
     <div class="pure-g center">
-        {% for i in range(30) %}
-        <div class="pure-u-1-4 pure-u-md-1-3 pure-u-lg-1-4 pure-u-xl-1-6" >
-            <p>#Test #Test #Test</p>
-            <img src="https://i.ytimg.com/vi/CP_AUlBtZOk/default.jpg"></img>
+        {% for post in posts %}
+        <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-4 pure-u-xl-1-6" >
+            <p>{{post['title']}}</p>
+            <img src="{{url_for("view_post", post_id=post['post_id'])}}">
+
         </div>
         {% endfor %}
     </div>
-</body>
+{% endblock %}
 </html>

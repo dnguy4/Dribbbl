@@ -116,7 +116,10 @@ def profile_page(username):
 
 @app.route('/search')
 def search_page():
-    return render_template("search.html")
+    with db.get_db_cursor() as cur:
+        posts = db.get_posts()
+        print(posts)
+    return render_template("search.html", posts=posts)
 
 @app.route('/solver')
 def solver_page():
