@@ -299,3 +299,89 @@
     }
   }
 /*-------------------------------------------------------------------*/
+/* Julia's section */
+
+.drawing-settings-box {
+    background-color: #a7a7a7;
+}
+
+.drawing-area {
+    background-color: #c7c7c7;
+    margin: 3em 2% auto auto;
+    width: 70%;
+}
+
+.drawing-header {
+    background-color: #878787;
+    text-align: center;
+    padding: 0.7em;
+}
+
+.drawing-canvas .p5Canvas {
+    margin: 0 2%;
+    width: 100%;
+}
+
+.drawing-panel {
+    margin-left: 5%;
+    overflow: auto;
+    
+}
+
+.drawing-panel input {
+    margin-top: 0.5em;
+    margin-right: 1em;
+}
+
+.drawing-panel button {
+    margin-top: 0.2em;
+    margin-right: 1em;
+    margin-bottom: 0.2em;
+}
+
+.drawing-title-form {
+    margin: 0 5% 5%;
+
+}
+
+.drawing-title-form textarea {
+    width: 60%;
+    resize: vertical;
+}
+
+.drawing-settings-box {
+    width:70%;
+    margin: 3em 0 auto;
+}
+
+.drawing-settings-form {
+    padding: 10%;
+}
+
+.drawing-settings-form button {
+    width:80%;
+    margin-bottom: 1em;
+    display: block;
+
+}
+
+#drawing-selection {
+    display: none;
+}
+/*
+@media (max-width: 900px) {
+    #desktop-drawing {
+        display: none;
+    }
+}*/
+
+@media (max-width: 1023px) {
+    .drawing-settings-box {
+        margin: 3em auto;
+    }
+    .drawing-area {
+        margin: 3em auto;
+    }
+}
+
+/* Julia's section ends here */

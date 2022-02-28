@@ -165,3 +165,7 @@ def image_gallery():
     with db.get_db_cursor() as cur:
         image_ids = db.get_image_ids()
         return render_template("uploader.html", image_ids = image_ids)
+
+@app.route('/drawing')
+def drawing_page():
+    return render_template('drawing.html')
