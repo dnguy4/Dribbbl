@@ -4,7 +4,7 @@ import urllib
 import io
 import psycopg2.errors
 from flask import Flask, render_template, request, g, redirect, url_for, \
-    jsonify, send_file, session, flash
+    jsonify, send_file, session, flash, abort
 from authlib.integrations.flask_client import OAuth
 from functools import wraps
 
@@ -132,9 +132,19 @@ def search_page():
         print(tags)
     return render_template("search.html", posts=posts, tags=tags)
 
-@app.route('/solver')
-def solver_page():
-    return render_template("solver.html")
+@app.route('/solver/<post_id>')
+def solver_page(post_id):
+    number = int(post_id)
+    print("number")
+    with db.get_db_cursor() as cur:
+        print(db.get_total_post_ids())
+        listMaxId = db.get_total_post_ids()
+        maxId = listMaxId[0][0]
+        if(number > maxId):
+            abort(404)
+        else:
+            post=db.get_post(number)
+            return render_template("solver.html",post=post)
 
 ### IMAGES
 ### TODO replace them with the proper function route names
