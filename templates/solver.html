@@ -8,14 +8,14 @@
             <div class="solver_container">
                 <div class="solver_author_content">
                     <div class="solver_title">
-                        <h1>Title</h1>
+                        <h1>{{post['title']}}</h1>
                     </div>
                     <div class="solver_picture">
-                        <!-- Attach the pic here -->
+                        <img class="post-img pure-img" src="{{url_for("view_post", post_id=post['post_id'])}}">
                     </div>
                     <div class="solver_description_div">
-                        <p>Description</p>
-                        <p>By: <i>@author</i></p>
+                        <p>Description: {{post['descrip']}}</p>
+                        <p>By: <i>{{post['author']}}</i></p>
                         <p>Tags: tags</p>
                     </div>
                 </div>
@@ -25,8 +25,9 @@
                         <form class="pure-form" id="userSolveAns" name="userSolveAns">
                             <fieldset>
                                 <h3>Thought?</h3>
-                                <input type="text" class="pure-input-1 " id="answer" name="answer" placeholder="What do you think it is ?"
-                                    maxlength="50" pattern="[A-Za-z ]+" title="Special characters not allowed" required>
+                                <input type="text" class="pure-input-1 " id="answer" name="answer"
+                                    placeholder="What do you think it is ?" maxlength="50" pattern="[A-Za-z ]+"
+                                    title="Special characters not allowed" required>
                                 <br>
                                 <button type="submit" class="solver_button_success pure-button">Submit</button>
                             </fieldset>
@@ -37,7 +38,9 @@
                         <div class="solver_each_user_all_data">
                             <div class="solver_each_user_profile">
                                 <!-- profile pic -->
-                                <img class="solver_profile_pic" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="profile-pic">
+                                <img class="solver_profile_pic"
+                                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                    alt="profile-pic">
                             </div>
                             <div class="solver_each_user_answer_div">
                                 <p class="solver_username"><b>UserA</b></p>
@@ -47,7 +50,9 @@
                         <div class="solver_each_user_all_data">
                             <div class="solver_each_user_profile">
                                 <!-- profile pic -->
-                                <img class="solver_profile_pic" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="profile-pic">
+                                <img class="solver_profile_pic"
+                                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                    alt="profile-pic">
                             </div>
                             <div class="solver_each_user_answer_div">
                                 <p class="solver_username"><b>UserA</b></p>
@@ -57,17 +62,19 @@
                         <div class="solver_each_user_all_data">
                             <div class="solver_each_user_profile">
                                 <!-- profile pic -->
-                                <img class="solver_profile_pic" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="profile-pic">
+                                <img class="solver_profile_pic"
+                                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                    alt="profile-pic">
                             </div>
                             <div class="solver_each_user_answer_div">
                                 <p class="solver_username"><b>UserA</b></p>
                                 <p class="solver_answer">Answer</p>
                             </div>
                         </div>
-                        
-                        
-                        
-                      
+
+
+
+
                     </div>
                 </div>
             </div>

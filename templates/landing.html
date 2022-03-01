@@ -27,8 +27,10 @@
                     <span>Pokemon, Yugioh, Deez, Nuts, Gottem, Testing, I'M GONNA OVERFLOOW</span>
                     <a href="https://www.google.com" class="post-edit-btn"><i class="fa fa-edit"></i></a>
                 </div>
-                <img class="post-img pure-img" src="{{url_for("view_post", post_id=post['post_id'])}}">
-                
+                <!-- <img onclick="myFunction({{post['post_id']}})" class="post-img pure-img" src="{{url_for("view_post", post_id=post['post_id'])}}"> -->
+                <a href="{{url_for('solver_page', post_id=post['post_id'])}}">
+                    <img class="post-img pure-img" src="{{url_for("view_post", post_id=post['post_id'])}}">
+                </a>
                 <div class="post-footer">
                     <i class="fa fa-solid fa-comments"></i>
                     <span>4 comments</span>
@@ -55,6 +57,12 @@
         {% endfor %}
 
     </div>
+    <script>
+
+function myFunction(postID) {
+    window.location.href='{{ url_for("solver_page", post_id="postID") }}';
+}
+    </script>
 
 {% endblock %}
 </html>
