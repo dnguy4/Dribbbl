@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 {% block title %}Images{% endblock %}
 {% block content %}
+<!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" 
+  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="/static/Tags-Input-Autocomplete/src/jquery.tagsinput-revisited.js"></script>
+<link rel="stylesheet" href="/static/Tags-Input-Autocomplete/src/jquery.tagsinput-revisited.css"> -->
+<script src="https://unpkg.com/@yaireo/tagify"></script>
+<script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+<link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+<script src="{{url_for('static',filename='uploader.js')}}" defer></script>
+
 
 <div class="imageGallery pure-g">
   {% for id in image_ids %}
@@ -9,7 +19,7 @@
   {% endfor %}
 </div>
 
-<h2>add Your own</h2> 
+<h2>Add Your own</h2> 
 <form class="pure-form" method="post" enctype="multipart/form-data" action="{{url_for("upload_post")}}">
   <fieldset>
       <input type="file" name="post_image" accept="image/jpeg,image/png,image/gif" />
@@ -17,6 +27,7 @@
       <label>Solution</label><input name="solution">
       <label>Desc</label><input name="desc">
       <label>Hint</label><input name="hint">
+      <input id="posttags" name="tags" type="text" value="">
       <button type="submit" class="pure-button pure-button-primary">Submit</button>
   </fieldset>
 </form>

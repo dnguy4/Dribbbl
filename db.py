@@ -88,8 +88,9 @@ def upload_post(data, title, desc, hint, sol, u_id):
     with get_db_cursor(True) as cur:
         cur.execute("""insert into posts (title, post_image,
         descrip, hint, solution, author) 
-        values (%s, %s, %s, %s, %s, %s)""",
+        values (%s, %s, %s, %s, %s, %s) RETURNING post_id""",
          (title, data, desc, hint, sol, u_id))
+        print(cur.fetchone(), flush=True)
 
 def get_image_ids():
     with get_db_cursor() as cur:
