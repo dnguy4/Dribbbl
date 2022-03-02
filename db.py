@@ -124,3 +124,8 @@ def get_total_post_ids():
     with get_db_cursor() as cur:
         cur.execute("SELECT MAX(post_id) from posts;")
         return cur.fetchall()
+
+def get_post_author_name(post_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT post_id, username FROM( SELECT * FROM users LEFT JOIN posts ON u_id=author) AS usernameTag WHERE post_id=%s;", (post_id,)) 
+        return cur.fetchall()

@@ -15,7 +15,7 @@
                     </div>
                     <div class="solver_description_div">
                         <p>Description: {{post['descrip']}}</p>
-                        <p>By: <i>{{post['author']}}</i></p>
+                        <p>By: <i>{{author[0][1]}}</i></p>
                         {% if tags['textcat_all'] != '' %}
                         <i class="fa fa-solid fa-tags"></i>
                         <span>{{tags['textcat_all']}}</span>
