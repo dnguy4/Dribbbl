@@ -200,3 +200,16 @@ def image_gallery():
 @app.route('/drawing')
 def drawing_page():
     return render_template('drawing.html')
+
+@app.route('/upload_post', methods=['POST'])
+@requires_auth
+def upload_image():
+    file = request.files['post_image']
+    title = request.form['title']
+    desc = request.form['description']
+    solution = request.form['word-selection']
+    hint = request.form['hint']
+    data = file.read()
+    db.upload_post(data, title, desc, hint, solution, 
+            session['profile']['user_id'])
+    return redirect(url_for("landing_page"))

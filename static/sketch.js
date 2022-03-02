@@ -86,21 +86,30 @@ function submitPost() {
   let confirmation = confirm('Are you sure you want to submit your drawing?');
   if (confirmation) {
     saveCanvastoDataURL();
-    
   }
 }
 
 function saveCanvastoDataURL() {
-  let title = $("#stacked-drawing-title").val();
-  let dataURL = canvas.canvas.toDataURL();
-  let description = $("#stacked-drawing-description").val();
-  let hint = $("#stacked-drawing-hint").val();
-  let solution = $("input[name='word-selection']:checked").val();
-  let solved = false;
-  //let author = ???;
-  let show_comments = $('#drawing-see-guesses').val();;
-  let tags = $('#stacked-drawing-tags').val();
-  console.log(title, description, hint, solution, solved, show_comments, tags);
+  let formData = new FormData($('#drawing-title-form')[0]);
+  let poData = $('#drawing-settings-form').serializeArray();
+  for (var i=0; i<poData.length; i++){
+    formData.append(poData[i].name, poData[i].value)
+  }
+
+  canvas.canvas.toBlob(blob => {
+    formData.append('post_image', blob);
+
+    $.ajax({
+      type: 'POST',
+      url: "upload_post",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(result){
+        window.location.href ="/";
+      } 
+    })
+  })
 }
 
 function windowResized() {

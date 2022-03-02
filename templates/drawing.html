@@ -45,12 +45,12 @@ Drawing
                     </label>
                 </form>
             </div>
-            <form class="drawing-title-form pure-form pure-form-stacked">
+            <form class="drawing-title-form pure-form pure-form-stacked" id="drawing-title-form">
                 <fieldset>
                     <label for="title">Title</label>
-                    <input id="stacked-drawing-title" required/>
+                    <input id="stacked-drawing-title" name="title"required/>
                     <label for="Description">Description</label>
-                    <textarea id="stacked-drawing-description" rows="4"></textarea>
+                    <textarea id="stacked-drawing-description" name="description" rows="4"></textarea>
                 </fieldset>
             </form>
         </div>
@@ -62,7 +62,7 @@ Drawing
 
     <div class="pure-u-1 pure-u-lg-2-5">
       <div class="drawing-settings-box">
-        <form class="drawing-settings-form pure-form pure-form-stacked">
+        <form class="drawing-settings-form pure-form pure-form-stacked" id="drawing-settings-form">
             <fieldset>
                 <legend>Settings</legend>
                 <label for="drawing-tags">Enter your tags:</label>
@@ -83,7 +83,7 @@ Drawing
                     </div>
                 </div>
                 <label for="drawing-hint">Add a hint:</label>
-                <input id="stacked-drawing-hint"/>
+                <input id="stacked-drawing-hint" name="hint"/>
                 <label for="drawing-see-guesses" class="pure-checkbox">
                     <input type="checkbox" id="drawing-see-guesses" /> Users can see other people's guesses.
                 </label>
