@@ -106,7 +106,8 @@ function saveCanvastoDataURL() {
       processData: false,
       contentType: false,
       success: function(result){
-        window.location.href ="/";
+        console.log(result)
+        window.location.href ="/solver/"+result;
       } 
     })
   })

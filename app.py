@@ -170,7 +170,7 @@ def allowed_file(filename):
 
 @app.route('/image', methods=['POST'])
 @requires_auth
-def upload_post():
+def upload_image():
     # check if the post request has the file part
     if 'post_image' not in request.files:
         return redirect(url_for("image_gallery", status="Image Upload Failed: No selected file"))
@@ -203,13 +203,13 @@ def drawing_page():
 
 @app.route('/upload_post', methods=['POST'])
 @requires_auth
-def upload_image():
+def upload_post():
     file = request.files['post_image']
     title = request.form['title']
     desc = request.form['description']
     solution = request.form['word-selection']
     hint = request.form['hint']
     data = file.read()
-    db.upload_post(data, title, desc, hint, solution, 
+    post_id = db.upload_post(data, title, desc, hint, solution, 
             session['profile']['user_id'])
-    return redirect(url_for("landing_page"))
+    return str(post_id)
