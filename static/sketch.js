@@ -22,7 +22,6 @@ function setup() {
 
   $("input[name='brush-size']").change(function() {
     brushSize = $("input[name='brush-size']:checked").val();
-    console.log(brushSize);
   });
 
   pg.background('#ffffff');
@@ -57,16 +56,12 @@ function setup() {
       let words = testWordPool[value];
       if (words && !wordsChosen) {
         let chosenWords =  words.sort(() => Math.random() - Math.random()).slice(0, 3);
-        console.log(chosenWords);
         $("#drawing-word-1").val(chosenWords[0]);
         $("label[for='drawing-word-1']").text(chosenWords[0]);
         $("#drawing-word-2").val(chosenWords[1]);
         $("label[for='drawing-word-2']").text(chosenWords[1]);
         $("#drawing-word-3").val(chosenWords[2]);
         $("label[for='drawing-word-3']").text(chosenWords[2]);
-        console.log($("#drawing-word-1").val());
-        console.log($("#drawing-word-2").val());
-        console.log($("#drawing-word-3").val());
         wordsChosen = 1;
         $("#drawing-selection").show();
       }
@@ -80,24 +75,32 @@ function setup() {
         $("label[for='drawing-word-1']").text('');
         $("#drawing-word-3").val('');
         $("label[for='drawing-word-1']").text('');
-        console.log($("#drawing-word-1").val());
-        console.log($("#drawing-word-2").val());
-        console.log($("#drawing-word-3").val());
         wordsChosen = 0;
         $("#drawing-selection").hide();
       }
     }
   });
+}
 
-  $("input[name='word-selection']").change(function() {
-    let test = $("input[name='word-selection']:checked").val();
-    console.log(test);
-  });
+function submitPost() {
+  let confirmation = confirm('Are you sure you want to submit your drawing?');
+  if (confirmation) {
+    saveCanvastoDataURL();
+    
+  }
 }
 
 function saveCanvastoDataURL() {
+  let title = $("#stacked-drawing-title").val();
   let dataURL = canvas.canvas.toDataURL();
-  console.log(dataURL);
+  let description = $("#stacked-drawing-description").val();
+  let hint = $("#stacked-drawing-hint").val();
+  let solution = $("input[name='word-selection']:checked").val();
+  let solved = false;
+  //let author = ???;
+  let show_comments = $('#drawing-see-guesses').val();;
+  let tags = $('#stacked-drawing-tags').val();
+  console.log(title, description, hint, solution, solved, show_comments, tags);
 }
 
 function windowResized() {

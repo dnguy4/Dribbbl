@@ -21,7 +21,6 @@ Drawing
 <script src="static/jquery.tagsinput-revisited.js"></script>
 <link rel="stylesheet" href="static/jquery.tagsinput-revisited.css">
 
-
 <div class="pure-g" id="desktop-drawing">
     <div class="pure-u-1 pure-u-lg-3-5">
         <div class="drawing-area">
@@ -49,13 +48,17 @@ Drawing
             <form class="drawing-title-form pure-form pure-form-stacked">
                 <fieldset>
                     <label for="title">Title</label>
-                    <input id="stacked-title"/>
+                    <input id="stacked-drawing-title" required/>
                     <label for="Description">Description</label>
-                    <textarea id="stacked-description" rows="4"></textarea>
+                    <textarea id="stacked-drawing-description" rows="4"></textarea>
                 </fieldset>
             </form>
         </div>
     </div>
+
+    <script src="{{
+        url_for('static', filename='sketch.js') }}">
+    </script>
 
     <div class="pure-u-1 pure-u-lg-2-5">
       <div class="drawing-settings-box">
@@ -63,7 +66,7 @@ Drawing
             <fieldset>
                 <legend>Settings</legend>
                 <label for="drawing-tags">Enter your tags:</label>
-                <input id="stacked-drawing-tags" name="drawing-tags"/>
+                <input id="stacked-drawing-tags" name="drawing-tags" required/>
                 <div id="drawing-selection">
                     <label for="drawing-select-word">Select the word based on your tags:</label>
                     <div class="individual-words">
@@ -84,17 +87,12 @@ Drawing
                 <label for="drawing-see-guesses" class="pure-checkbox">
                     <input type="checkbox" id="drawing-see-guesses" /> Users can see other people's guesses.
                 </label>
-                <button type="submit" class="pure-button pure-button-primary" 
-                onclick="return confirm('Are you sure you want to submit your drawing?');">Submit</button>
+                <button type="button" class="pure-button" 
+                onclick="submitPost()">Submit</button>
             </fieldset>
         </form>
       </div>
     </div>
 </div>
-
-<script src="{{
-    url_for('static', filename='sketch.js') }}">
-
-</script>
 
 {% endblock %}
