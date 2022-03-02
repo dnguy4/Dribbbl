@@ -1,5 +1,6 @@
 let canvas, pg, colorPicker, eraser, reset;
 let mode = 0;
+let drawing = 0;
 let div = document.getElementById("canvas-p5-container");
 let brushSize = $("input[name='brush-size']:checked").val();
 
@@ -147,7 +148,19 @@ function mouseClicked(){
 
 function mouseDragged(){
   pg.line(mouseX, mouseY, pmouseX, pmouseY);
-  return false;
+  if (drawing){
+    return false;
+  }
+}
+
+function mousePressed() {
+  if (mouseX <= pg.width && mouseX >= 0 && mouseY <= pg.height && mouseY >= 0){
+    drawing = 1;
+  }
+}
+
+function mouseReleased() {
+  drawing = 0;
 }
 
 function switchEraser() {
