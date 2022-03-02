@@ -199,17 +199,24 @@ def image_gallery():
 
 @app.route('/drawing')
 def drawing_page():
-    return render_template('drawing.html')
+    # tags = db.get_all_tags()
+    # for i in range(len(tags)):
+    #     tags[i]['textcat_all'] = tags[i]['textcat_all'][:-1]
+    tags = [t['tag_name'] for t in db.get_all_tags()]
+    return render_template('drawing.html', tags=tags)
 
 @app.route('/upload_post', methods=['POST'])
 @requires_auth
 def upload_post():
     file = request.files['post_image']
+    data = file.read()
     title = request.form['title']
     desc = request.form['description']
     solution = request.form['word-selection']
     hint = request.form['hint']
-    data = file.read()
+    
     post_id = db.upload_post(data, title, desc, hint, solution, 
             session['profile']['user_id'])
+    tags = request.form['drawing_tags'].split(",")
+    db.tag_post(tags, post_id)
     return str(post_id)

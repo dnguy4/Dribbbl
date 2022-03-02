@@ -31,7 +31,7 @@
                 </div>
                 <!-- <img onclick="myFunction({{post['post_id']}})" class="post-img pure-img" src="{{url_for("view_post", post_id=post['post_id'])}}"> -->
                 <a href="{{url_for('solver_page', post_id=post['post_id'])}}">
-                    <img class="post-img pure-img" src="{{url_for("view_post", post_id=post['post_id'])}}">
+                    <img class="post-img pure-img" src="{{url_for('view_post', post_id=post['post_id'])}}">
                 </a>
                 <div class="post-footer">
                     <i class="fa fa-solid fa-comments"></i>
