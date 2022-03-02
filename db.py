@@ -100,7 +100,14 @@ def get_tags():
     with get_db_cursor() as cur:
         cur.execute("SELECT post_id, textcat_all(tag_name || ',') FROM(SELECT * FROM (SELECT * FROM posts LEFT JOIN tagged ON post_id=post) AS joinedTags LEFT JOIN tags ON tag=tag_id) AS tag_labels GROUP BY post_id ORDER BY post_id;")
         return cur.fetchall()
-        
+
+def get_tag(post_id):
+    with get_db_cursor() as cur:
+        # This is kinda bad, definitely optimize this by adding WHERE clause deeper in query
+        cur.execute("SELECT post_id, textcat_all(tag_name || ',') FROM(SELECT * FROM (SELECT * FROM posts LEFT JOIN tagged ON post_id=post) AS joinedTags LEFT JOIN tags ON tag=tag_id) AS tag_labels  WHERE post_id=%s GROUP BY post_id ORDER BY post_id;", (post_id,)) 
+        return cur.fetchone()
+
+
 def get_total_post_ids():
     with get_db_cursor() as cur:
         cur.execute("SELECT MAX(post_id) from posts;")

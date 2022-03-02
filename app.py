@@ -147,7 +147,11 @@ def solver_page(post_id):
             abort(404)
         else:
             post=db.get_post(number)
-            return render_template("solver.html",post=post)
+            tags = db.get_tag(number)
+            print(tags)
+            tags['textcat_all'] = tags['textcat_all'][:-1]
+            print(tags)
+            return render_template("solver.html",post=post, tags=tags)
 
 ### IMAGES
 ### TODO replace them with the proper function route names
