@@ -1,5 +1,6 @@
 import json
 import os
+import math
 import urllib
 import io
 import psycopg2.errors
@@ -94,16 +95,18 @@ def requires_auth(f):
 @app.route('/')
 def landing_page():
     userInfo = session.get("profile", None)
-    with db.get_db_cursor() as cur:
-        posts = db.get_posts()
-        tags = db.get_tags()
-        for i in range(len(tags)):
-            tags[i]['textcat_all'] = tags[i]['textcat_all'][:-1]
+    page = max(request.args.get('page', 1, type=int), 1)
+    final_page = math.ceil(db.get_num_of_posts()/10)
+    posts = db.get_posts(page=page-1)
+    tags = db.get_tags()
+    for i in range(len(tags)):
+        tags[i]['textcat_all'] = tags[i]['textcat_all'][:-1]
 
-        images = []
-        for post in posts:
-            images.append(b64encode(post['post_image']).decode("utf-8"))
-        return render_template('landing.html',  userinfo=userInfo, posts=posts, tags=tags, images=images)
+    images = []
+    for post in posts:
+        images.append(b64encode(post['post_image']).decode("utf-8"))
+    return render_template('landing.html', userinfo=userInfo, 
+        posts=posts, tags=tags, images=images, page_num=page, final_page=final_page)
 
 @app.route('/user/<username>', methods=['GET', 'POST'])
 def profile_page(username):
@@ -157,10 +160,9 @@ def solver_page(post_id):
             tags = db.get_tag(number)
             tags['textcat_all'] = tags['textcat_all'][:-1]
             username = db.get_post_author_name(number)
-            return render_template("solver.html",post=post, tags=tags, author=username)
+            return render_template("solver.html",post=post, tags=tags, author=username, userinfo=session['profile'])
 
 ### IMAGES
-### TODO replace them with the proper function route names
 @app.route('/images/<int:post_id>')
 def view_post(post_id):
     post_row = db.get_post(post_id)

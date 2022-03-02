@@ -3,15 +3,6 @@
 {% block title %} Dribbbl {% endblock %}
 
 {% block content %}
-
-    {% if userinfo and userinfo['name'] %}
-        <h2>Welcome {{userinfo['name']}}</h2>
-        <a href="/logout">GET ME OUT OF HERE</a>
-    {% else %}
-        <h2> Not logged in</h2>
-        <a href="/login">let me in, let me INNN</a>
-    {% endif %}
-
     <div class="pure-menu" id="floating-rules-side">
         <span class="pure-menu-heading">Eat your vegetables</span>
     </div>
@@ -39,28 +30,20 @@
                 </div>
             </div>
         </div>
-
-        <!-- <div class="post-container pure-u-1 pure-u-md-1-2">
-            <div class="post">
-                <div class="post-infobar">
-                    <span>Post Title</span>
-                    <i class="fa fa-solid fa-tags"></i>
-                  
-                    <a href="https://www.google.com" class="post-edit-btn"><i class="fa fa-edit"></i></a>
-                </div>
-                <img class="post-img pure-img" src="placeholder.png">
-                
-                <div class="post-footer">
-                    <i class="fa fa-solid fa-comments"></i>
-                    <span>4 comments</span>
-                </div>
-            </div>
-        </div> -->
         {% endfor %}
 
     </div>
-    <script>
 
+    <div id="pagination">
+        {% if page_num > 1 %}
+        <a href="{{ url_for('landing_page', page=page_num-1) }}">PREVIOUS</a>
+        {%endif%}
+        {% if page_num < final_page %}
+        <a href="{{ url_for('landing_page', page=page_num+1) }}">NEXT</a>
+        {%endif%}
+    </div>
+    
+    <script>
 function myFunction(postID) {
     window.location.href='{{ url_for("solver_page", post_id="postID") }}';
 }

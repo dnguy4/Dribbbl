@@ -21,7 +21,7 @@ def setup():
     global pool
     DATABASE_URL = os.environ['DATABASE_URL']
     current_app.logger.info(f"creating db connection pool")
-    pool = ThreadedConnectionPool(1, 6, dsn=DATABASE_URL, sslmode='require')
+    pool = ThreadedConnectionPool(1, 100, dsn=DATABASE_URL, sslmode='require')
 
 
 @contextmanager
@@ -124,6 +124,11 @@ def get_total_post_ids():
     with get_db_cursor() as cur:
         cur.execute("SELECT MAX(post_id) from posts;")
         return cur.fetchall()
+
+def get_num_of_posts():
+     with get_db_cursor() as cur:
+        cur.execute("select COUNT(*) from posts")
+        return cur.fetchone()[0]
 
 def get_post_author_name(post_id):
     with get_db_cursor() as cur:
