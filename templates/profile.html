@@ -12,6 +12,8 @@
             </div>
         {% endif %}
     {% endwith %}
+
+    {% if is_me%}
     <form class="pure-form" method="post">
         <fieldset>
 
@@ -25,5 +27,8 @@
             <button class = "pure-button pure-button-primary">Change Username</button>
         </fieldset>
     </form>
+    {% else %}
+        <span>Username: {{username}}</span>
+    {% endif %}
 </div>
 {% endblock %}
