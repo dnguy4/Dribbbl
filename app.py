@@ -3,6 +3,7 @@ import os
 import urllib
 import io
 import psycopg2.errors
+from base64 import b64encode
 from flask import Flask, render_template, request, g, redirect, url_for, \
     jsonify, send_file, session, flash, abort
 from authlib.integrations.flask_client import OAuth
@@ -98,7 +99,11 @@ def landing_page():
         tags = db.get_tags()
         for i in range(len(tags)):
             tags[i]['textcat_all'] = tags[i]['textcat_all'][:-1]
-        return render_template('landing.html',  userinfo=userInfo, posts=posts, tags=tags)
+
+        images = []
+        for post in posts:
+            images.append(b64encode(post['post_image']).decode("utf-8"))
+        return render_template('landing.html',  userinfo=userInfo, posts=posts, tags=tags, images=images)
 
 @app.route('/user/<username>', methods=['GET', 'POST'])
 def profile_page(username):
@@ -165,45 +170,9 @@ def view_post(post_id):
     # use special "send_file" function
     return send_file(stream, attachment_filename=post_row["title"])
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ['png', 'jpg', "gif"]
-
-
-@app.route('/image', methods=['POST'])
-@requires_auth
-def upload_image():
-    # check if the post request has the file part
-    if 'post_image' not in request.files:
-        return redirect(url_for("image_gallery", status="Image Upload Failed: No selected file"))
-    file = request.files['post_image']
-    title = request.form['title']
-    desc = request.form['desc']
-    solution = request.form['solution']
-    hint = request.form['hint']
-
-    # if user does not select file, browser also
-    # submit an empty part without filename
-    if file.filename == '':
-        return redirect(url_for("image_gallery", status="Image Upload Failed: No selected file"))
-    if file and allowed_file(file.filename):
-        #filename = secure_filename(file.filename)
-        data = file.read()
-        db.upload_post(data, title, desc, hint, solution, 
-            session['profile']['user_id']) #todo: sanitize title
-    return redirect(url_for("image_gallery", status="Image Uploaded Succesfully"))
-
-@app.route('/image', methods=['GET'])
-def image_gallery():
-    with db.get_db_cursor() as cur:
-        image_ids = db.get_image_ids()
-        return render_template("uploader.html", image_ids = image_ids, userinfo=session['profile'])
-
 @app.route('/drawing')
+@requires_auth
 def drawing_page():
-    # tags = db.get_all_tags()
-    # for i in range(len(tags)):
-    #     tags[i]['textcat_all'] = tags[i]['textcat_all'][:-1]
     tags = [t['tag_name'] for t in db.get_all_tags()]
     return render_template('drawing.html', tags=tags, userinfo=session['profile'])
 

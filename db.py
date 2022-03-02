@@ -76,7 +76,7 @@ def get_posts(page = 0, post_per_page = 10):
     limit = post_per_page
     offset = page*post_per_page
     with get_db_cursor() as cur:
-        cur.execute("select * from posts order by upload_time limit %s offset %s", (limit, offset))
+        cur.execute("select * from posts order by upload_time DESC limit %s offset %s", (limit, offset))
         return cur.fetchall()
 
 def get_post(post_id):
