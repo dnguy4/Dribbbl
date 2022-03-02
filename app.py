@@ -155,10 +155,9 @@ def solver_page(post_id):
         else:
             post=db.get_post(number)
             tags = db.get_tag(number)
-            print(tags)
             tags['textcat_all'] = tags['textcat_all'][:-1]
-            print(tags)
-            return render_template("solver.html",post=post, tags=tags)
+            username = db.get_post_author_name(number)
+            return render_template("solver.html",post=post, tags=tags, author=username)
 
 ### IMAGES
 ### TODO replace them with the proper function route names
