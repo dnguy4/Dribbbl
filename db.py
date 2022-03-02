@@ -21,7 +21,7 @@ def setup():
     global pool
     DATABASE_URL = os.environ['DATABASE_URL']
     current_app.logger.info(f"creating db connection pool")
-    pool = ThreadedConnectionPool(1, 4, dsn=DATABASE_URL, sslmode='require')
+    pool = ThreadedConnectionPool(1, 6, dsn=DATABASE_URL, sslmode='require')
 
 
 @contextmanager
@@ -87,10 +87,10 @@ def get_post(post_id):
 def upload_post(data, title, desc, hint, sol, u_id):
     with get_db_cursor(True) as cur:
         cur.execute("""insert into posts (title, post_image,
-        descrip, hint, solution, author) 
-        values (%s, %s, %s, %s, %s, %s) RETURNING post_id""",
-         (title, data, desc, hint, sol, u_id))
-        print(cur.fetchone(), flush=True)
+            descrip, hint, solution, author) 
+            values (%s, %s, %s, %s, %s, %s) RETURNING post_id""",
+            (title, data, desc, hint, sol, u_id))
+        return cur.fetchone()[0] #postid
 
 def get_image_ids():
     with get_db_cursor() as cur:
