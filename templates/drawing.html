@@ -5,11 +5,22 @@ Drawing
 {% endblock %}
 
 {% block content %}
+
 <script
   src="https://code.jquery.com/jquery-3.6.0.min.js"
   integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
   crossorigin="anonymous">
 </script>
+<script 
+    src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" 
+    integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" 
+    crossorigin="anonymous">
+</script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script src="static/jquery.tagsinput-revisited.js"></script>
+<link rel="stylesheet" href="static/jquery.tagsinput-revisited.css">
+
 
 <div class="pure-g" id="desktop-drawing">
     <div class="pure-u-1 pure-u-lg-3-5">
@@ -17,6 +28,23 @@ Drawing
             <h1 class="drawing-header">Drawing Page</h1>
             <div class="drawing-canvas" id="canvas-p5-container"></div>
             <div class="drawing-panel" id="panel-p5-container">
+                <form class="drawing-brush-size pure-form">
+                    <label for="size-1" class="pure-radio">
+                        <input type="radio" id="size-1" name="brush-size" value="1"/> 1
+                    </label>
+                    <label for="size-5" class="pure-radio">
+                        <input type="radio" id="size-5" name="brush-size" value="5" /> 5
+                    </label>
+                    <label for="size-10" class="pure-radio">
+                        <input type="radio" id="size-10" name="brush-size" value="10"  checked=""/> 10
+                    </label>
+                    <label for="size-30" class="pure-radio">
+                        <input type="radio" id="size-30" name="brush-size" value="30" /> 30
+                    </label>
+                    <label for="size-50" class="pure-radio">
+                        <input type="radio" id="size-50" name="brush-size" value="50" /> 50
+                    </label>
+                </form>
             </div>
             <form class="drawing-title-form pure-form pure-form-stacked">
                 <fieldset>
@@ -35,19 +63,29 @@ Drawing
             <fieldset>
                 <legend>Settings</legend>
                 <label for="drawing-tags">Enter your tags:</label>
-                <input id="stacked-drawing-tags"/>
+                <input id="stacked-drawing-tags" name="drawing-tags"/>
                 <div id="drawing-selection">
                     <label for="drawing-select-word">Select the word based on your tags:</label>
-                    <button type="drawing-word" class="pure-button pure-button-primary"></button>
-                    <button type="drawing-word" class="pure-button pure-button-primary"></button>
-                    <button type="drawing-word" class="pure-button pure-button-primary"></button>
+                    <div class="individual-words">
+                        <label for="drawing-word-1" class="pure-radio"></label>
+                        <input type="radio" id="drawing-word-1" name="word-selection" checked=""/> 
+                    </div>
+                    <div class="individual-words">
+                        <label for="drawing-word-2" class="pure-radio"></label>
+                        <input type="radio" id="drawing-word-2" name="word-selection"/> 
+                    </div>
+                    <div class="individual-words">
+                        <label for="drawing-word-3" class="pure-radio"></label>
+                        <input type="radio" id="drawing-word-3" name="word-selection"/> 
+                    </div>
                 </div>
                 <label for="drawing-hint">Add a hint:</label>
                 <input id="stacked-drawing-hint"/>
                 <label for="drawing-see-guesses" class="pure-checkbox">
                     <input type="checkbox" id="drawing-see-guesses" /> Users can see other people's guesses.
                 </label>
-                <button type="submit" class="pure-button pure-button-primary">Submit</button>
+                <button type="submit" class="pure-button pure-button-primary" 
+                onclick="return confirm('Are you sure you want to submit your drawing?');">Submit</button>
             </fieldset>
         </form>
       </div>
@@ -56,29 +94,6 @@ Drawing
 
 <script src="{{
     url_for('static', filename='sketch.js') }}">
-
-</script>
-
-<script>
-    $('#stacked-drawing-tags').blur(function()
-    {
-        if( !$(this).val() ) {
-            $("#drawing-selection").hide();
-        }
-        else {
-            let inputTag = $(this).val();
-            console.log(inputTag);
-            $("#drawing-selection").show();
-        }
-    });
-
-    $('.drawing-canvas').click(function(e){
-    console.log( 'clicked on div' );
-    e.stopPropagation(); // Prevent bubbling
-    });
-    $('body').click(function(e){
-    console.log( 'clicked outside of div' );
-    });
 
 </script>
 

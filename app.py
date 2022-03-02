@@ -137,16 +137,17 @@ def search():
 
 @app.route('/solver/<post_id>')
 def solver_page(post_id):
-    converted_post_id = int(post_id)
+    number = int(post_id)
+    print("number")
     with db.get_db_cursor() as cur:
-        max_post_id = db.get_total_post_ids()
-        print(max_post_id)
-        if(converted_post_id < max_post_id[0][0]):
-            post = db.get_post(converted_post_id)
-            return render_template("solver.html", post=post)
-        else:
+        print(db.get_total_post_ids())
+        listMaxId = db.get_total_post_ids()
+        maxId = listMaxId[0][0]
+        if(number > maxId):
             abort(404)
-        
+        else:
+            post=db.get_post(number)
+            return render_template("solver.html",post=post)
 
 ### IMAGES
 ### TODO replace them with the proper function route names

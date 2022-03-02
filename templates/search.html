@@ -48,8 +48,10 @@ img{
             <i class="fa fa-solid fa-tags"></i>
             <span>No tags</span>  
             {% endif %}
-            <img src="{{url_for("view_post", post_id=post['post_id'])}}">
 
+        <a href="{{url_for('solver_page', post_id=post['post_id'])}}">
+            <img src="{{url_for("view_post", post_id=post['post_id'])}}">
+        </a>
         </div>
         {% endfor %}
     </div>
