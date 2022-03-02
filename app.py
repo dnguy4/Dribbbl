@@ -103,9 +103,11 @@ def landing_page():
 @app.route('/user/<username>', methods=['GET', 'POST'])
 def profile_page(username):
     uid = db.get_uid(username) #if uid dne, return 404
+    is_current_user =  session.get("profile") and session['profile']['user_id'] == uid
+
     if request.method == 'GET':
-        return render_template("profile.html", uid=uid, username=username)
-    else:
+        return render_template("profile.html", uid=uid, username=username, is_me=is_current_user, userinfo=session['profile'])
+    elif is_current_user:
         #POST, trying to change username
         new_username = request.form.get('username')
         try:
@@ -195,7 +197,7 @@ def upload_image():
 def image_gallery():
     with db.get_db_cursor() as cur:
         image_ids = db.get_image_ids()
-        return render_template("uploader.html", image_ids = image_ids)
+        return render_template("uploader.html", image_ids = image_ids, userinfo=session['profile'])
 
 @app.route('/drawing')
 def drawing_page():
@@ -203,7 +205,7 @@ def drawing_page():
     # for i in range(len(tags)):
     #     tags[i]['textcat_all'] = tags[i]['textcat_all'][:-1]
     tags = [t['tag_name'] for t in db.get_all_tags()]
-    return render_template('drawing.html', tags=tags)
+    return render_template('drawing.html', tags=tags, userinfo=session['profile'])
 
 @app.route('/upload_post', methods=['POST'])
 @requires_auth
