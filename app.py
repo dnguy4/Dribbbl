@@ -95,7 +95,10 @@ def landing_page():
     userInfo = session.get("profile", None)
     with db.get_db_cursor() as cur:
         posts = db.get_posts()
-        return render_template('landing.html',  userinfo=userInfo, posts=posts)
+        tags = db.get_tags()
+        for i in range(len(tags)):
+            tags[i]['textcat_all'] = tags[i]['textcat_all'][:-1]
+        return render_template('landing.html',  userinfo=userInfo, posts=posts, tags=tags)
 
 @app.route('/user/<username>', methods=['GET', 'POST'])
 def profile_page(username):
@@ -115,8 +118,8 @@ def profile_page(username):
             return redirect(url_for('profile_page', username=username))
 
 
-@app.route('/search')
-def search_page():
+@app.route('/search', methods=['GET'])
+def search():
     with db.get_db_cursor() as cur:
         posts = db.get_posts()
         tags = db.get_tags()

@@ -18,10 +18,10 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
     {% else %}
         <a class="active" href="#home">Login</a>
     {% endif %}
-    <a href="#about">Home</a>
-  <a href="#about">Edit</a>
+    <a href="{{ url_for('landing_page') }}">Home</a>
+  <a href="{{ url_for('upload_post') }}">Upload Image</a>
   <div class="search-container">
-    <form action="/action_page.php">
+    <form action="{{ url_for('search') }}" method="get">
       <input type="text" placeholder="Search.." name="search">
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>

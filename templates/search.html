@@ -7,7 +7,13 @@
     <link rel="stylesheet"  href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css" />
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script
+  src="https://cdn.rawgit.com/sniperwolf/taggingJS/master/tagging.min.js"></script>
+
     <title>Search Page</title>
 </head>
 <style>
@@ -25,18 +31,22 @@ img{
 
 }
 </style>
+
 {% extends 'base.html' %}
 
 {% block title %} Dribbbl {% endblock %}
 {% block content %}
+
     <div class="pure-g center">
         {% for post, tag in zip(posts, tags) %}
         <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-4 pure-u-xl-1-6" >
             <p>{{post['title']}}</p>
-            {% if tag['textcat_all'] == '' %}
-                <p> no tags </p>
+            {% if tag['textcat_all'] != '' %}
+            <i class="fa fa-solid fa-tags"></i>
+            <span>{{tag['textcat_all']}}</span>
             {% else %}
-            <p>{{tag['textcat_all']}}</p>
+            <i class="fa fa-solid fa-tags"></i>
+            <span>No tags</span>  
             {% endif %}
             <img src="{{url_for("view_post", post_id=post['post_id'])}}">
 
