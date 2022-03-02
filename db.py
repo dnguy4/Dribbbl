@@ -13,7 +13,7 @@ from flask import current_app, g
 
 import psycopg2
 from psycopg2.pool import ThreadedConnectionPool
-from psycopg2.extras import DictCursor
+from psycopg2.extras import DictCursor, execute_values
 
 pool = None
 
@@ -108,6 +108,17 @@ def get_tag(post_id):
         cur.execute("SELECT post_id, textcat_all(tag_name || ',') FROM(SELECT * FROM (SELECT * FROM posts LEFT JOIN tagged ON post_id=post) AS joinedTags LEFT JOIN tags ON tag=tag_id) AS tag_labels  WHERE post_id=%s GROUP BY post_id ORDER BY post_id;", (post_id,)) 
         return cur.fetchone()
 
+def get_all_tags():
+    with get_db_cursor() as cur:
+        # cur.execute("SELECT textcat_all(tag_name || ',') FROM tags ")
+        cur.execute("SELECT * from tags;")
+        return cur.fetchall()
+
+def tag_post(tags, post_id):
+    with get_db_cursor(True) as cur:
+        cur.execute("SELECT tag_id from tags WHERE tag_name = ANY (%s)", (tags,) )
+        data = [(post_id, t['tag_id']) for t in cur.fetchall()]
+        execute_values(cur, "INSERT INTO tagged (post, tag) VALUES %s", data)
 
 def get_total_post_ids():
     with get_db_cursor() as cur:

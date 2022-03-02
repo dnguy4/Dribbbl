@@ -78,6 +78,11 @@ Drawing
         </form>
       </div>
     </div>
+
+    <script>
+        var alltags = {{tags|safe}}
+        importTags(alltags);
+    </script>
 </div>
 
 {% endblock %}
