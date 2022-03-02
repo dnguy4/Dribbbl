@@ -17,6 +17,9 @@
 
             <div class="pure-control-group">
                 <label for="username">Username:</label>
+                <!-- Treat as form validation problem, use ajax to send update onchange,
+                maybe lodash-debounce or javascript debounce to only send after a 100 ms without change,
+                allow submit after we know it's good -->
                 <input name="username" value={{username}}>
             </div>
             <button class = "pure-button pure-button-primary">Change Username</button>

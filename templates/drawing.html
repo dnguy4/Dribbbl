@@ -6,23 +6,7 @@ Drawing
 
 {% block content %}
 
-<script
-  src="https://code.jquery.com/jquery-3.6.0.min.js"
-  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-  crossorigin="anonymous">
-</script>
-<script 
-    src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" 
-    integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" 
-    crossorigin="anonymous">
-</script>
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-<script src="static/jquery.tagsinput-revisited.js"></script>
-<link rel="stylesheet" href="static/jquery.tagsinput-revisited.css">
-
-
-<div class="pure-g" id="desktop-drawing">
+<div class="pure-g">
     <div class="pure-u-1 pure-u-lg-3-5">
         <div class="drawing-area">
             <h1 class="drawing-header">Drawing Page</h1>
@@ -46,24 +30,28 @@ Drawing
                     </label>
                 </form>
             </div>
-            <form class="drawing-title-form pure-form pure-form-stacked">
+            <form class="drawing-title-form pure-form pure-form-stacked" id="drawing-title-form">
                 <fieldset>
                     <label for="title">Title</label>
-                    <input id="stacked-title"/>
+                    <input id="stacked-drawing-title" name="title"required/>
                     <label for="Description">Description</label>
-                    <textarea id="stacked-description" rows="4"></textarea>
+                    <textarea id="stacked-drawing-description" name="description" rows="4"></textarea>
                 </fieldset>
             </form>
         </div>
     </div>
 
+    <script src="{{
+        url_for('static', filename='sketch.js') }}">
+    </script>
+
     <div class="pure-u-1 pure-u-lg-2-5">
       <div class="drawing-settings-box">
-        <form class="drawing-settings-form pure-form pure-form-stacked">
+        <form class="drawing-settings-form pure-form pure-form-stacked" id="drawing-settings-form">
             <fieldset>
                 <legend>Settings</legend>
                 <label for="drawing-tags">Enter your tags:</label>
-                <input id="stacked-drawing-tags" name="drawing-tags"/>
+                <input id="stacked-drawing-tags" name="drawing-tags" required/>
                 <div id="drawing-selection">
                     <label for="drawing-select-word">Select the word based on your tags:</label>
                     <div class="individual-words">
@@ -80,21 +68,16 @@ Drawing
                     </div>
                 </div>
                 <label for="drawing-hint">Add a hint:</label>
-                <input id="stacked-drawing-hint"/>
+                <input id="stacked-drawing-hint" name="hint"/>
                 <label for="drawing-see-guesses" class="pure-checkbox">
                     <input type="checkbox" id="drawing-see-guesses" /> Users can see other people's guesses.
                 </label>
-                <button type="submit" class="pure-button pure-button-primary" 
-                onclick="return confirm('Are you sure you want to submit your drawing?');">Submit</button>
+                <button type="button" class="pure-button" 
+                onclick="submitPost()">Submit</button>
             </fieldset>
         </form>
       </div>
     </div>
 </div>
-
-<script src="{{
-    url_for('static', filename='sketch.js') }}">
-
-</script>
 
 {% endblock %}
