@@ -301,10 +301,6 @@
 /*-------------------------------------------------------------------*/
 /* Julia's section */
 
-.drawing-settings-box {
-    background-color: #a7a7a7;
-}
-
 .drawing-area {
     background-color: #c7c7c7;
     margin: 3em 2% auto auto;
@@ -365,6 +361,7 @@
 }
 
 .drawing-settings-box {
+    background-color: #a7a7a7;
     width:70%;
     margin: 3em 0 auto;
 }
@@ -388,6 +385,31 @@
 .individual-words input {
     display:inline;
 }
+
+.editing-img {
+    margin: 0 2%;
+    width: 95%;
+}
+
+/* .editing-settings-form {
+    padding: 10%;
+} */
+
+.image-details {
+    padding: 3%;
+}
+/* 
+.solution-box {
+    padding-top: 3%;
+    margin-left: 10%;
+} */
+
+/* for making solution word to appear *fancy*
+.solution-word {
+}
+*/
+
+
 
 @media (max-width: 1023px) {
     .drawing-settings-box {

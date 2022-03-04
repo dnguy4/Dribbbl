@@ -162,6 +162,29 @@ def solver_page(post_id):
             username = db.get_post_author_name(number)
             return render_template("solver.html",post=post, tags=tags, author=username, userinfo=session['profile'])
 
+@app.route('/editing/<post_id>')
+def editing_page(post_id):
+    number = int(post_id)
+    #uid = db.get_uid(username) #if uid dne, return 404
+    #is_current_user =  session.get("profile") and session['profile']['user_id'] == uid
+    with db.get_db_cursor() as cur:
+        print(db.get_total_post_ids())
+        listMaxId = db.get_total_post_ids()
+        maxId = listMaxId[0][0]
+        if(number > maxId):
+            abort(404)
+        else:
+            post=db.get_post(number)
+            cur_profile = session.get("profile")
+            ## is this a scuffed way to verify that user is the same? probably
+            if (post['author'] == cur_profile['user_id']):
+                tags = db.get_tag(number)
+                tags['textcat_all'] = tags['textcat_all'][:-1]
+                username = db.get_post_author_name(number)
+                return render_template("editing.html",post=post, tags=tags, author=username, userinfo=session['profile'])
+            else:
+                abort(404)
+
 ### IMAGES
 @app.route('/images/<int:post_id>')
 def view_post(post_id):
@@ -192,3 +215,18 @@ def upload_post():
     tags = request.form['drawing_tags'].split(",")
     db.tag_post(tags, post_id)
     return str(post_id)
+
+@app.route('/editing/<post_id>', methods=['POST'])
+@requires_auth
+def edit_post(post_id):
+    title = request.form['title']
+    desc = request.form['description']
+    hint = request.form['hint']
+    # guesses = request.form.get('see-guesses')
+    # if (guesses != None):
+    #     guesses = True
+    # else:
+    #     guesses = False
+    
+    db.edit_post(title, desc, hint, post_id)
+    return redirect(url_for("solver_page", post_id=post_id))
