@@ -90,6 +90,17 @@ def requires_auth(f):
 
   return decorated
 
+
+def get_tags_and_images(posts):
+    tags = db.get_tags()
+    for i in range(len(tags)):
+        tags[i]['textcat_all'] = tags[i]['textcat_all'][:-1]
+
+    images = []
+    for post in posts:
+        images.append(b64encode(post['post_image']).decode("utf-8"))
+    return tags, images
+
 ###### Routes ######
 
 @app.route('/')
@@ -98,34 +109,38 @@ def landing_page():
     page = max(request.args.get('page', 1, type=int), 1)
     final_page = math.ceil(db.get_num_of_posts()/10)
     posts = db.get_posts(page=page-1)
-    tags = db.get_tags()
-    for i in range(len(tags)):
-        tags[i]['textcat_all'] = tags[i]['textcat_all'][:-1]
-
-    images = []
-    for post in posts:
-        images.append(b64encode(post['post_image']).decode("utf-8"))
+    tags, images = get_tags_and_images(posts)
     return render_template('landing.html', userinfo=userInfo, 
         posts=posts, tags=tags, images=images, page_num=page, final_page=final_page)
 
-@app.route('/user/<username>', methods=['GET', 'POST'])
+@app.route('/user/<username>')
 def profile_page(username):
-    uid = db.get_uid(username) #if uid dne, return 404
+    uid = db.get_uid(username)
     is_current_user =  session.get("profile") and session['profile']['user_id'] == uid
+    if request.method == 'GET' and uid != None:
+        posts =db.get_posts_by_author(uid)
+        tags, images = get_tags_and_images(posts)
+        return render_template("profile.html", uid=uid, posts=posts, tags=tags, images=images,
+            username=username, is_me=is_current_user, userinfo=session['profile'])
+    else:
+        return render_template('404.html', userinfo=session['profile']), 404
 
-    if request.method == 'GET':
-        return render_template("profile.html", uid=uid, username=username, is_me=is_current_user, userinfo=session['profile'])
-    elif is_current_user:
-        #POST, trying to change username
+@app.route('/user/<username>', methods=['POST'])
+@requires_auth
+def update_username(username):
+    uid = db.get_uid(username)
+    is_current_user =  session['profile']['user_id'] == uid
+    if is_current_user:
         new_username = request.form.get('username')
         try:
             db.edit_username(uid, new_username)
             session['profile']['name'] = new_username
+            session.modifed = True
             return redirect(url_for('profile_page', username=new_username))
         except psycopg2.Error as e:
-            flash("Username already taken.")
             #print(e.pgerror)
-            return redirect(url_for('profile_page', username=username))
+            abort(403, "Username already in use")
+    abort(401, "Unauthorized")
 
 
 @app.route('/search', methods=['GET'])
@@ -167,8 +182,6 @@ def solver_page(post_id):
 def view_post(post_id):
     post_row = db.get_post(post_id)
     stream = io.BytesIO(post_row["post_image"])
-         
-    # use special "send_file" function
     return send_file(stream, attachment_filename=post_row["title"])
 
 @app.route('/drawing')
@@ -177,7 +190,7 @@ def drawing_page():
     tags = [t['tag_name'] for t in db.get_all_tags()]
     return render_template('drawing.html', tags=tags, userinfo=session['profile'])
 
-@app.route('/upload_post', methods=['POST'])
+@app.route('/drawing', methods=['POST'])
 @requires_auth
 def upload_post():
     file = request.files['post_image']

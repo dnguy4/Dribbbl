@@ -38,6 +38,13 @@
     margin    : auto;
 }
 
+#nextPageBtn, #editUsernameBtn {
+    float: right;
+}
+#prevPageBtn {
+    float: left;
+}
+
 #floating-rules-side {
     display         : inline-block;
     margin-left     : -150px;
@@ -51,13 +58,6 @@
     /* so the menu or its navicon stays above all content */
     background      : #191818;
     overflow-y      : auto;
-    /* float        : right;
-    top             :2rem;
-    left            : 90%;
-    margin          :0;
-    width           :fit-content;
-    background-color: yellow;
-    position        : fixed; */
 }
 
 @media screen and (max-width: 768px) {

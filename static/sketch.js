@@ -102,7 +102,7 @@ function saveCanvastoDataURL() {
 
     $.ajax({
       type: 'POST',
-      url: "upload_post",
+      url: "drawing",
       data: formData,
       processData: false,
       contentType: false,

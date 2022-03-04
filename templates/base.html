@@ -33,11 +33,34 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
 <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
+{% macro post_widget(post, tag, image) -%}
+<div class="post">
+  <div class="post-infobar">
+      <span>{{post['title']}}</span>
+      {% if tag['textcat_all'] != '' %}
+          <i class="fa fa-solid fa-tags"></i>
+          <span>{{tag['textcat_all']}}</span>
+      {% endif %}
+      {% if userinfo and userinfo['user_id'] == post['author'] %}
+      <a href="https://www.google.com" class="post-edit-btn"><i class="fa fa-edit"></i></a>
+      {%endif%}
+  </div>
+  <a href="{{url_for('solver_page', post_id=post['post_id'])}}">
+      <img class="post-img pure-img" src="data:;base64,{{ image }}">
+  </a>
+  <div class="post-footer">
+      <i class="fa fa-solid fa-comments"></i>
+      <span>4 comments</span>
+  </div>
+</div>
+{%- endmacro %}
+
 <body>
 <div class="topnav">
 
     {% if userinfo and userinfo['name'] %}
-    <a class="active"  onclick="window.location.href ='logout'">Logout</a>
+    <a class="active"  href="{{ url_for('logout') }}">Logout</a>
+    <a href="{{ url_for('profile_page', username=userinfo['name']) }}">Profile Page</a>
     {% else %}
         <a class="active" href="{{ url_for('login') }}">Login</a>
     {% endif %}
