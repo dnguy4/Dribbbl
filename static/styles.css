@@ -38,7 +38,12 @@
     margin    : auto;
 }
 
-#nextPageBtn, #editUsernameBtn {
+.post-footer > * {
+    text-decoration: none;
+    color: inherit;
+}
+
+#nextPageBtn {
     float: right;
     margin: 0 2rem;
 }
@@ -99,6 +104,11 @@
     background-color: rgba(248, 215, 218, 1);
     border-color: rgba(220, 53, 69, 1);
     color: rgba(114, 28, 36,1);
+}
+
+#editUsernameBtn {
+    float: right;
+    margin: 0 2rem;
 }
 
 

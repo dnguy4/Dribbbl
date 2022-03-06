@@ -42,15 +42,18 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
           <span>{{tag['textcat_all']}}</span>
       {% endif %}
       {% if userinfo and userinfo['user_id'] == post['author'] %}
-      <a href="https://www.google.com" class="post-edit-btn"><i class="fa fa-edit"></i></a>
+      <a href="{{url_for('editing_page', post_id=post['post_id'])}}" class="post-edit-btn">
+        <i class="fa fa-edit"></i></a>
       {%endif%}
   </div>
   <a href="{{url_for('solver_page', post_id=post['post_id'])}}">
       <img class="post-img pure-img" src="data:;base64,{{ image }}">
   </a>
   <div class="post-footer">
-      <i class="fa fa-solid fa-comments"></i>
-      <span>4 comments</span>
+      <a href="{{url_for('solver_page', post_id=post['post_id'])}}">
+        <i class="fa fa-solid fa-comments"></i>
+        <span>4 comments</span>
+      </a>
   </div>
 </div>
 {%- endmacro %}

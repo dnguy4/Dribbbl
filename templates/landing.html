@@ -20,19 +20,11 @@
             <a class="pure-button" id="previousPageBtn" href="{{ url_for('landing_page', page=page_num-1) }}">
                 <i class="fa fa-solid fa-arrow-left"></i>
             </a>
-        {%endif%}
-        {% if page_num < final_page %}
+        {% elif page_num < final_page %}
             <a class="pure-button" id="nextPageBtn" href="{{ url_for('landing_page', page=page_num+1) }}">
                 <i class="fa fa-solid fa-arrow-right"></i>
             </a>
         {%endif%}
     </div>
-    
-    <script>
-function myFunction(postID) {
-    window.location.href='{{ url_for("solver_page", post_id="postID") }}';
-}
-    </script>
-
 {% endblock %}
 </html>

@@ -15,7 +15,8 @@
                     </div>
                     <div class="solver_description_div">
                         <p>Description: {{post['descrip']}}</p>
-                        <p>By: <i>{{author[0][1]}}</i></p>
+                        <p>By: <a href="{{url_for('profile_page',username=author[0][1])}}"
+                            ><i>{{author[0][1]}}</i></a></p>
                         {% if tags['textcat_all'] != '' %}
                         <i class="fa fa-solid fa-tags"></i>
                         <span>{{tags['textcat_all']}}</span>
@@ -41,6 +42,7 @@
                     </div>
                     <div class="solver_other_user_answers">
                         <!-- Get data from database and do for loop here -->
+                        {% for i in range(3) %}
                         <div class="solver_each_user_all_data">
                             <div class="solver_each_user_profile">
                                 <!-- profile pic -->
@@ -53,34 +55,7 @@
                                 <p class="solver_answer">Answer</p>
                             </div>
                         </div>
-                        <div class="solver_each_user_all_data">
-                            <div class="solver_each_user_profile">
-                                <!-- profile pic -->
-                                <img class="solver_profile_pic"
-                                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                                    alt="profile-pic">
-                            </div>
-                            <div class="solver_each_user_answer_div">
-                                <p class="solver_username"><b>UserA</b></p>
-                                <p class="solver_answer">Answer</p>
-                            </div>
-                        </div>
-                        <div class="solver_each_user_all_data">
-                            <div class="solver_each_user_profile">
-                                <!-- profile pic -->
-                                <img class="solver_profile_pic"
-                                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                                    alt="profile-pic">
-                            </div>
-                            <div class="solver_each_user_answer_div">
-                                <p class="solver_username"><b>UserA</b></p>
-                                <p class="solver_answer">Answer</p>
-                            </div>
-                        </div>
-
-
-
-
+                        {% endfor %}
                     </div>
                 </div>
             </div>

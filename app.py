@@ -163,29 +163,22 @@ def search():
         print(tags)
     return render_template("search.html", posts=posts, tags=tags)
 
-@app.route('/solver/<post_id>')
+@app.route('/post/<int:post_id>')
 def solver_page(post_id):
-    number = int(post_id)
-    print("number")
-    with db.get_db_cursor() as cur:
-        print(db.get_total_post_ids())
-        listMaxId = db.get_total_post_ids()
-        maxId = listMaxId[0][0]
-        if(number > maxId):
-            abort(404)
-        else:
-            post=db.get_post(number)
-            tags = db.get_tag(number)
-            tags['textcat_all'] = tags['textcat_all'][:-1]
-            username = db.get_post_author_name(number)
-            return render_template("solver.html",post=post, tags=tags, author=username, userinfo=session['profile'])
+    post=db.get_post(post_id)
+    if post == None:
+        return render_template('404.html', userinfo=session['profile']), 404
+    tags = db.get_tag(post_id)
+    tags['textcat_all'] = tags['textcat_all'][:-1]
+    username = db.get_post_author_name(post_id)
+    return render_template("solver.html",post=post, tags=tags, author=username, userinfo=session['profile'])
 
-@app.route('/editing/<int:post_id>')
+@app.route('/post/<int:post_id>/edit')
 @requires_auth
 def editing_page(post_id):
     post = db.get_post(post_id)
     if post == None:
-        abort(404)
+        return render_template('404.html', userinfo=session['profile']), 404
     if (post['author'] == session['profile']['user_id']):
         tags = db.get_tag(post_id)
         tags['textcat_all'] = tags['textcat_all'][:-1]
@@ -222,7 +215,7 @@ def upload_post():
     db.tag_post(tags, post_id)
     return str(post_id)
 
-@app.route('/editing/<post_id>', methods=['POST'])
+@app.route('/post/<int:post_id>/edit', methods=['POST'])
 @requires_auth
 def edit_post(post_id):
     title = request.form['title']
