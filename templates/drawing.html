@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Drawing
+Make a Drawing!
 {% endblock %}
 
 {% block content %}
@@ -35,7 +35,7 @@ Drawing
                     <label for="title">Title</label>
                     <input id="stacked-drawing-title" name="title"required/>
                     <label for="Description">Description</label>
-                    <textarea id="stacked-drawing-description" name="description" rows="4"></textarea>
+                    <textarea id="stacked-drawing-description" name="description" rows="4" cols="22"></textarea>
                 </fieldset>
             </form>
         </div>
@@ -70,7 +70,7 @@ Drawing
                 <label for="drawing-hint">Add a hint:</label>
                 <input id="stacked-drawing-hint" name="hint"/>
                 <label for="drawing-see-guesses" class="pure-checkbox">
-                    <input type="checkbox" id="drawing-see-guesses" /> Users can see other people's guesses.
+                    <input type="checkbox" id="drawing-see-guesses" name="see-guesses"/> Users can see other people's guesses.
                 </label>
                 <button type="button" class="pure-button" 
                 onclick="submitPost()">Submit</button>

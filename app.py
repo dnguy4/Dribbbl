@@ -180,6 +180,20 @@ def solver_page(post_id):
             username = db.get_post_author_name(number)
             return render_template("solver.html",post=post, tags=tags, author=username, userinfo=session['profile'])
 
+@app.route('/editing/<int:post_id>')
+@requires_auth
+def editing_page(post_id):
+    post = db.get_post(post_id)
+    if post == None:
+        abort(404)
+    if (post['author'] == session['profile']['user_id']):
+        tags = db.get_tag(post_id)
+        tags['textcat_all'] = tags['textcat_all'][:-1]
+        username = db.get_post_author_name(post_id)
+        return render_template("editing.html",post=post, tags=tags, author=username, userinfo=session['profile'])
+    else:
+        abort(403)
+
 ### IMAGES
 @app.route('/images/<int:post_id>')
 def view_post(post_id):
@@ -202,9 +216,18 @@ def upload_post():
     desc = request.form['description']
     solution = request.form['word-selection']
     hint = request.form['hint']
-    
     post_id = db.upload_post(data, title, desc, hint, solution, 
             session['profile']['user_id'])
     tags = request.form['drawing_tags'].split(",")
     db.tag_post(tags, post_id)
     return str(post_id)
+
+@app.route('/editing/<post_id>', methods=['POST'])
+@requires_auth
+def edit_post(post_id):
+    title = request.form['title']
+    desc = request.form['description']
+    hint = request.form['hint']
+    show_comment = request.form.get('see-guesses', None) != None
+    db.edit_post(title, desc, hint, show_comment, post_id)
+    return redirect(url_for("solver_page", post_id=post_id))

@@ -70,6 +70,13 @@ def edit_username(user_id, username):
         current_app.logger.info("Trying to add %s", username)
         cur.execute("""UPDATE users SET username = %s WHERE u_id = %s""", (username, user_id))
 
+def edit_post(title, desc, hint, show_comment, post_id):
+    with get_db_cursor(True) as cur:
+        current_app.logger.info("Trying to edit %s", post_id)
+        cur.execute("""UPDATE posts SET title = %s, descrip = %s, 
+            hint = %s, show_comment = %s WHERE post_id = %s""", 
+            (title, desc, hint, show_comment, post_id))
+
 
 def get_posts(page = 0, post_per_page = 10):
     ''' note -- result can be used as list of dictionaries'''
