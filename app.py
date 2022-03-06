@@ -1,6 +1,7 @@
 import json
 import os
 import math
+import re
 import urllib
 import io
 import psycopg2.errors
@@ -132,6 +133,8 @@ def update_username(username):
     is_current_user =  session['profile']['user_id'] == uid
     if is_current_user:
         new_username = request.form.get('username')
+        if not re.match(r'^[A-Za-z0-9_@]+$', new_username):
+            abort(400, "Only alphanumeric and underscores allowed")
         try:
             db.edit_username(uid, new_username)
             session['profile']['name'] = new_username

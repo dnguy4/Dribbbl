@@ -1,9 +1,5 @@
 $(window).on('load', () => setUp())
 
-// <!-- Treat as form validation problem, use ajax to send update onchange,
-// maybe lodash-debounce or javascript debounce to only send after a 100 ms without change,
-// allow submit after we know it's good -->
-
 //https://www.freecodecamp.org/news/javascript-debounce-example/
 //https://codepen.io/ondrabus/pen/WNGaVZN
 function debounce(func, timeout = 100){
@@ -16,13 +12,25 @@ function debounce(func, timeout = 100){
 const processChange = debounce(() => validateUsername())
 
 function validateUsername(){
-    let newUsername = $('#username').val();
+    let username =  $('#username')[0];
+    username.reportValidity();
+    if (!username.checkValidity()) return;
+    let newUsername = username.value;
     $.get(window.location.origin+'/user/'+newUsername)
         .done(() => {
-            alert("Username in use already")
+            $('#username').css("border", "2px solid red");
+            $('#overlapAlert').text("Username already taken.")
+                .css('visibility','visible')
+                .toggleClass("alert-error", true)
+                .toggleClass("alert-success", false)
         })
-        .fail(() => {
-            //You're all good, display green
+        .fail(() => { // No duplicate user exists
+            $('#username').css("border", "2px solid green");
+          $('#overlapAlert').text("Valid username.")
+            .css('visibility','visible')
+            .toggleClass("alert-error", false)
+            .toggleClass("alert-success", true);
+
         });
 }
 
@@ -34,22 +42,34 @@ function setUp(){
 function editUsername(){
     let oldUser = $('#username').text();
     $('#username').replaceWith($(`<input type='text' id='username' 
-      value='${$('#username').text()}'>`));
+      value='${$('#username').text()}' pattern='[a-zA-z0-9_]+'
+      oninvalid="setCustomValidity('Username can only use letters, numbers, and underscores')"
+        oninput="setCustomValidity('')">`));
     $('#username').change(processChange).keypress(function (e) {
-        if (e.which == 13){ //Submit when pressing enter
+        if (e.which == 13 && username.checkValidity()){ //Submit when pressing enter
             saveUsername(oldUser);
             return false;
         }
     })
-    $('#editUsernameBtn').text("Save username").off('click').click(() => saveUsername(oldUser));
+    $('#editUsernameBtn').text("Save").off('click').click(() => saveUsername(oldUser));
 }
 
 function saveUsername(oldUser){
     let newUsername = $('#username').val();
-    $.post(window.location.pathname, {"username": newUsername})
+    if (newUsername === oldUser){
+        resetChanges(oldUser);
+    }
+    else {
+        $.post(window.location.pathname, {"username": newUsername})
         .done( (msg) => window.location.href = "/user/"+newUsername)
         .fail( (xhr, status, error) => {
-            $('#username').replaceWith(`<span id="username">${oldUser}</span>`)
-            $('#editUsernameBtn').text("Edit username").off('click').click(editUsername);
-    });
+            resetChanges(oldUser);
+        });
+    }
+}
+
+function resetChanges(oldUser){
+    $('#username').replaceWith(`<span id="username">${oldUser}</span>`)
+    $('#editUsernameBtn').text("Edit").off('click').click(editUsername);
+    $('#overlapAlert').css('visibility','hidden');
 }

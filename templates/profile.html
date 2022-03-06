@@ -5,16 +5,15 @@
 
 {% block content %}
 <div>
-    <div>
-        <div>
-            Username: <span id="username">{{username}}</span>
-        {% if is_me %}
-            <button id="editUsernameBtn" class="pure-button">Change Username</button>
-        {% endif %}
-        </div>
+    <div class="user-profile">
+        <button id="editUsernameBtn" class="pure-button {{'pure-button-disabled' if not is_me}}">Edit</button>
+        <b>Username:</b> <span id="username">{{username}}</span>
+        <span id="overlapAlert" class="alert">Filler</span>
     </div>
 
+    <h2 class="gallery-label">Posts</h2>
     <div class="post-gallery pure-g">
+        
         {% for post, tag, image in zip(posts, tags, images) %}
         <div class="post-container pure-u-1 pure-u-md-1-2">
             {{post_widget(post, tag, image)}}
