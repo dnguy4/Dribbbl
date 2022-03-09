@@ -69,10 +69,10 @@ def edit_username(user_id, username):
         cur.execute("""UPDATE users SET username = %s WHERE u_id = %s""", (username, user_id))
 
 ## POST
-def get_posts(page = 0, post_per_page = 10):
+def get_posts(page = 1, post_per_page = 10):
     ''' note -- result can be used as list of dictionaries'''
     limit = post_per_page
-    offset = page*post_per_page
+    offset = (page-1)*post_per_page
     with get_db_cursor() as cur:
         cur.execute("select * from posts order by upload_time DESC limit %s offset %s", (limit, offset))
         return cur.fetchall()
@@ -82,12 +82,12 @@ def get_post(post_id):
         cur.execute("SELECT * FROM posts where post_id=%s", (post_id,))
         return cur.fetchone()
 
-def upload_post(data, title, desc, hint, sol, u_id):
+def upload_post(data, title, desc, hint, show_comment, sol, u_id):
     with get_db_cursor(True) as cur:
         cur.execute("""insert into posts (title, post_image,
-            descrip, hint, solution, author) 
-            values (%s, %s, %s, %s, %s, %s) RETURNING post_id""",
-            (title, data, desc, hint, sol, u_id))
+            descrip, hint, show_comment, solution, author) 
+            values (%s, %s, %s, %s, %s, %s, %s) RETURNING post_id""",
+            (title, data, desc, hint, show_comment, sol, u_id))
         return cur.fetchone()[0] #postid
 
 def get_image_ids():
@@ -136,7 +136,6 @@ def get_tag(post_id):
 
 def get_all_tags():
     with get_db_cursor() as cur:
-        # cur.execute("SELECT textcat_all(tag_name || ',') FROM tags ")
         cur.execute("SELECT * from tags;")
         return cur.fetchall()
 
@@ -182,8 +181,13 @@ def get_comments(post_id):
              WHERE post = %s""", (post_id,))
         return cur.fetchall()
 
-def get_comment_counts():
-      with get_db_cursor() as cur:
-        cur.execute("""SELECT COUNT(*) FROM comments GROUP BY post
-            """)
+def get_comment_counts(page = 1, post_per_page = 10):
+    limit = post_per_page
+    offset = (page-1)*post_per_page
+    with get_db_cursor() as cur:
+        cur.execute("""
+           SELECT count(comments.post) as number_of_comments
+            from posts left join comments on posts.post_id = comments.post
+            GROUP BY posts.post_id ORDER BY posts.upload_time DESC limit %s offset %s""", 
+            (limit, offset))
         return cur.fetchall()

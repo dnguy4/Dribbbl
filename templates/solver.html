@@ -32,10 +32,12 @@
                             <fieldset>
                                 <h3>Guess</h3>
                                 <input type="text" class="pure-input-1 " id="answer" name="answer"
-                                    placeholder="What do you think it is?" maxlength="50" pattern="[A-Za-z ]+"
-                                    title="Only letters allowed" required>
+                                    placeholder="What do you think it is? {{'Must be logged in to comment.' if not userinfo}}" 
+                                    maxlength="50" pattern="[A-Za-z ]+" {{'disabled' if not userinfo}}
+                                    title="Only letters and spaces allowed" required>
                                 <br>
-                                <button type="submit" class="solver_button_success pure-button">Submit</button>
+                                <button {{'disabled' if not userinfo}} type="submit" 
+                                    class="solver_button_success pure-button">Submit</button>
                             </fieldset>
                         </form>
                     </div>

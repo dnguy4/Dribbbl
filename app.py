@@ -86,7 +86,7 @@ def requires_auth(f):
   def decorated(*args, **kwargs):
     if 'profile' not in session:
       # Redirect to Login page here
-      return redirect('/')
+      return redirect('/login')
     return f(*args, **kwargs)
 
   return decorated
@@ -106,13 +106,13 @@ def get_tags_and_images(posts):
 
 @app.route('/')
 def landing_page():
-    userInfo = session.get("profile", None)
     page = max(request.args.get('page', 1, type=int), 1)
     final_page = math.ceil(db.get_num_of_posts()/10)
-    posts = db.get_posts(page=page-1)
+    posts = db.get_posts(page=page)
     tags, images = get_tags_and_images(posts)
-    return render_template('landing.html', userinfo=userInfo, 
-        posts=posts, tags=tags, images=images, 
+    comments = db.get_comment_counts(page=page)
+    return render_template('landing.html', userinfo=session.get("profile", None), 
+        posts=posts, tags=tags, images=images, comments=comments,
         page_num=page, final_page=final_page)
 
 @app.route('/user/<username>')
@@ -123,9 +123,9 @@ def profile_page(username):
         posts =db.get_posts_by_author(uid)
         tags, images = get_tags_and_images(posts)
         return render_template("profile.html", uid=uid, posts=posts, tags=tags, images=images,
-            username=username, is_me=is_current_user, userinfo=session['profile'])
+            username=username, is_me=is_current_user, userinfo=session.get('profile', None))
     else:
-        return render_template('404.html', userinfo=session['profile']), 404
+        return render_template('404.html', userinfo=session.get('profile', None)), 404
 
 @app.route('/user/<username>', methods=['POST'])
 @requires_auth
@@ -168,13 +168,13 @@ def search():
 def solver_page(post_id):
     post = db.get_post(post_id)
     if post == None:
-        return render_template('404.html', userinfo=session['profile']), 404
+        return render_template('404.html', userinfo=session.get('profile', None)), 404
     tags = db.get_tag(post_id)
     tags['textcat_all'] = tags['textcat_all'][:-1]
     username = db.get_post_author_name(post_id)
     comments = db.get_comments(post_id)
     return render_template("solver.html", post=post,  comments=comments,
-        tags=tags, author=username, userinfo=session['profile'])
+        tags=tags, author=username, userinfo=session.get('profile', None))
 
 @app.route('/post/<int:post_id>', methods=['POST'])
 @requires_auth
@@ -182,7 +182,7 @@ def add_comment(post_id):
     #Limit 1 comment per user?
     comment_author =  session['profile']['user_id']
     content = request.form.get("answer", "")
-    #db.add_comment(post_id, comment_author, content)
+    db.add_comment(post_id, comment_author, content)
 
     # Check if it was the solution
     post = db.get_post(post_id)
@@ -226,7 +226,8 @@ def upload_post():
     desc = request.form['description']
     solution = request.form['word-selection']
     hint = request.form['hint']
-    post_id = db.upload_post(data, title, desc, hint, solution, 
+    show_comment = request.form.get('see-guesses', None) != None
+    post_id = db.upload_post(data, title, desc, hint, show_comment, solution, 
             session['profile']['user_id'])
     tags = request.form['drawing_tags'].split(",")
     db.tag_post(tags, post_id)
