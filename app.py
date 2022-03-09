@@ -181,12 +181,12 @@ def solver_page(post_id):
 def add_comment(post_id):
     #Limit 1 comment per user?
     comment_author =  session['profile']['user_id']
-    content = request.form.get("answer", "")
+    content = request.form.get("answer", "").lower().strip()
     db.add_comment(post_id, comment_author, content)
 
     # Check if it was the solution
     post = db.get_post(post_id)
-    if post and post['solution'].lower().strip() == content.lower().strip():
+    if post and post['solution'] == content:
         db.mark_post_solved(True, post_id)
     return redirect(url_for('solver_page', post_id=post_id))
 
@@ -224,7 +224,7 @@ def upload_post():
     data = file.read()
     title = request.form['title']
     desc = request.form['description']
-    solution = request.form['word-selection']
+    solution = request.form['word-selection'].lower().strip()
     hint = request.form['hint']
     show_comment = request.form.get('see-guesses', None) != None
     post_id = db.upload_post(data, title, desc, hint, show_comment, solution, 

@@ -118,7 +118,7 @@ def get_tags():
                     LEFT JOIN tagged ON post_id=post) 
                 AS joinedTags LEFT JOIN tags ON tag=tag_id) 
             AS tag_labels 
-            GROUP BY post_id ORDER BY post_id;""")
+            GROUP BY post_id, upload_time ORDER BY upload_time DESC;""")
         return cur.fetchall()
 
 def get_tag(post_id):

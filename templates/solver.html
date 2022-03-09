@@ -7,6 +7,9 @@
         <div class="pure-u-1">
             <div class="solver_container {{'solved' if post['solved']}}">
                 <div class="solver_author_content">
+                    {% if post['solved'] %}
+                        <i class="fa fa-solid fa-check solver_title_checkmark"> Solved</i>
+                    {% endif %}
                     <div class="solver_title">
                         <h1>{{post['title']}}</h1>
                     </div>
@@ -52,7 +55,7 @@
                                         src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                                         alt="profile-pic">
                                 </div>
-                                <div class="solver_each_user_answer_div">
+                                <div class="solver_each_user_answer_div {{'solved' if comment['content'] == post['solution']}}">
                                     <p class="solver_username"><b>{{comment['username']}}</b></p>
                                     <p class="solver_answer">{{comment['content']}}</p>
                                 </div>
