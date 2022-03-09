@@ -22,8 +22,8 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <!-- Responsive Tags -->
-<script src="static/jquery.tagsinput-revisited.js"></script>
-<link rel="stylesheet" href="static/jquery.tagsinput-revisited.css">
+<script src="{{url_for('static', filename='jquery.tagsinput-revisited.js')}}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='jquery.tagsinput-revisited.css')}}">
 
 <!-- p5.js -->
 <script src="{{ url_for('static', filename='p5.min.js') }}"></script>
@@ -33,7 +33,7 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
 <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
-{% macro post_widget(post, tag, image) -%}
+{% macro post_widget(post, tag, image, num_comment) -%}
 <div class="post">
   <div class="post-infobar">
       <span>{{post['title']}}</span>
@@ -52,7 +52,8 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
   <div class="post-footer">
       <a href="{{url_for('solver_page', post_id=post['post_id'])}}">
         <i class="fa fa-solid fa-comments"></i>
-        <span>4 comments</span>
+        <span>{{num_comment}} comments</span>
+        <!-- Check with kluver about extensions, pluralize for example -->
       </a>
   </div>
 </div>

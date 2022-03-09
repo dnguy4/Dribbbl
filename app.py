@@ -112,7 +112,8 @@ def landing_page():
     posts = db.get_posts(page=page-1)
     tags, images = get_tags_and_images(posts)
     return render_template('landing.html', userinfo=userInfo, 
-        posts=posts, tags=tags, images=images, page_num=page, final_page=final_page)
+        posts=posts, tags=tags, images=images, 
+        page_num=page, final_page=final_page)
 
 @app.route('/user/<username>')
 def profile_page(username):
@@ -163,15 +164,31 @@ def search():
         print(tags)
     return render_template("search.html", posts=posts, tags=tags)
 
-@app.route('/post/<int:post_id>')
+@app.route('/post/<int:post_id>', methods=['GET'])
 def solver_page(post_id):
-    post=db.get_post(post_id)
+    post = db.get_post(post_id)
     if post == None:
         return render_template('404.html', userinfo=session['profile']), 404
     tags = db.get_tag(post_id)
     tags['textcat_all'] = tags['textcat_all'][:-1]
     username = db.get_post_author_name(post_id)
-    return render_template("solver.html",post=post, tags=tags, author=username, userinfo=session['profile'])
+    comments = db.get_comments(post_id)
+    return render_template("solver.html", post=post,  comments=comments,
+        tags=tags, author=username, userinfo=session['profile'])
+
+@app.route('/post/<int:post_id>', methods=['POST'])
+@requires_auth
+def add_comment(post_id):
+    #Limit 1 comment per user?
+    comment_author =  session['profile']['user_id']
+    content = request.form.get("answer", "")
+    #db.add_comment(post_id, comment_author, content)
+
+    # Check if it was the solution
+    post = db.get_post(post_id)
+    if post and post['solution'].lower().strip() == content.lower().strip():
+        db.mark_post_solved(True, post_id)
+    return redirect(url_for('solver_page', post_id=post_id))
 
 @app.route('/post/<int:post_id>/edit')
 @requires_auth

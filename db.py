@@ -45,10 +45,8 @@ def get_db_cursor(commit=False):
       finally:
           cursor.close()
 
-
+## USER STUFF
 def add_user(user_id, username):
-    # Since we're using connection pooling, it's not as big of a deal to have
-    # lots of short-lived cursors (I think -- worth testing if we ever go big)
     with get_db_cursor(True) as cur:
         current_app.logger.info("Adding person %s", username)
         cur.execute("INSERT INTO users (u_id, username) values (%s, %s)", (user_id, username))
@@ -70,14 +68,7 @@ def edit_username(user_id, username):
         current_app.logger.info("Trying to add %s", username)
         cur.execute("""UPDATE users SET username = %s WHERE u_id = %s""", (username, user_id))
 
-def edit_post(title, desc, hint, show_comment, post_id):
-    with get_db_cursor(True) as cur:
-        current_app.logger.info("Trying to edit %s", post_id)
-        cur.execute("""UPDATE posts SET title = %s, descrip = %s, 
-            hint = %s, show_comment = %s WHERE post_id = %s""", 
-            (title, desc, hint, show_comment, post_id))
-
-
+## POST
 def get_posts(page = 0, post_per_page = 10):
     ''' note -- result can be used as list of dictionaries'''
     limit = post_per_page
@@ -104,22 +95,43 @@ def get_image_ids():
         cur.execute("select post_id from posts;")
         return [r['post_id'] for r in cur]
 
+def edit_post(title, desc, hint, show_comment, post_id):
+    with get_db_cursor(True) as cur:
+        current_app.logger.info("Trying to edit %s", post_id)
+        cur.execute("""UPDATE posts SET title = %s, descrip = %s, 
+            hint = %s, show_comment = %s WHERE post_id = %s""", 
+            (title, desc, hint, show_comment, post_id))
+
+def mark_post_solved(solved, post_id):
+    with get_db_cursor(True) as cur:
+        cur.execute("""UPDATE posts SET solved = %s WHERE post_id = %s""", 
+            (solved, post_id))
+
 ## TAGS
 def get_tags():
     with get_db_cursor() as cur:
         cur.execute("""
             SELECT post_id, textcat_all(tag_name || ',') 
-            FROM(SELECT * FROM 
-                (SELECT * FROM posts 
-                LEFT JOIN tagged ON post_id=post) 
-            AS joinedTags LEFT JOIN tags ON tag=tag_id) AS tag_labels 
+            FROM(
+                SELECT * FROM 
+                    (SELECT * FROM posts 
+                    LEFT JOIN tagged ON post_id=post) 
+                AS joinedTags LEFT JOIN tags ON tag=tag_id) 
+            AS tag_labels 
             GROUP BY post_id ORDER BY post_id;""")
         return cur.fetchall()
 
 def get_tag(post_id):
     with get_db_cursor() as cur:
         # This is kinda bad, definitely optimize this by adding WHERE clause deeper in query
-        cur.execute("SELECT post_id, textcat_all(tag_name || ',') FROM(SELECT * FROM (SELECT * FROM posts LEFT JOIN tagged ON post_id=post) AS joinedTags LEFT JOIN tags ON tag=tag_id) AS tag_labels  WHERE post_id=%s GROUP BY post_id ORDER BY post_id;", (post_id,)) 
+        cur.execute("""SELECT post_id, textcat_all(tag_name || ',') 
+            FROM(
+                SELECT * FROM 
+                    (SELECT * FROM posts 
+                    LEFT JOIN tagged ON post_id=post) 
+                AS joinedTags LEFT JOIN tags ON tag=tag_id) 
+            AS tag_labels  WHERE post_id=%s 
+            GROUP BY post_id ORDER BY post_id;""", (post_id,)) 
         return cur.fetchone()
 
 def get_all_tags():
@@ -135,14 +147,14 @@ def tag_post(tags, post_id):
         execute_values(cur, "INSERT INTO tagged (post, tag) VALUES %s", data)
 
 
-## POST
+## VIEWING MULTIPLE POSTS
 def get_total_post_ids():
     with get_db_cursor() as cur:
         cur.execute("SELECT MAX(post_id) from posts;")
         return cur.fetchall()
 
 def get_num_of_posts():
-     with get_db_cursor() as cur:
+    with get_db_cursor() as cur:
         cur.execute("select COUNT(*) from posts")
         return cur.fetchone()[0]
 
@@ -152,6 +164,26 @@ def get_post_author_name(post_id):
         return cur.fetchall()
 
 def get_posts_by_author(u_id):
-     with get_db_cursor() as cur:
+    with get_db_cursor() as cur:
         cur.execute("""SELECT * FROM posts WHERE author = %s""", (u_id,))
+        return cur.fetchall()
+
+## COMMENTS
+def add_comment(post_id, author, content):
+    with get_db_cursor(True) as cur:
+        cur.execute("""INSERT INTO comments (post, author, content)
+            vALUES (%s, %s, %s) RETURNING comment_id""", 
+            (post_id, author, content))
+        return cur.fetchone()[0] #comment_id
+
+def get_comments(post_id):
+    with get_db_cursor() as cur:
+        cur.execute("""SELECT * FROM comments LEFT JOIN users ON u_id = author
+             WHERE post = %s""", (post_id,))
+        return cur.fetchall()
+
+def get_comment_counts():
+      with get_db_cursor() as cur:
+        cur.execute("""SELECT COUNT(*) FROM comments GROUP BY post
+            """)
         return cur.fetchall()

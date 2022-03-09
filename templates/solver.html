@@ -5,7 +5,7 @@
 <div class="solver_content">
     <div class="pure-g">
         <div class="pure-u-1">
-            <div class="solver_container">
+            <div class="solver_container {{'solved' if post['solved']}}">
                 <div class="solver_author_content">
                     <div class="solver_title">
                         <h1>{{post['title']}}</h1>
@@ -26,15 +26,14 @@
                         {% endif %}
                     </div>
                 </div>
-                <hr>
                 <div class="solver_users_content">
                     <div class="solver_user_input_div">
-                        <form class="pure-form" id="userSolveAns" name="userSolveAns">
+                        <form class="pure-form" id="userSolveAns" name="userSolveAns" method="POST">
                             <fieldset>
-                                <h3>Thought?</h3>
+                                <h3>Guess</h3>
                                 <input type="text" class="pure-input-1 " id="answer" name="answer"
-                                    placeholder="What do you think it is ?" maxlength="50" pattern="[A-Za-z ]+"
-                                    title="Special characters not allowed" required>
+                                    placeholder="What do you think it is?" maxlength="50" pattern="[A-Za-z ]+"
+                                    title="Only letters allowed" required>
                                 <br>
                                 <button type="submit" class="solver_button_success pure-button">Submit</button>
                             </fieldset>
@@ -42,20 +41,26 @@
                     </div>
                     <div class="solver_other_user_answers">
                         <!-- Get data from database and do for loop here -->
-                        {% for i in range(3) %}
-                        <div class="solver_each_user_all_data">
-                            <div class="solver_each_user_profile">
-                                <!-- profile pic -->
-                                <img class="solver_profile_pic"
-                                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                                    alt="profile-pic">
+                        {% if post['show_comment'] %}
+                            {% for comment in comments %}
+                            <div class="solver_each_user_all_data">
+                                <div class="solver_each_user_profile">
+                                    <!-- profile pic -->
+                                    <img class="solver_profile_pic"
+                                        src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                        alt="profile-pic">
+                                </div>
+                                <div class="solver_each_user_answer_div">
+                                    <p class="solver_username"><b>{{comment['username']}}</b></p>
+                                    <p class="solver_answer">{{comment['content']}}</p>
+                                </div>
                             </div>
-                            <div class="solver_each_user_answer_div">
-                                <p class="solver_username"><b>UserA</b></p>
-                                <p class="solver_answer">Answer</p>
-                            </div>
-                        </div>
-                        {% endfor %}
+                            {% else %}
+                            <h1>No comments yet</h1>
+                            {% endfor %}
+                        {% else %}
+                            <h1>Comments disabled</h1>
+                        {%endif%}
                     </div>
                 </div>
             </div>

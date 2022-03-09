@@ -87,9 +87,9 @@
     width: 10rem;
     margin: 1rem;
     padding: 0 1rem;
-    border-radius: 4px;
+    border-radius: 0.3rem;
     border-style: solid;
-    border-width: 1px;
+    border-width: 0.06rem;
     visibility: hidden;
 }
 
@@ -136,13 +136,18 @@
     background-color: lightgray;
 }
 
+.solver_container.solved{
+    border-style: solid;
+    border-color: rgba(38, 179, 3, 1);
+}
+
 .solver_author_content {
     margin-left     : auto;
     margin-right    : auto;
     padding-bottom  : 1em;
     width           : 50em;
     height          : auto;
-    /* background-color: red; */
+    border-bottom: 0.5rem black solid;
 }
 
 .solver_users_content {

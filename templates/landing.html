@@ -10,7 +10,7 @@
     <div class="post-gallery pure-g">
         {% for post, tag, image in zip(posts, tags, images) %}
         <div class="post-container pure-u-1 pure-u-md-1-2">
-            {{post_widget(post, tag, image)}}
+            {{post_widget(post, tag, image, 0)}}
         </div>
         {% endfor %}
     </div>
