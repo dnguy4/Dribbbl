@@ -8,46 +8,23 @@
     </div>
 
     <div class="post-gallery pure-g">
-       
-        {% for post, tag, image in zip(posts, tags, images) %}
+        {% for post, tag, image, comment in zip(posts, tags, images, comments) %}
         <div class="post-container pure-u-1 pure-u-md-1-2">
-            <div class="post">
-                <div class="post-infobar">
-                    <span>{{post['title']}}</span>
-                    {% if tag['textcat_all'] != '' %}
-                        <i class="fa fa-solid fa-tags"></i>
-                        <span>{{tag['textcat_all']}}</span>
-                    {% endif %}
-                    <a href="https://www.google.com" class="post-edit-btn"><i class="fa fa-edit"></i></a>
-                </div>
-                <!-- <img onclick="myFunction({{post['post_id']}})" class="post-img pure-img" src="{{url_for("view_post", post_id=post['post_id'])}}"> -->
-                <a href="{{url_for('solver_page', post_id=post['post_id'])}}">
-                    <img class="post-img pure-img" src="data:;base64,{{ image }}">
-                </a>
-                <div class="post-footer">
-                    <i class="fa fa-solid fa-comments"></i>
-                    <span>4 comments</span>
-                </div>
-            </div>
+            {{post_widget(post, tag, image, comment[0])}}
         </div>
         {% endfor %}
-
     </div>
 
     <div id="pagination">
         {% if page_num > 1 %}
-        <a href="{{ url_for('landing_page', page=page_num-1) }}">PREVIOUS</a>
-        {%endif%}
-        {% if page_num < final_page %}
-        <a href="{{ url_for('landing_page', page=page_num+1) }}">NEXT</a>
+            <a class="pure-button" id="previousPageBtn" href="{{ url_for('landing_page', page=page_num-1) }}">
+                <i class="fa fa-solid fa-arrow-left"></i>
+            </a>
+        {% elif page_num < final_page %}
+            <a class="pure-button" id="nextPageBtn" href="{{ url_for('landing_page', page=page_num+1) }}">
+                <i class="fa fa-solid fa-arrow-right"></i>
+            </a>
         {%endif%}
     </div>
-    
-    <script>
-function myFunction(postID) {
-    window.location.href='{{ url_for("solver_page", post_id="postID") }}';
-}
-    </script>
-
 {% endblock %}
 </html>

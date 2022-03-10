@@ -5,8 +5,26 @@ let div = document.getElementById("canvas-p5-container");
 let brushSize = $("input[name='brush-size']:checked").val();
 
 let testWordPool = {
-  "bird": ['sparrow','hawk','robin','green heron','duck','eagle','egret','crow','owl','finch','goose','swan'],
-  "pokemon": ['rowlet','dartrix', 'decidueye', 'litten', 'torracat', 'incineroar', 'popplio', 'brionne', 'primarina']
+  "firearm":['pistol', 'shotgun', 'rifle', 'sniper', 'revolver', 'RPG', 'submachine gun', 'machine gun', 'light machine gun', 'grenade launcher', 'bazooka'],
+  "food":['pizza', 'burger', 'hotdog', 'fries', 'sandwich', 'taco', 'donut', 'pancakes', 'fried chicken', 'muffins', 'noodles', 'ice cream', 'bread', 'kebab', 'ramen', 'pasta'],
+  "star-wars":['k-2so', 'darth vader', 'chewbacca', 'bb-8', 'boba fett', 'r2-d2', 'baby yoda', 'yoda', 'storm trooper', 'scout trooper', 'light saber', 'c-3po'],
+  "anime":['naruto', 'bleach', 'one piece', 'attack on titan', 'demon slayer', 'black clover', 'one punch man', 'haikyu', 'my hero academia', 'pokemon', 'fullmetal alchemist'],
+  "building":['hospital', 'church', 'mosque', 'pagoda', 'police station', 'skyscraper', 'factory', 'temple', 'house', 'condo', 'school', 'mall', 'store', 'grocery store'],
+  "clothing":['hat', 'gloves', 'scarf', 'glasses', 'earmuffs', 'watch', 'ring', 'bracelet', 'necklace', 'purse', 'earrings', 'headband', 'sunglasses', 'tie', 'beanie', 'umbrella'],
+  "accessory":['socks', 'sweater', 'shirt', 't-shirt', 'jacket', 'jeans', 'pants', 'skirt', 'dress', 'coat', 'tracksuit', 'hoodie', 'shorts', 'high heels', 'sneakers', 'swimsuit', 'suit'],
+  "job":['fireman', 'policeman', 'scientist', 'engineer', 'nurse', 'doctor', 'musician', 'artist', 'athlete', 'teacher', 'farmer', 'weatherman', 'cashier', 'developer', 'designer', 'lawyer'],
+  "board-game":['monopoly', 'jenga', 'connect four', 'risk', 'sorry', 'clue', 'mancala', 'chess', 'checkers', 'operation', 'scrabble', 'battleship', 'uno', 'phase 10'],
+  "bird": ['sparrow','hawk','robin','green heron','duck','eagle','egret','crow','owl','finch','goose','swan', 'parakeet', 'parrot', 'raven', 'pigeon', 'penguin', 'hummingbird', 'falcon', 'vulture', 'seagull', 'pelican'],
+  "starter-pokemon": 
+    ['bulbasaur','ivysaur', 'venusaur', 'charmander', 'charmeleon', 'charizard', 'squirtle', 'wartortle', 'blastoise',
+    'chikorita','bayleef', 'meganium', 'cyndaquil', 'quilava', 'typhlosion', 'totodile', 'croconaw', 'feraligatr',
+    'treecko','grovyle', 'sceptile', 'torchic', 'combusken', 'blaziken', 'mudkip', 'marshtomp', 'swampert',
+    'turtwig','grotle', 'torterra', 'chimchar', 'monferno', 'infernape', 'piplup', 'prinplup', 'empoleon',
+    'snivy','servine', 'serperior', 'tepig', 'pignite', 'emboar', 'oshawott', 'dewott', 'samurott',
+    'chespin','quilladin', 'chesnaught', 'fennekin', 'braixen', 'delphox', 'froakie', 'frogadier', 'greninja',
+    'rowlet','dartrix', 'decidueye', 'litten', 'torracat', 'incineroar', 'popplio', 'brionne', 'primarina',
+    'grookey','thwackey', 'rillaboom', 'scorbunny', 'raboot', 'cinderace', 'sobble', 'drizzile', 'inteleon',
+    'sprigatito', 'fuecoco', 'quaxly']
 };
 
 let wordsChosen = 0;
@@ -102,7 +120,7 @@ function saveCanvastoDataURL() {
 
     $.ajax({
       type: 'POST',
-      url: "upload_post",
+      url: "drawing",
       data: formData,
       processData: false,
       contentType: false,
@@ -147,14 +165,14 @@ function mouseClicked(){
 } 
 
 function mouseDragged(){
-  pg.line(mouseX, mouseY, pmouseX, pmouseY);
   if (drawing){
+    pg.line(mouseX, mouseY, pmouseX, pmouseY);
     return false;
   }
 }
 
 function mousePressed() {
-  if (mouseX <= pg.width && mouseX >= 0 && mouseY <= pg.height && mouseY >= 0){
+  if (mouseX <= pg.width+30 && mouseX >= -30 && mouseY <= pg.height+30 && mouseY >= -30){
     drawing = 1;
   }
 }

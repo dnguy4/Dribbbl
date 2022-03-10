@@ -5,30 +5,22 @@
 
 {% block content %}
 <div>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <div class="notification is-danger">
-                {{ messages[0] }}.
-            </div>
-        {% endif %}
-    {% endwith %}
+    <div class="user-profile">
+        <button id="editUsernameBtn" class="pure-button {{'pure-button-disabled' if not is_me}}">Edit</button>
+        <b>Username:</b> <span id="username">{{username}}</span>
+        <span id="overlapAlert" class="alert">Filler</span>
+    </div>
 
-    {% if is_me%}
-    <form class="pure-form" method="post">
-        <fieldset>
-
-            <div class="pure-control-group">
-                <label for="username">Username:</label>
-                <!-- Treat as form validation problem, use ajax to send update onchange,
-                maybe lodash-debounce or javascript debounce to only send after a 100 ms without change,
-                allow submit after we know it's good -->
-                <input name="username" value={{username}}>
-            </div>
-            <button class = "pure-button pure-button-primary">Change Username</button>
-        </fieldset>
-    </form>
-    {% else %}
-        <span>Username: {{username}}</span>
-    {% endif %}
+    <h2 class="gallery-label">Posts</h2>
+    <div class="post-gallery pure-g">
+        
+        {% for post, tag, image in zip(posts, tags, images) %}
+        <div class="post-container pure-u-1 pure-u-md-1-2">
+            {{post_widget(post, tag, image)}}
+        </div>
+        {% endfor %}
+    </div>
+   
 </div>
+<script src="/static/profile.js"></script>
 {% endblock %}
