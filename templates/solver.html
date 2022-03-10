@@ -12,17 +12,45 @@
                     </div>
                     <div class="solver_picture">
                         <img class="post-img pure-img" src="{{url_for("view_post", post_id=post['post_id'])}}">
+                        {% if post['hint']%}
+                            <div class="solver_hint" id="solver_hint_container">
+                                <button id="solver_close_hint_btn" type="button">X</button>
+                                <div id="solver_hint_content" class="solver_hint_content">
+                                    <div id="solver_hint_confirmation">
+                                        <p>Do you really want to see the hint?</p>
+                                        <button id="solver_hint_yes" type="button">Yes</button>
+                                        <button id="solver_hint_no" type="button">No</button>
+                                    </div>
+                                    <div id="solver_actual_hint">
+                                        <p>{{post['hint']}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="solver_hint_btn" type="button">Hint</button>
+                        {% else %}
+                            <div class="solver_hint" id="solver_hint_container">
+                                <button id="solver_close_hint_btn" type="button">X</button>
+                                <div id="solver_hint_content" class="solver_hint_content">
+                                    <div id="solver_hint_confirmation">
+                                        <p>The author does not provide hint</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="solver_hint_btn" type="button">Hint</button>
+                        {% endif %}
                     </div>
                     <div class="solver_description_div">
-                        <p>Description: {{post['descrip']}}</p>
-                        <p>By: <i>{{author[0][1]}}</i></p>
-                        {% if tags['textcat_all'] != '' %}
-                        <i class="fa fa-solid fa-tags"></i>
-                        <span>{{tags['textcat_all']}}</span>
-                        {% else %}
-                        <i class="fa fa-solid fa-tags"></i>
-                        <span>No tags</span>  
-                        {% endif %}
+                        <div class="solver_description_inside_container">
+                            <p>Description: {{post['descrip']}}</p>
+                            <p>By: <i>{{author[0][1]}}</i></p>
+                            {% if tags['textcat_all'] != '' %}
+                            <i class="fa fa-solid fa-tags"></i>
+                            <span>{{tags['textcat_all']}}</span>
+                            {% else %}
+                            <i class="fa fa-solid fa-tags"></i>
+                            <span>No tags</span>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
                 <hr>
@@ -77,14 +105,34 @@
                                 <p class="solver_answer">Answer</p>
                             </div>
                         </div>
-
-
-
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+
+    $("#solver_hint_btn").click(function(){
+        $("#solver_hint_container").show();
+    });
+    $("#solver_close_hint_btn").click(function(){
+        $("#solver_hint_confirmation").show();
+        $("#solver_hint_container").hide();
+        $("#solver_actual_hint").hide();
+    });
+    $("#solver_hint_yes").click(function(){
+        $("#solver_hint_confirmation").hide();
+        $("#solver_actual_hint").show();
+    });
+    $("#solver_hint_no").click(function(){
+        $("#solver_hint_confirmation").show();
+        $("#solver_hint_container").hide();
+        $("#solver_actual_hint").hide();
+    });
+    
+
+    
+
+</script>
 {% endblock %}
