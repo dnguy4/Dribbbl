@@ -14,9 +14,9 @@
     <h2 class="gallery-label">Posts</h2>
     <div class="post-gallery pure-g">
         
-        {% for post, tag, image in zip(posts, tags, images) %}
+        {% for post, tag, image, comment in zip(posts, tags, images, comments) %}
         <div class="post-container pure-u-1 pure-u-md-1-2">
-            {{post_widget(post, tag, image)}}
+            {{post_widget(post, tag, image, comment)}}
         </div>
         {% endfor %}
     </div>

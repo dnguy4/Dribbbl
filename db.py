@@ -190,4 +190,4 @@ def get_comment_counts(page = 1, post_per_page = 10):
             from posts left join comments on posts.post_id = comments.post
             GROUP BY posts.post_id ORDER BY posts.upload_time DESC limit %s offset %s""", 
             (limit, offset))
-        return cur.fetchall()
+        return [c[0] for c in cur.fetchall()]

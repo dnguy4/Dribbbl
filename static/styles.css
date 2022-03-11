@@ -488,3 +488,18 @@
 }
 
 /* Julia's section ends here */
+
+/* 404 Page */
+.err404 {
+    font-size: 11rem;
+    text-align: center;
+}
+
+.err404msg {
+    font-size: 2rem;
+    text-align: center;
+}
+
+.fa.fa-question-circle {
+    color: #ffffff;
+}

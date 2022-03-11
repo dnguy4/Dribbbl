@@ -122,7 +122,8 @@ def profile_page(username):
     if request.method == 'GET' and uid != None:
         posts =db.get_posts_by_author(uid)
         tags, images = get_tags_and_images(posts)
-        return render_template("profile.html", uid=uid, posts=posts, tags=tags, images=images,
+        comments = db.get_comment_counts()
+        return render_template("profile.html", posts=posts, tags=tags, images=images, comments=comments,
             username=username, is_me=is_current_user, userinfo=session.get('profile', None))
     else:
         return render_template('404.html', userinfo=session.get('profile', None)), 404
