@@ -48,7 +48,6 @@ def callback_handling():
     auth0.authorize_access_token()
     resp = auth0.get('userinfo')
     userinfo = resp.json()
-    #print(userinfo, flush=True)
 
     # Store the user information in flask session.
     session['jwt_payload'] = userinfo
@@ -93,13 +92,16 @@ def requires_auth(f):
 
 
 def get_tags_and_images(posts):
-    tags = db.get_tags()
+    images = []
+    post_ids = []
+    for post in posts:
+        post_ids.append(post['post_id'])
+        images.append(b64encode(post['post_image']).decode("utf-8"))
+    
+    tags = db.get_tags(post_ids)
     for i in range(len(tags)):
         tags[i]['textcat_all'] = tags[i]['textcat_all'][:-1]
 
-    images = []
-    for post in posts:
-        images.append(b64encode(post['post_image']).decode("utf-8"))
     return tags, images
 
 ###### Routes ######
@@ -120,7 +122,7 @@ def profile_page(username):
     uid = db.get_uid(username)
     is_current_user =  session.get("profile") and session['profile']['user_id'] == uid
     if request.method == 'GET' and uid != None:
-        posts =db.get_posts_by_author(uid)
+        posts = db.get_posts_by_author(uid)
         tags, images = get_tags_and_images(posts)
         comments = db.get_comment_counts()
         return render_template("profile.html", posts=posts, tags=tags, images=images, comments=comments,
@@ -180,14 +182,17 @@ def solver_page(post_id):
 @app.route('/post/<int:post_id>', methods=['POST'])
 @requires_auth
 def add_comment(post_id):
-    #Limit 1 comment per user?
+    post = db.get_post(post_id)
+    #allow comments only if not yet solved
+    if not post or post['solved']:
+        return redirect(url_for('solver_page', post_id=post_id))
+    # #Limit 1 comment per user?
     comment_author =  session['profile']['user_id']
     content = request.form.get("answer", "").lower().strip()
     db.add_comment(post_id, comment_author, content)
 
     # Check if it was the solution
-    post = db.get_post(post_id)
-    if post and post['solution'] == content:
+    if post['solution'] == content:
         db.mark_post_solved(True, post_id)
     return redirect(url_for('solver_page', post_id=post_id))
 
@@ -237,6 +242,13 @@ def upload_post():
 @app.route('/post/<int:post_id>/edit', methods=['POST'])
 @requires_auth
 def edit_post(post_id):
+    post = db.get_post(post_id)
+    if not post or post['author'] != session['profile']['user_id']:
+        abort(403)
+    delete = request.form.get('delete-post', None) != None
+    if delete:
+        db.delete_post(post_id)
+        return redirect(url_for("profile_page", username=session['profile']['name']))
     title = request.form['title']
     desc = request.form['description']
     hint = request.form['hint']

@@ -12,6 +12,7 @@ Edit
             <h1 class="drawing-header">Edit your post!</h1>
             <div class="drawing-image">
                 <!-- image here -->
+                <button class="pure-button" id="delete-post"><i class="fa fa-solid fa-times"></i></button>
                 <img class="editing-img pure-img" alt="{{post['title']}}" src="{{url_for("view_post", post_id=post['post_id'])}}">
             </div>
             <div class="image-details">
@@ -51,10 +52,34 @@ Edit
         </form>
       </div>
     </div>
+    <div id="dialog-confirm" title="Delete your post?">
+        <p>This cannot be undone.</p>
+      </div>
 </div>
 
 <script>
-    $('#editing-see-guesses').prop('checked', '{{post['show_comment']}}')
+    $( "#dialog-confirm" ).hide()
+    $('#delete-post').click(function(){
+        $( "#dialog-confirm" ).dialog({
+        resizable: false,
+        height: "auto",
+        width: 400,
+        modal: true,
+        buttons: {
+            "Delete": function() {
+                $.post(window.location.href, {"delete-post": true}).done(function(data){
+                    window.location.href="/user/{{userinfo['name']}}";
+                });
+                $( this ).dialog( "close" );
+            },
+            Cancel: function() {
+                $( this ).dialog( "close" );
+            }
+        }
+        });
+    } );
+    $('#editing-see-guesses').prop('checked', {{post['show_comment']}})
+    
 </script>
 
 {% endblock %}

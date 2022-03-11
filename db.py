@@ -102,23 +102,40 @@ def edit_post(title, desc, hint, show_comment, post_id):
             hint = %s, show_comment = %s WHERE post_id = %s""", 
             (title, desc, hint, show_comment, post_id))
 
+def delete_post(post_id):
+     with get_db_cursor(True) as cur:
+        current_app.logger.info("Trying to delete %s", post_id)
+        cur.execute("""DELETE FROM posts WHERE post_id = %s""", (post_id,))
+
 def mark_post_solved(solved, post_id):
     with get_db_cursor(True) as cur:
         cur.execute("""UPDATE posts SET solved = %s WHERE post_id = %s""", 
             (solved, post_id))
 
 ## TAGS
-def get_tags():
+def get_tags(post_ids=[]):
     with get_db_cursor() as cur:
-        cur.execute("""
-            SELECT post_id, textcat_all(tag_name || ',') 
-            FROM(
-                SELECT * FROM 
-                    (SELECT * FROM posts 
-                    LEFT JOIN tagged ON post_id=post) 
-                AS joinedTags LEFT JOIN tags ON tag=tag_id) 
-            AS tag_labels 
-            GROUP BY post_id, upload_time ORDER BY upload_time DESC;""")
+        if post_ids == []:
+            cur.execute("""
+                SELECT post_id, textcat_all(tag_name || ',') 
+                FROM(
+                    SELECT * FROM 
+                        (SELECT * FROM posts 
+                        LEFT JOIN tagged ON post_id=post) 
+                    AS joinedTags LEFT JOIN tags ON tag=tag_id) 
+                AS tag_labels 
+                GROUP BY post_id, upload_time ORDER BY upload_time DESC;""")
+        else:
+            cur.execute("""
+                SELECT post_id, textcat_all(tag_name || ',') 
+                FROM(
+                    SELECT * FROM 
+                        (SELECT * FROM posts 
+                        LEFT JOIN tagged ON post_id=post WHERE post_id = ANY (%s)) 
+                    AS joinedTags LEFT JOIN tags ON tag=tag_id) 
+                AS tag_labels 
+                GROUP BY post_id, upload_time ORDER BY upload_time DESC;""", 
+                (post_ids,))
         return cur.fetchall()
 
 def get_tag(post_id):
@@ -164,7 +181,7 @@ def get_post_author_name(post_id):
 
 def get_posts_by_author(u_id):
     with get_db_cursor() as cur:
-        cur.execute("""SELECT * FROM posts WHERE author = %s""", (u_id,))
+        cur.execute("""SELECT * FROM posts WHERE author = %s ORDER BY upload_time DESC""", (u_id,))
         return cur.fetchall()
 
 ## COMMENTS

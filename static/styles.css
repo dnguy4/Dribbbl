@@ -456,6 +456,16 @@
     margin: 0 2%;
     width: 95%;
 }
+/* Delete button on image */
+.drawing-image {
+    position: relative; 
+}
+#delete-post {
+    position: absolute;
+    display: inline-block;
+    top: 0rem;
+    right: 3%;
+}
 
 /* .editing-settings-form {
     padding: 10%;
@@ -475,8 +485,6 @@
 }
 */
 
-
-
 @media (max-width: 1023px) {
     .drawing-settings-box {
         margin: 3em auto;
@@ -485,6 +493,7 @@
     .drawing-area {
         margin: 3em auto;
     }
+
 }
 
 /* Julia's section ends here */
@@ -493,13 +502,10 @@
 .err404 {
     font-size: 11rem;
     text-align: center;
+    color:#878787;
 }
 
 .err404msg {
     font-size: 2rem;
     text-align: center;
-}
-
-.fa.fa-question-circle {
-    color: #ffffff;
 }
