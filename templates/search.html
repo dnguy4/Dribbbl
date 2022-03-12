@@ -21,8 +21,8 @@
   text-align: center;
 }
 img{
-    width: 250px;
-    height: 250px;
+    width: 400px;
+    height: 300px;
 }
 .searchbar{
     margin-top: 0.5em;
@@ -38,9 +38,9 @@ img{
 {% block content %}
 
     <div class="pure-g center">
-        {% for post, tag in zip(posts, tags) %}
-        <div class="pure-u-1 pure-u-md-1-3 pure-u-lg-1-4 pure-u-xl-1-6" >
-            <p>{{post['title']}}</p>
+        {% for tag in tags %}
+        <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3 pure-u-xl-1-4" >
+            <p>{{tag['title']}}</p>
             {% if tag['textcat_all'] != '' %}
             <i class="fa fa-solid fa-tags"></i>
             <span>{{tag['textcat_all']}}</span>
@@ -49,8 +49,8 @@ img{
             <span>No tags</span>  
             {% endif %}
 
-        <a href="{{url_for('solver_page', post_id=post['post_id'])}}">
-            <img src="{{url_for("view_post", post_id=post['post_id'])}}">
+        <a href="{{url_for('solver_page', post_id=tag['post_id'])}}">
+            <img src="{{url_for("view_post", post_id=tag['post_id'])}}">
         </a>
         </div>
         {% endfor %}

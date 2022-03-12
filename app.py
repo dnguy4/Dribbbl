@@ -153,10 +153,16 @@ def update_username(username):
 @app.route('/search', methods=['GET'])
 def search():
     with db.get_db_cursor() as cur:
-        posts = db.get_posts()
+        # posts = db.get_posts()
         tags = db.get_tags()
+        search_query = request.args.get('search')
+        if search_query:
+            print(search_query)
+            tags = db.get_search(search_query+":*")
+            print(tags)
         for i in range(len(tags)):
             tags[i]['textcat_all'] = tags[i]['textcat_all'][:-1]
+        
         # tags['textcat_all'] = [t[:-1] for t in tags['textcat_all']]
 
         # for tag in tags:
@@ -165,7 +171,7 @@ def search():
         #     tag_list.append(tag['textcat_all'][:-1])
         #     # tag_list = tag['textcat_all'].split(',')[:-1]
         print(tags)
-    return render_template("search.html", posts=posts, tags=tags)
+    return render_template("search.html", tags=tags)
 
 @app.route('/post/<int:post_id>', methods=['GET'])
 def solver_page(post_id):
