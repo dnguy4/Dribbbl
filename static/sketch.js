@@ -126,7 +126,7 @@ function saveCanvastoDataURL() {
       contentType: false,
       success: function(result){
         console.log(result)
-        window.location.href ="/solver/"+result;
+        window.location.href ="/post/"+result;
       } 
     })
   })

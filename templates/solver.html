@@ -8,7 +8,8 @@
             <div class="solver_container {{'solved' if post['solved']}}">
                 <div class="solver_author_content">
                     {% if post['solved'] %}
-                        <i class="fa fa-solid fa-check solver_title_checkmark"> Solved</i>
+                        <i class="fa fa-solid fa-check solver_title_checkmark">
+                            Solved by {{solver}}</i>
                     {% endif %}
                     <div class="solver_title">
                         <h1>{{post['title']}}</h1>
@@ -62,7 +63,7 @@
                     <div class="solver_user_input_div">
                         <form class="pure-form" id="userSolveAns" name="userSolveAns" method="POST">
                             <fieldset>
-                                <h3>Comments</h3>
+                                <h3 id="toggleComments"><i class="fa fa-solid fa-caret-right rotate"></i>Comments</h3>
                                 <input type="text" class="pure-input-1 " id="answer" name="answer"
                                     placeholder="What do you think it is? {{'Must be logged in to comment.' if not userinfo}}" 
                                     maxlength="50" pattern="[A-Za-z ]+" {{'disabled' if not userinfo}}
@@ -121,8 +122,14 @@
         $("#solver_actual_hint").hide();
     });
     
+    if ("{{post['solved']}}".toLowerCase() === "true" ) {
+        $(".solver_other_user_answers").hide()
+    }
 
+    $('#toggleComments').click(function(){
+        $('.solver_other_user_answers').slideToggle('slow');
+        $('.rotate').toggleClass("down");
+    });
     
-
 </script>
 {% endblock %}

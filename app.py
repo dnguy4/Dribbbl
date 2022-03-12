@@ -35,10 +35,14 @@ auth0 = oauth.register(
 # https://stackoverflow.com/questions/5208252/ziplist1-list2-in-jinja2
 app.jinja_env.globals.update(zip=zip)
 
-#Kluver's groovy DB setup
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html', userinfo=session['profile']), 404
+
 @app.before_first_request
 def initialize():
     db.setup()
+    app.register_error_handler(404, page_not_found)
 
 
 ###### AUTH0 functions ######
@@ -128,7 +132,7 @@ def profile_page(username):
         return render_template("profile.html", posts=posts, tags=tags, images=images, comments=comments,
             username=username, is_me=is_current_user, userinfo=session.get('profile', None))
     else:
-        return render_template('404.html', userinfo=session.get('profile', None)), 404
+        abort(404)
 
 @app.route('/user/<username>', methods=['POST'])
 @requires_auth
@@ -171,12 +175,16 @@ def search():
 def solver_page(post_id):
     post = db.get_post(post_id)
     if post == None:
-        return render_template('404.html', userinfo=session.get('profile', None)), 404
+        abort(404)
     tags = db.get_tag(post_id)
     tags['textcat_all'] = tags['textcat_all'][:-1]
     username = db.get_post_author_name(post_id)
     comments = db.get_comments(post_id)
-    return render_template("solver.html", post=post,  comments=comments,
+    if post['solved']:
+        solver = next(c['username'] for c in comments if c['content'] == post['solution'])
+    else:
+        solver = None
+    return render_template("solver.html", post=post,  comments=comments, solver=solver,
         tags=tags, author=username, userinfo=session.get('profile', None))
 
 @app.route('/post/<int:post_id>', methods=['POST'])
@@ -201,7 +209,7 @@ def add_comment(post_id):
 def editing_page(post_id):
     post = db.get_post(post_id)
     if post == None:
-        return render_template('404.html', userinfo=session['profile']), 404
+        abort(404)
     if (post['author'] == session['profile']['user_id']):
         tags = db.get_tag(post_id)
         tags['textcat_all'] = tags['textcat_all'][:-1]
