@@ -195,7 +195,7 @@
 }
 
 .solver_user_input_div button {
-    margin-top: 0.5em;
+    
 }
 
 .solver_button_success {
@@ -204,6 +204,7 @@
     text-shadow  : 0 1px 1px rgba(0, 0, 0, 0.2);
     background   : rgb(28, 184, 65);
     float        : right;
+    margin: 0.5em 0;
 }
 
 .solver_other_user_answers {
@@ -293,6 +294,18 @@
 
 #solver_actual_hint {
     display: none;
+}
+
+.rotate{
+    -moz-transition: all 0.2s ease;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.rotate.down{
+    -moz-transform:rotate(90deg);
+    -webkit-transform:rotate(90deg);
+    transform:rotate(90deg);
 }
 
 /*--------------------------------------------------------------------*/
