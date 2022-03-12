@@ -117,14 +117,14 @@ def get_tags(post_ids=[]):
     with get_db_cursor() as cur:
         if post_ids == []:
             cur.execute("""
-                SELECT post_id, textcat_all(tag_name || ',') 
+                SELECT post_id, title, textcat_all(tag_name || ',') 
                 FROM(
                     SELECT * FROM 
                         (SELECT * FROM posts 
                         LEFT JOIN tagged ON post_id=post) 
                     AS joinedTags LEFT JOIN tags ON tag=tag_id) 
                 AS tag_labels 
-                GROUP BY post_id, upload_time ORDER BY upload_time DESC;""")
+                GROUP BY post_id, title, upload_time ORDER BY upload_time DESC;""")
         else:
             cur.execute("""
                 SELECT post_id, textcat_all(tag_name || ',') 
@@ -208,3 +208,24 @@ def get_comment_counts(page = 1, post_per_page = 10):
             GROUP BY posts.post_id ORDER BY posts.upload_time DESC limit %s offset %s""", 
             (limit, offset))
         return [c[0] for c in cur.fetchall()]
+
+# SEARCH 
+def get_search(query):
+    with get_db_cursor() as cur:
+        cur.execute("""SELECT post_id, title, textcat_all(tag_name || ',') FROM
+   (SELECT * FROM posts LEFT JOIN tagged ON post_id=post WHERE title @@ to_tsquery(%s) OR descrip @@ to_tsquery(%s)) AS joinedTags
+  LEFT JOIN tags ON tag=tag_id
+GROUP BY post_id, title""", (query,query))
+        return cur.fetchall()
+
+# def get_search(page = 1, post_per_page = 10):
+#     limit = post_per_page
+#     offset = (page-1)*post_per_page
+#     with get_db_cursor() as cur:
+#         cur.execute("""
+#            SELECT count(comments.post) as number_of_comments
+#             from posts left join comments on posts.post_id = comments.post
+#             GROUP BY posts.post_id ORDER BY posts.upload_time DESC limit %s offset %s""", 
+#             (limit, offset))
+#         return [c[0] for c in cur.fetchall()]
+        
