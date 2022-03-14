@@ -21,7 +21,7 @@ def setup():
     global pool
     DATABASE_URL = os.environ['DATABASE_URL']
     current_app.logger.info(f"creating db connection pool")
-    pool = ThreadedConnectionPool(1, 6, dsn=DATABASE_URL, sslmode='require')
+    pool = ThreadedConnectionPool(1, 100, dsn=DATABASE_URL, sslmode='require')
 
 
 @contextmanager
@@ -45,10 +45,8 @@ def get_db_cursor(commit=False):
       finally:
           cursor.close()
 
-
+## USER STUFF
 def add_user(user_id, username):
-    # Since we're using connection pooling, it's not as big of a deal to have
-    # lots of short-lived cursors (I think -- worth testing if we ever go big)
     with get_db_cursor(True) as cur:
         current_app.logger.info("Adding person %s", username)
         cur.execute("INSERT INTO users (u_id, username) values (%s, %s)", (user_id, username))
@@ -70,20 +68,13 @@ def edit_username(user_id, username):
         current_app.logger.info("Trying to add %s", username)
         cur.execute("""UPDATE users SET username = %s WHERE u_id = %s""", (username, user_id))
 
-def get_postsID(page = 0, post_per_page = 10):
+## POST
+def get_posts(page = 1, post_per_page = 10):
     ''' note -- result can be used as list of dictionaries'''
     limit = post_per_page
-    offset = page*post_per_page
+    offset = (page-1)*post_per_page
     with get_db_cursor() as cur:
-        cur.execute("select * from posts order by upload_time limit %s offset %s", (limit, offset))
-        return cur.fetchall()
-
-def get_posts(page = 0, post_per_page = 10):
-    ''' note -- result can be used as list of dictionaries'''
-    limit = post_per_page
-    offset = page*post_per_page
-    with get_db_cursor() as cur:
-        cur.execute("select * from posts order by upload_time limit %s offset %s", (limit, offset))
+        cur.execute("select * from posts order by upload_time DESC limit %s offset %s", (limit, offset))
         return cur.fetchall()
 
 def get_post(post_id):
@@ -91,12 +82,12 @@ def get_post(post_id):
         cur.execute("SELECT * FROM posts where post_id=%s", (post_id,))
         return cur.fetchone()
 
-def upload_post(data, title, desc, hint, sol, u_id):
+def upload_post(data, title, desc, hint, show_comment, sol, u_id):
     with get_db_cursor(True) as cur:
         cur.execute("""insert into posts (title, post_image,
-            descrip, hint, solution, author) 
-            values (%s, %s, %s, %s, %s, %s) RETURNING post_id""",
-            (title, data, desc, hint, sol, u_id))
+            descrip, hint, show_comment, solution, author) 
+            values (%s, %s, %s, %s, %s, %s, %s) RETURNING post_id""",
+            (title, data, desc, hint, show_comment, sol, u_id))
         return cur.fetchone()[0] #postid
 
 def get_image_ids():
@@ -104,20 +95,64 @@ def get_image_ids():
         cur.execute("select post_id from posts;")
         return [r['post_id'] for r in cur]
 
-def get_tags():
+def edit_post(title, desc, hint, show_comment, post_id):
+    with get_db_cursor(True) as cur:
+        current_app.logger.info("Trying to edit %s", post_id)
+        cur.execute("""UPDATE posts SET title = %s, descrip = %s, 
+            hint = %s, show_comment = %s WHERE post_id = %s""", 
+            (title, desc, hint, show_comment, post_id))
+
+def delete_post(post_id):
+     with get_db_cursor(True) as cur:
+        current_app.logger.info("Trying to delete %s", post_id)
+        cur.execute("""DELETE FROM posts WHERE post_id = %s""", (post_id,))
+
+def mark_post_solved(solved, post_id):
+    with get_db_cursor(True) as cur:
+        cur.execute("""UPDATE posts SET solved = %s WHERE post_id = %s""", 
+            (solved, post_id))
+
+## TAGS
+def get_tags(post_ids=[]):
     with get_db_cursor() as cur:
-        cur.execute("SELECT post_id, textcat_all(tag_name || ',') FROM(SELECT * FROM (SELECT * FROM posts LEFT JOIN tagged ON post_id=post) AS joinedTags LEFT JOIN tags ON tag=tag_id) AS tag_labels GROUP BY post_id ORDER BY post_id;")
+        if post_ids == []:
+            cur.execute("""
+                SELECT post_id, title, textcat_all(tag_name || ',') 
+                FROM(
+                    SELECT * FROM 
+                        (SELECT * FROM posts 
+                        LEFT JOIN tagged ON post_id=post) 
+                    AS joinedTags LEFT JOIN tags ON tag=tag_id) 
+                AS tag_labels 
+                GROUP BY post_id, title, upload_time ORDER BY upload_time DESC;""")
+        else:
+            cur.execute("""
+                SELECT post_id, textcat_all(tag_name || ',') 
+                FROM(
+                    SELECT * FROM 
+                        (SELECT * FROM posts 
+                        LEFT JOIN tagged ON post_id=post WHERE post_id = ANY (%s)) 
+                    AS joinedTags LEFT JOIN tags ON tag=tag_id) 
+                AS tag_labels 
+                GROUP BY post_id, upload_time ORDER BY upload_time DESC;""", 
+                (post_ids,))
         return cur.fetchall()
 
 def get_tag(post_id):
     with get_db_cursor() as cur:
         # This is kinda bad, definitely optimize this by adding WHERE clause deeper in query
-        cur.execute("SELECT post_id, textcat_all(tag_name || ',') FROM(SELECT * FROM (SELECT * FROM posts LEFT JOIN tagged ON post_id=post) AS joinedTags LEFT JOIN tags ON tag=tag_id) AS tag_labels  WHERE post_id=%s GROUP BY post_id ORDER BY post_id;", (post_id,)) 
+        cur.execute("""SELECT post_id, textcat_all(tag_name || ',') 
+            FROM(
+                SELECT * FROM 
+                    (SELECT * FROM posts 
+                    LEFT JOIN tagged ON post_id=post) 
+                AS joinedTags LEFT JOIN tags ON tag=tag_id) 
+            AS tag_labels  WHERE post_id=%s 
+            GROUP BY post_id ORDER BY post_id;""", (post_id,)) 
         return cur.fetchone()
 
 def get_all_tags():
     with get_db_cursor() as cur:
-        # cur.execute("SELECT textcat_all(tag_name || ',') FROM tags ")
         cur.execute("SELECT * from tags;")
         return cur.fetchall()
 
@@ -127,7 +162,70 @@ def tag_post(tags, post_id):
         data = [(post_id, t['tag_id']) for t in cur.fetchall()]
         execute_values(cur, "INSERT INTO tagged (post, tag) VALUES %s", data)
 
+
+## VIEWING MULTIPLE POSTS
 def get_total_post_ids():
     with get_db_cursor() as cur:
         cur.execute("SELECT MAX(post_id) from posts;")
         return cur.fetchall()
+
+def get_num_of_posts():
+    with get_db_cursor() as cur:
+        cur.execute("select COUNT(*) from posts")
+        return cur.fetchone()[0]
+
+def get_post_author_name(post_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT post_id, username FROM( SELECT * FROM users LEFT JOIN posts ON u_id=author) AS usernameTag WHERE post_id=%s;", (post_id,)) 
+        return cur.fetchall()
+
+def get_posts_by_author(u_id):
+    with get_db_cursor() as cur:
+        cur.execute("""SELECT * FROM posts WHERE author = %s ORDER BY upload_time DESC""", (u_id,))
+        return cur.fetchall()
+
+## COMMENTS
+def add_comment(post_id, author, content):
+    with get_db_cursor(True) as cur:
+        cur.execute("""INSERT INTO comments (post, author, content)
+            vALUES (%s, %s, %s) RETURNING comment_id""", 
+            (post_id, author, content))
+        return cur.fetchone()[0] #comment_id
+
+def get_comments(post_id):
+    with get_db_cursor() as cur:
+        cur.execute("""SELECT * FROM comments LEFT JOIN users ON u_id = author
+             WHERE post = %s""", (post_id,))
+        return cur.fetchall()
+
+def get_comment_counts(page = 1, post_per_page = 10):
+    limit = post_per_page
+    offset = (page-1)*post_per_page
+    with get_db_cursor() as cur:
+        cur.execute("""
+           SELECT count(comments.post) as number_of_comments
+            from posts left join comments on posts.post_id = comments.post
+            GROUP BY posts.post_id ORDER BY posts.upload_time DESC limit %s offset %s""", 
+            (limit, offset))
+        return [c[0] for c in cur.fetchall()]
+
+# SEARCH 
+def get_search(query):
+    with get_db_cursor() as cur:
+        cur.execute("""SELECT post_id, title, textcat_all(tag_name || ',') FROM
+   (SELECT * FROM posts LEFT JOIN tagged ON post_id=post WHERE title @@ to_tsquery(%s) OR descrip @@ to_tsquery(%s)) AS joinedTags
+  LEFT JOIN tags ON tag=tag_id
+GROUP BY post_id, title""", (query,query))
+        return cur.fetchall()
+
+# def get_search(page = 1, post_per_page = 10):
+#     limit = post_per_page
+#     offset = (page-1)*post_per_page
+#     with get_db_cursor() as cur:
+#         cur.execute("""
+#            SELECT count(comments.post) as number_of_comments
+#             from posts left join comments on posts.post_id = comments.post
+#             GROUP BY posts.post_id ORDER BY posts.upload_time DESC limit %s offset %s""", 
+#             (limit, offset))
+#         return [c[0] for c in cur.fetchall()]
+        

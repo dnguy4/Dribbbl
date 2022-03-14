@@ -22,8 +22,8 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <!-- Responsive Tags -->
-<script src="static/jquery.tagsinput-revisited.js"></script>
-<link rel="stylesheet" href="static/jquery.tagsinput-revisited.css">
+<script src="{{url_for('static', filename='jquery.tagsinput-revisited.js')}}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='jquery.tagsinput-revisited.css')}}">
 
 <!-- p5.js -->
 <script src="{{ url_for('static', filename='p5.min.js') }}"></script>
@@ -33,13 +33,40 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
 <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
+{% macro post_widget(post, tag, image, num_comment) -%}
+<div class="post">
+  <div class="post-infobar">
+      <span>{{post['title']}}</span>
+      {% if tag['textcat_all'] != '' %}
+          <i class="fa fa-solid fa-tags"></i>
+          <span>{{tag['textcat_all']}}</span>
+      {% endif %}
+      {% if userinfo and userinfo['user_id'] == post['author'] %}
+      <a href="{{url_for('editing_page', post_id=post['post_id'])}}" class="post-edit-btn">
+        <i class="fa fa-edit"></i></a>
+      {%endif%}
+  </div>
+  <a href="{{url_for('solver_page', post_id=post['post_id'])}}">
+      <img class="post-img pure-img" src="data:;base64,{{ image }}">
+  </a>
+  <div class="post-footer">
+      <a href="{{url_for('solver_page', post_id=post['post_id'])}}">
+        <i class="fa fa-solid fa-comments"></i>
+        <span>{{num_comment}} comments</span>
+        <!-- Check with kluver about extensions, pluralize for example -->
+      </a>
+  </div>
+</div>
+{%- endmacro %}
+
 <body>
 <div class="topnav">
 
     {% if userinfo and userinfo['name'] %}
-    <a class="active"  onclick="window.location.href ='logout'">Logout</a>
+    <a class="active"  href="{{ url_for('logout') }}">Logout</a>
+    <a href="{{ url_for('profile_page', username=userinfo['name']) }}">{{userinfo['name']}}</a>
     {% else %}
-        <a class="active" href="#home">Login</a>
+        <a class="active" href="{{ url_for('login') }}">Login</a>
     {% endif %}
     <a href="{{ url_for('landing_page') }}">Home</a>
   <a href="{{ url_for('drawing_page') }}">Create a Drawing</a>
