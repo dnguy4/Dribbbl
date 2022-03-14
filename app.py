@@ -156,6 +156,11 @@ def update_username(username):
 
 @app.route('/search', methods=['GET'])
 def search():
+    name2=""
+    name1= request.args.get('search')
+    name1=name1.split()
+    print("hey",type(name1))
+    print("hey",name1)
     with db.get_db_cursor() as cur:
         # posts = db.get_posts()
         tags = db.get_tags()

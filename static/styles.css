@@ -5,16 +5,17 @@
 }
 
 .post-container[class*="pure-u"] {
-    background-color: rgb(28, 77, 151);
+    background-color: white;
     padding         : 1rem 0;
     height          : fit-content;
 }
 
 .post {
-    background-color: rgb(224, 224, 133);
+    background-color: black;
+    color: white;
     aspect-ratio    : 4 / 3;
     max-width       : 30rem;
-    border          : 3px solid red;
+    border          : 3px solid black;
     padding         : 1rem 2rem;
     /* text-align   : center; */
     margin          : 0 auto;
@@ -127,7 +128,8 @@
     margin-right    : auto;
     width           : 70rem;
     height: fit-content;
-    background-color: lightgray;
+    background-color: black;
+    color: white;
 }
 
 .solved{
@@ -308,16 +310,17 @@
     transform:rotate(90deg);
 }
 
-/*--------------------------------------------------------------------*/
+/*---Sai-----------------------------------------------------------------*/
+
 .topnav {
     overflow        : hidden;
-    background-color: #e9e9e9;
+    background-color: black;
 }
 
 .topnav a {
     float          : left;
     display        : block;
-    color          : black;
+    color          : white;
     text-align     : center;
     padding        : 14px 16px;
     text-decoration: none;
@@ -378,20 +381,29 @@
         border: 1px solid #ccc;
     }
 }
+/*
+.pure-g{
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+*/
 
 /*-------------------------------------------------------------------*/
 /* Julia's section */
 
 .drawing-area {
-    background-color: #c7c7c7;
+    background-color: black;
     margin          : 3em 2% auto auto;
     width           : 70%;
+    color: white;
 }
 
 .drawing-header {
-    background-color: #878787;
+    background-color: black ;
     text-align      : center;
     padding         : 0.7em;
+    color: white;
 }
 
 .drawing-canvas .p5Canvas {
@@ -427,8 +439,9 @@
     display         : inline;
     margin-right    : 1%;
     padding         : 1%;
-    background-color: #2196F3;
-    vertical-align  : middle
+    background-color: grey;
+    vertical-align  : middle;
+    color: black;
 }
 
 .drawing-title-form {
@@ -442,9 +455,10 @@
 }
 
 .drawing-settings-box {
-    background-color: #a7a7a7;
+    background-color: black;
     width:70%;
     margin: 3em 0 auto;
+    color: white;
 }
 
 .drawing-settings-form {
