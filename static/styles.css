@@ -11,7 +11,8 @@
 }
 
 .post {
-    background-color: grey;
+    background-color: black;
+    color: white;
     aspect-ratio    : 4 / 3;
     max-width       : 30rem;
     border          : 3px solid black;
@@ -127,7 +128,8 @@
     margin-right    : auto;
     width           : 70rem;
     height: fit-content;
-    background-color: lightgray;
+    background-color: black;
+    color: white;
 }
 
 .solved{
