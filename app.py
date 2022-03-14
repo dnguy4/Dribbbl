@@ -120,8 +120,16 @@ def profile_page(username):
 
 @app.route('/search', methods=['GET'])
 def search():
+    name2=""
+    name1= request.args.get('search')
+    name1=name1.split()
+    print("hey",type(name1))
+    print("hey",name1)
     with db.get_db_cursor() as cur:
-        posts = db.get_posts()
+        if(name1!=None): 
+            posts=cur.execute("SELECT post_id, textcat_all(tag_name || ',') FROM(SELECT * FROM (SELECT * FROM posts LEFT JOIN tagged ON post_id=post) AS joinedTags LEFT JOIN tags ON tag=tag_id) AS tag_labels  WHERE tag_name = ANY (%s) GROUP BY post_id ORDER BY post_id",(name1,))
+        else:
+            posts = db.get_posts()
         tags = db.get_tags()
         for i in range(len(tags)):
             tags[i]['textcat_all'] = tags[i]['textcat_all'][:-1]

@@ -70,6 +70,13 @@ def edit_username(user_id, username):
         current_app.logger.info("Trying to add %s", username)
         cur.execute("""UPDATE users SET username = %s WHERE u_id = %s""", (username, user_id))
 
+def get_postsID(page = 0, post_per_page = 10):
+    ''' note -- result can be used as list of dictionaries'''
+    limit = post_per_page
+    offset = page*post_per_page
+    with get_db_cursor() as cur:
+        cur.execute("select * from posts order by upload_time limit %s offset %s", (limit, offset))
+        return cur.fetchall()
 
 def get_posts(page = 0, post_per_page = 10):
     ''' note -- result can be used as list of dictionaries'''

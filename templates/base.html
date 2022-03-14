@@ -44,7 +44,7 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
     <a href="{{ url_for('landing_page') }}">Home</a>
   <a href="{{ url_for('drawing_page') }}">Create a Drawing</a>
   <div class="search-container">
-    <form action="{{ url_for('search') }}" method="get">
+    <form action="{{ url_for('search') }}"  method="GET">
       <input type="text" placeholder="Search.." name="search">
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>
