@@ -392,6 +392,20 @@
 /*-------------------------------------------------------------------*/
 /* Julia's section */
 
+.search-container .inputTags-list  {
+    display         : inline !important;
+}
+
+.search-container .inputTags-error {
+    display         : inline !important;
+}
+
+@media (max-width: 604px) {
+    .search-container .inputTags-list {
+        display         : inline-block !important;
+    }
+}
+
 .drawing-area {
     background-color: black;
     margin          : 3em 2% auto auto;
