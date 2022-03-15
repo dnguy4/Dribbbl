@@ -400,6 +400,10 @@
     display         : inline !important;
 }
 
+.drawing-settings-box .inputTags-autocomplete-item {
+    color: black;
+}
+
 @media (max-width: 604px) {
     .search-container .inputTags-list {
         display         : inline-block !important;

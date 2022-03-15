@@ -1,5 +1,4 @@
 let canvas, pg, colorPicker, eraser, reset;
-let resized = 0;
 let mode = 0;
 let drawing = 0;
 let currentTag = '';
@@ -159,13 +158,9 @@ function windowResized() {
   height = Math.round(height);
   canvas = resizeCanvas(width, height);
   background('#ffffff');
-  pg.width = width;
-  pg.height = height;
-  image(pg, 0, 0, width, height);
-  if (!resized) {
-    alert('Please refresh the page if you resized the window!\nCanvas functionalities might not work properly on a resized window.');
-    resized = 1;
-  }
+  var newPg = createGraphics(width, height);
+  newPg.image(pg, 0, 0, width, height);
+  pg = newPg;
 }
 
 
