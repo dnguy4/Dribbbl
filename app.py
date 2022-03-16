@@ -156,31 +156,20 @@ def update_username(username):
 
 @app.route('/search', methods=['GET'])
 def search():
-    name2=""
-    name1= request.args.get('search')
-    name1=name1.split()
-    print("hey",type(name1))
-    print("hey",name1)
-    with db.get_db_cursor() as cur:
-        # posts = db.get_posts()
+    search_query = request.args.get('search')
+    if search_query:
+        tags = db.get_search(search_query+":*")
+    else:
         tags = db.get_tags()
-        search_query = request.args.get('search')
-        if search_query:
-            print(search_query)
-            tags = db.get_search(search_query+":*")
-            print(tags)
-        for i in range(len(tags)):
-            tags[i]['textcat_all'] = tags[i]['textcat_all'][:-1]
-        
-        # tags['textcat_all'] = [t[:-1] for t in tags['textcat_all']]
+    
+    page = max(request.args.get('page', 1, type=int), 1)
+    final_page = math.ceil(len(tags) / 12)
+    tags = tags[(page-1)*12 : page*12]
 
-        # for tag in tags:
-        #     # print(tag)
-        #     # print(tag['post_id'])
-        #     tag_list.append(tag['textcat_all'][:-1])
-        #     # tag_list = tag['textcat_all'].split(',')[:-1]
-        print(tags)
-    return render_template("search.html", tags=tags)
+    for i in range(len(tags)):
+        tags[i]['textcat_all'] = tags[i]['textcat_all'][:-1]
+    return render_template("search.html", tags=tags, userinfo=session.get('profile', None),
+        page_num=page, final_page=final_page)
 
 @app.route('/post/<int:post_id>', methods=['GET'])
 def solver_page(post_id):
