@@ -76,14 +76,15 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
        Dribble
     </div>
     <div class="nav-items">
-      {% if userinfo and userinfo['name'] %}
-    <li><a class="active"  href="{{ url_for('logout') }}">Logout</a> </li>
-    <li><a href="{{ url_for('profile_page', username=userinfo['name']) }}">{{userinfo['name']}}</a></li>
-    {% else %}
-        <li><a class="active" href="{{ url_for('login') }}">Login</a></li>
-    {% endif %}
        <li><a href="{{ url_for('landing_page') }}">Home</a></li>
        <li><a href="{{ url_for('drawing_page') }}">Create a Drawing</a></li>
+       {% if userinfo and userinfo['name'] %}
+        <li><a href="{{ url_for('profile_page', username=userinfo['name']) }}">
+          <i class="fa fa-solid fa-user"></i> {{userinfo['name']}}</a></li>
+        <li><a class="active"  href="{{ url_for('logout') }}">Logout</a> </li>
+        {% else %}
+        <li><a class="active" href="{{ url_for('login') }}">Login</a></li>
+       {% endif %}
     </div>
     <div class="search-icon">
        <span class="fas fa-search"></span>
