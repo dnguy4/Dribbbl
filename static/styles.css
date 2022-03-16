@@ -94,13 +94,13 @@
 }
 
 /* https://codepen.io/sandervolbeda/pen/YbBByY */
-.alert.alert-success {
+div .alert-success {
     background-color: rgba(227, 253, 235, 1);
     border-color: rgba(38, 179, 3, 1);
     color: rgba(60, 118, 61, 1);
 }
 
-.alert.alert-error {
+div .alert-error {
     background-color: rgba(248, 215, 218, 1);
     border-color: rgba(220, 53, 69, 1);
     color: rgba(114, 28, 36,1);
@@ -197,7 +197,7 @@
 }
 
 .solver_user_input_div button {
-    margin-top: 0.5em;
+    
 }
 
 .solver_button_success {
@@ -206,6 +206,7 @@
     text-shadow  : 0 1px 1px rgba(0, 0, 0, 0.2);
     background   : rgb(28, 184, 65);
     float        : right;
+    margin: 0.5em 0;
 }
 
 .solver_other_user_answers {
@@ -295,6 +296,18 @@
 
 #solver_actual_hint {
     display: none;
+}
+
+.rotate{
+    -moz-transition: all 0.2s ease;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.rotate.down{
+    -moz-transform:rotate(90deg);
+    -webkit-transform:rotate(90deg);
+    transform:rotate(90deg);
 }
 
 /*---Sai-----------------------------------------------------------------*/
@@ -626,6 +639,24 @@ nav{
 
 /*-------------------------------------------------------------------*/
 /* Julia's section */
+
+.search-container .inputTags-list  {
+    display         : inline !important;
+}
+
+.search-container .inputTags-error {
+    display         : inline !important;
+}
+
+.drawing-settings-box .inputTags-autocomplete-item {
+    color: black;
+}
+
+@media (max-width: 604px) {
+    .search-container .inputTags-list {
+        display         : inline-block !important;
+    }
+}
 
 .drawing-area {
     background-color: darkslategrey;

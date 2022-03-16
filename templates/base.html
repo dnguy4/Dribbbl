@@ -24,9 +24,14 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
 </script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
+<script src="{{url_for('static', filename='wordPool.js')}}"></script>
+
 <!-- Responsive Tags -->
 <script src="{{url_for('static', filename='jquery.tagsinput-revisited.js')}}"></script>
 <link rel="stylesheet" href="{{url_for('static', filename='jquery.tagsinput-revisited.css')}}">
+
+<script src="{{url_for('static', filename='inputTags.jquery.min.js')}}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='inputTags.min.css')}}"> 
 
 <!-- p5.js -->
 <script src="{{ url_for('static', filename='p5.min.js') }}"></script>
@@ -134,6 +139,7 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
   <div class="search-container">
     <form action="{{ url_for('search') }}"  method="GET">
       <input type="text" placeholder="Search.." name="search">
+      <input type="text" placeholder="Select your tags.." name="search-tags" id="search-tags">
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>
   </div>
@@ -151,6 +157,23 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
     {% endblock %}
     </div>
 
+<script>
+  $('#search-tags').inputTags({
+      max: 2,
+      autocomplete: {
+        values: Object.keys(wordPool),
+        only: true
+      },
+      errors: { 
+        empty: 'Input field is empty.',
+        exists:'This tag already exists.',
+        autocomplete_only: 'Please enter one of the suggested tags.',
+        minLength: 'Your tag should have at least %s characters.',
+        maxLength: 'Your tag should have at most %s characters.',
+        max: 'The number of tags cannot exceed %s.' 
+      }
+  });
+</script>
 </body>
 
 </html>
