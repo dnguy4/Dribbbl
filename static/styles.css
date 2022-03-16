@@ -12,7 +12,7 @@
 
 .post {
     background-color: black;
-    color: white;
+    color           : white;
     aspect-ratio    : 4 / 3;
     max-width       : 30rem;
     border          : 3px solid black;
@@ -35,35 +35,37 @@
 
 .post-img.pure-img {
     max-height: 100%;
+    width     : 100%;
     margin    : auto;
 }
 
-.post-footer > * {
+.post-footer>* {
     text-decoration: none;
-    color: inherit;
+    color          : inherit;
 }
 
 #nextPageBtn {
-    float: right;
+    float : right;
     margin: 0 2rem;
 }
+
 #prevPageBtn {
     float: left;
 }
 
 #floating-rules-side {
-    display         : inline-block;
-    margin-left     : -150px;
+    display    : inline-block;
+    margin-left: -150px;
     /* "#menu" width */
-    width           : 150px;
-    position        : fixed;
-    top             : 0;
-    left            : 0;
-    bottom          : 0;
-    z-index         : 1000;
+    width      : 150px;
+    position   : fixed;
+    top        : 0;
+    left       : 0;
+    bottom     : 0;
+    z-index    : 1000;
     /* so the menu or its navicon stays above all content */
-    background      : #191818;
-    overflow-y      : auto;
+    background : #191818;
+    overflow-y : auto;
 }
 
 @media screen and (max-width: 768px) {
@@ -71,95 +73,136 @@
         display: none;
     }
 }
+
 /* ============================================================= */
 .user-profile {
-    height:fit-content;
-    width: 100%;
+    height  : fit-content;
+    width   : 100%;
     overflow: auto;
-    margin: 2rem 1rem;
+    margin  : 2rem 1rem;
 }
+
 .gallery-label {
-    margin: 0rem 1rem; 
+    margin: 0rem 1rem;
 }
 
 
 .alert {
-    width: 10rem;
-    margin: 1rem;
-    padding: 0 1rem;
+    width        : 10rem;
+    margin       : 1rem;
+    padding      : 0 1rem;
     border-radius: 0.3rem;
-    border-style: solid;
-    border-width: 0.06rem;
-    visibility: hidden;
+    border-style : solid;
+    border-width : 0.06rem;
+    visibility   : hidden;
 }
 
 /* https://codepen.io/sandervolbeda/pen/YbBByY */
 div .alert-success {
     background-color: rgba(227, 253, 235, 1);
-    border-color: rgba(38, 179, 3, 1);
-    color: rgba(60, 118, 61, 1);
+    border-color    : rgba(38, 179, 3, 1);
+    color           : rgba(60, 118, 61, 1);
 }
 
 div .alert-error {
     background-color: rgba(248, 215, 218, 1);
-    border-color: rgba(220, 53, 69, 1);
-    color: rgba(114, 28, 36,1);
+    border-color    : rgba(220, 53, 69, 1);
+    color           : rgba(114, 28, 36, 1);
 }
 
 #editUsernameBtn {
-    float: right;
+    float : right;
     margin: 0 2rem;
 }
 
 
 /* ============================================================= */
 .solver_content {
-    width              : 100%;
-    height             : 100%;
+    width : 100%;
+    height: 100%;
 }
 
-.solver_container {
-    margin-top      : 1em;
-    margin-bottom   : 1em;
-    padding-top     : 0.5em;
-    padding-bottom  : 1em;
-    border-radius   : 10px;
-    margin-left     : auto;
-    margin-right    : auto;
-    width           : 70rem;
-    height: fit-content;
-    background-color: black;
-    color: white;
+/* Tablet */
+@media (max-width: 1080px) and (min-width: 768px) {
+    .solver_container {
+        margin-top      : 1em;
+        margin-bottom   : 1em;
+        padding-top     : 0.5em;
+        padding-bottom  : 1em;
+        border-radius   : 10px;
+        margin-left     : auto;
+        margin-right    : auto;
+        width           : 40rem;
+        height          : fit-content;
+        background-color: black;
+        color           : white;
+    }
 }
 
-.solved{
+/* pc */
+@media (min-width: 1080px) {
+    .solver_container {
+        margin-top      : 1em;
+        margin-bottom   : 1em;
+        padding-top     : 0.5em;
+        padding-bottom  : 1em;
+        border-radius   : 10px;
+        margin-left     : auto;
+        margin-right    : auto;
+        width           : 60rem;
+        height          : fit-content;
+        background-color: black;
+        color           : white;
+    }
+}
+
+/* phone */
+@media (max-width: 768px) {
+    .solver_container {
+        margin-top      : 1em;
+        margin-bottom   : 1em;
+        padding-top     : 0.5em;
+        padding-bottom  : 1em;
+        border-radius   : 10px;
+        margin-left     : auto;
+        margin-right    : auto;
+        width           : 80vw;
+        height          : fit-content;
+        background-color: black;
+        color           : white;
+    }
+}
+
+
+.solved {
     border-style: solid;
     border-color: rgba(38, 179, 3, 1);
 }
 
 .solver_author_content {
-    margin-left     : auto;
-    margin-right    : auto;
-    padding-bottom  : 1em;
-    width           : 50em;
-    height          : auto;
-    border-bottom: 0.5rem black solid;
+    margin-left   : auto;
+    margin-right  : auto;
+    padding-bottom: 1em;
+    /* width         : 50em; */
+    width         : 90%;
+    height        : auto;
+    border-bottom : 0.5rem black solid;
 }
 
 .solver_users_content {
-    margin-left        : auto;
-    margin-right       : auto;
-    width              : 50em;
+    margin-left : auto;
+    margin-right: auto;
+    width         : 90%;
 }
 
 .solver_title {
     margin-left : 5%;
     margin-right: 5%;
-    font-size: 1.5rem;
+    font-size   : 1.5rem;
 }
 
 .solver_title_checkmark {
-    float:right;
+    float: right;
 }
 
 .solver_picture {
@@ -180,7 +223,7 @@ div .alert-error {
     height         : auto;
     line-height    : 40%;
     text-decoration: none;
-    color: inherit;
+    color          : inherit;
 }
 
 .solver_description_inside_container {
@@ -188,17 +231,15 @@ div .alert-error {
 }
 
 .solver_user_input_div {
-    margin-left    : auto;
-    margin-right   : auto;
-    margin-bottom  : -2em;
-    width          : 90%;
-    height         : auto;
-    line-height    : 40%;
+    margin-left  : auto;
+    margin-right : auto;
+    margin-bottom: -2em;
+    width        : 90%;
+    height       : auto;
+    line-height  : 40%;
 }
 
-.solver_user_input_div button {
-    
-}
+.solver_user_input_div button {}
 
 .solver_button_success {
     color        : white;
@@ -206,13 +247,13 @@ div .alert-error {
     text-shadow  : 0 1px 1px rgba(0, 0, 0, 0.2);
     background   : rgb(28, 184, 65);
     float        : right;
-    margin: 0.5em 0;
+    margin       : 0.5em 0;
 }
 
 .solver_other_user_answers {
-    margin-top     : 0.5em;
-    margin-left    : auto;
-    margin-right   : auto;
+    margin-top  : 0.5em;
+    margin-left : auto;
+    margin-right: auto;
 }
 
 .solver_each_user_all_data {
@@ -220,8 +261,8 @@ div .alert-error {
 }
 
 .solver_each_user_profile {
-    float              : left;
-    width              : 5%;
+    float: left;
+    width: 5%;
 }
 
 .solver_profile_pic {
@@ -253,7 +294,7 @@ div .alert-error {
 }
 
 #solver_close_hint_btn {
-    float: right;
+    float           : right;
     border-radius   : 50%;
     background-color: lightgrey;
     margin-top      : 0.4em;
@@ -276,14 +317,14 @@ div .alert-error {
     height          : 15em;
     background-color: lightslategray;
     border-radius   : 1em;
-    padding-right: 0.5em;
+    padding-right   : 0.5em;
 }
 
 .solver_hint_content {
-    padding-left: 1em;
+    padding-left : 1em;
     padding-right: 1em;
-    text-align     : center;
-    height         : 90%;
+    text-align   : center;
+    height       : 90%;
 }
 
 .solver_hint_content p {
@@ -298,16 +339,16 @@ div .alert-error {
     display: none;
 }
 
-.rotate{
-    -moz-transition: all 0.2s ease;
+.rotate {
+    -moz-transition   : all 0.2s ease;
     -webkit-transition: all 0.2s ease;
-    transition: all 0.2s ease;
+    transition        : all 0.2s ease;
 }
 
-.rotate.down{
-    -moz-transform:rotate(90deg);
-    -webkit-transform:rotate(90deg);
-    transform:rotate(90deg);
+.rotate.down {
+    -moz-transform   : rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    transform        : rotate(90deg);
 }
 
 /*---Sai-----------------------------------------------------------------*/
@@ -381,6 +422,7 @@ div .alert-error {
         border: 1px solid #ccc;
     }
 }
+
 /*
 .pure-g{
     flex-direction: column;
@@ -392,12 +434,12 @@ div .alert-error {
 /*-------------------------------------------------------------------*/
 /* Julia's section */
 
-.search-container .inputTags-list  {
-    display         : inline !important;
+.search-container .inputTags-list {
+    display: inline !important;
 }
 
 .search-container .inputTags-error {
-    display         : inline !important;
+    display: inline !important;
 }
 
 .drawing-settings-box .inputTags-autocomplete-item {
@@ -406,7 +448,7 @@ div .alert-error {
 
 @media (max-width: 604px) {
     .search-container .inputTags-list {
-        display         : inline-block !important;
+        display: inline-block !important;
     }
 }
 
@@ -414,14 +456,14 @@ div .alert-error {
     background-color: black;
     margin          : 3em 2% auto auto;
     width           : 70%;
-    color: white;
+    color           : white;
 }
 
 .drawing-header {
-    background-color: black ;
+    background-color: black;
     text-align      : center;
     padding         : 0.7em;
-    color: white;
+    color           : white;
 }
 
 .drawing-canvas .p5Canvas {
@@ -459,7 +501,7 @@ div .alert-error {
     padding         : 1%;
     background-color: grey;
     vertical-align  : middle;
-    color: black;
+    color           : black;
 }
 
 .drawing-title-form {
@@ -474,9 +516,9 @@ div .alert-error {
 
 .drawing-settings-box {
     background-color: black;
-    width:70%;
-    margin: 3em 0 auto;
-    color: white;
+    width           : 70%;
+    margin          : 3em 0 auto;
+    color           : white;
 }
 
 .drawing-settings-form {
@@ -501,17 +543,19 @@ div .alert-error {
 
 .editing-img {
     margin: 0 2%;
-    width: 95%;
+    width : 95%;
 }
+
 /* Delete button on image */
 .drawing-image {
-    position: relative; 
+    position: relative;
 }
+
 #delete-post {
     position: absolute;
-    display: inline-block;
-    top: 0rem;
-    right: 3%;
+    display : inline-block;
+    top     : 0rem;
+    right   : 3%;
 }
 
 /* .editing-settings-form {
@@ -521,6 +565,7 @@ div .alert-error {
 .image-details {
     padding: 3%;
 }
+
 /* 
 .solution-box {
     padding-top: 3%;
@@ -547,12 +592,12 @@ div .alert-error {
 
 /* 404 Page */
 .err404 {
-    font-size: 11rem;
+    font-size : 11rem;
     text-align: center;
-    color:#878787;
+    color     : #878787;
 }
 
 .err404msg {
-    font-size: 2rem;
+    font-size : 2rem;
     text-align: center;
 }
