@@ -49,6 +49,7 @@ function setup() {
         },
         change: function($elem) {
           if ($elem.tags.length > 0 && $elem.tags[0] != currentTag) {
+            $elem.next().removeClass("alert-error"); //Remove error from div
             currentTag = $elem.tags[0];
             // wordPool is shared in wordPool.js
             let words = wordPool[currentTag];
@@ -75,52 +76,18 @@ function setup() {
     
   }
 
-/*
-function importTags(tags){
-  // https://www.jqueryscript.net/form/Tags-Input-Autocomplete.html
-  $('#stacked-drawing-tags').tagsInput({
-    unique:true,
-    'autocomplete': {
-      source: tags
-    },
-    whitelist: tags,
-    
-    onAddTag: function(input, value){
-      value = value.toLowerCase();
-      let words = wordPool[value];
-      console.log(input,value)
-      if (words && !wordsChosen) {
-        let chosenWords =  words.sort(() => Math.random() - Math.random()).slice(0, 3);
-        $("#drawing-word-1").val(chosenWords[0]);
-        $("label[for='drawing-word-1']").text(chosenWords[0]);
-        $("#drawing-word-2").val(chosenWords[1]);
-        $("label[for='drawing-word-2']").text(chosenWords[1]);
-        $("#drawing-word-3").val(chosenWords[2]);
-        $("label[for='drawing-word-3']").text(chosenWords[2]);
-        wordsChosen = 1;
-        $("#drawing-selection").show();
-      }
-
-    },
-    onRemoveTag: function(input, value) {
-      if (!$(input).val()) {
-        $("#drawing-word-1").val('');
-        $("label[for='drawing-word-1']").text('');
-        $("#drawing-word-2").val('');
-        $("label[for='drawing-word-1']").text('');
-        $("#drawing-word-3").val('');
-        $("label[for='drawing-word-1']").text('');
-        wordsChosen = 0;
-        $("#drawing-selection").hide();
-      }
-    }
-  });
-}*/
-
 function submitPost() {
+  let valid = $('#drawing-title-form')[0].reportValidity();
+  if ($("#drawing-selection").is(":hidden")){
+    $(".drawing-settings-box .inputTags-list").addClass("alert-error")
+    valid = false;
+  }
+  
+  if (valid){
     let confirmation = confirm('Are you sure you want to submit your drawing?');
-  if (confirmation) {
-    saveCanvastoDataURL();
+    if (confirmation) {
+      saveCanvastoDataURL();
+    }
   }
 }
 

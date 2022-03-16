@@ -6,7 +6,7 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 
 * Team Name: Oysters
 * App Name: Dribbbl
-* App Link: <https://TODO.heroku.com/>
+* App Link: <https://dribbbl.herokuapp.com>
 
 ### Students
 
@@ -28,7 +28,9 @@ $env:FLASK_APP = "app.py"
 **Describe the most challenging features you implemented
 (one sentence per bullet, maximum 4 bullets):**
 
-* ...
+* Getting and displaying the tags for each post on a page involved complicated SQL.
+* Storing and retrieving user-drawn images from a Canvas required some work with data urls and image blobs.
+* 
 
 ## Testing Notes
 
@@ -47,7 +49,7 @@ along with a very brief caption:**
 
 ## Mock-up 
 
-There are a few tools for mock-ups. Paper prototypes (low-tech, but effective and cheap), Digital picture edition software (gimp / photoshop / etc.), or dedicated tools like moqups.com (I'm calling out moqups here in particular since it seems to strike the best balance between "easy-to-use" and "wants your money" -- the free teir isn't perfect, but it should be sufficient for our needs with a little "creative layout" to get around the page-limit)
+There are a few tools for mock-ups. Paper prototypes (low-tech, but effective and cheap), Digital picture edition software (gimp / photoshop / etc.), or dedicated tools like moqups.com (I'm calling out moqups here in particular since it seems to strike the best balance between "easy-to-use" and "wants your money" -- the free tier isn't perfect, but it should be sufficient for our needs with a little "creative layout" to get around the page-limit)
 
 In this space please either provide images (around 4) showing your prototypes, OR, a link to an online hosted mock-up tool like moqups.com
 
@@ -68,7 +70,8 @@ In this space please either provide images (around 4) showing your prototypes, O
 Please do not document required libraries. or libraries that are mentioned in the product requirements**
 
 * Library or service name: description of use
-* ...
+* [p5.js](https://p5js.org): Used to implement the drawing of pictures.
+* [Flat jQuery Tags](https://github.com/betaWeb/inputTags-jQuery-plugin): Used for autocompleting and validating tags. Also for giving a traditional tags experience.  
 
 **If there's anything else you would like to disclose about how your project
 relied on external code, expertise, or anything else, please disclose that

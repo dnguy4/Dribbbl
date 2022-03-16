@@ -94,13 +94,13 @@
 }
 
 /* https://codepen.io/sandervolbeda/pen/YbBByY */
-.alert.alert-success {
+div .alert-success {
     background-color: rgba(227, 253, 235, 1);
     border-color: rgba(38, 179, 3, 1);
     color: rgba(60, 118, 61, 1);
 }
 
-.alert.alert-error {
+div .alert-error {
     background-color: rgba(248, 215, 218, 1);
     border-color: rgba(220, 53, 69, 1);
     color: rgba(114, 28, 36,1);
