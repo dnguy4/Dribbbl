@@ -157,15 +157,24 @@ def update_username(username):
 @app.route('/search', methods=['GET'])
 def search():
     page = max(request.args.get('page', 1, type=int), 1)
-    search_query = request.args.get('search')
-    search_tags = request.args.get('search-tags', "").split(",")
-    if search_query:
+    search_query = request.args.get('search', '')
+    search_tags = request.args.get('search_tags', '').split(",")
+    if search_tags == ['']:
+        search_tags = []
+    app.logger.info("My tags are: " + str(search_tags))
+        
+    if search_query != '':
         posts = db.get_search(search_query+":*", search_tags)
-    else:
+        final_page = math.ceil(len(posts) / 12)
+        posts = posts[(page-1)*12 : page*12]
+    elif search_tags != []:
         posts = db.get_search_tag_only(search_tags)
-
-    final_page = math.ceil(len(posts) / 12)
-    posts = posts[(page-1)*12 : page*12]
+        final_page = math.ceil(len(posts) / 12)
+        posts = posts[(page-1)*12 : page*12]
+    else:
+        posts = db.get_posts(page=page)
+        final_page = math.ceil(db.get_num_of_posts()/12)
+    
     
     tags, images = get_tags_and_images(posts)
     comments = db.get_comment_counts(page=page)

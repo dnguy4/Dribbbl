@@ -1,6 +1,6 @@
 .post-gallery {
     left           : 2rem;
-    justify-content: center;
+    justify-content: space-evenly;
     height         : auto;
 }
 
@@ -24,6 +24,10 @@
 .post>* {
     margin: 1rem 0;
 }
+.post-tag-link {
+    text-decoration: none;
+    color: inherit;
+}
 
 .post:hover {
     cursor: pointer;
@@ -44,7 +48,6 @@
     text-decoration: none;
     color: inherit;
 }
-
 #nextPageBtn {
     float: right;
 }

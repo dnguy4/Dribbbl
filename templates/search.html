@@ -6,11 +6,17 @@
 
 <div class="post-gallery pure-g">
     {% for post, tag, image, comment in zip(posts, tags, images, comments) %}
-    <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3 pure-u-xl-1-4" >
+    <div class="post-container pure-u-1 pure-u-md-1-2 pure-u-lg-1-3" >
         {{post_widget(post, tag, image, comment)}}
     </div>
     {% endfor %}
 </div>
+
+{% if posts|length == 0 %}
+<div class="err404">
+    No posts found.
+</div>
+{% endif %}
 
 {{pagination_widget(page_num, final_page)}}
 

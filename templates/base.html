@@ -38,13 +38,22 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
 <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
+{% macro tag_widget(tag) -%}
+<span>
+  {% for t in tag['textcat_all'].split(",") %}
+  <a class="post-tag-link" href="{{url_for('search', search_tags=t|string)}}">
+    {{t}}{{ ", " if not loop.last else "" }}</a>
+  {% endfor %}
+</span>
+{%- endmacro %}
+
 {% macro post_widget(post, tag, image, num_comment) -%}
 <div class="post">
   <div class="post-infobar">
       <span>{{post['title']}}</span>
       {% if tag['textcat_all'] != '' %}
           <i class="fa fa-solid fa-tags"></i>
-          <span>{{tag['textcat_all']}}</span>
+          {{ tag_widget(tag) }}
       {% endif %}
       {% if userinfo and userinfo['user_id'] == post['author'] %}
       <a href="{{url_for('editing_page', post_id=post['post_id'])}}" class="post-edit-btn">
@@ -92,7 +101,7 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
   <div class="search-container">
     <form action="{{ url_for('search') }}"  method="GET">
       <input type="text" placeholder="Search.." name="search">
-      <input type="text" placeholder="Select your tags.." name="search-tags" id="search-tags">
+      <input type="text" placeholder="Select your tags.." name="search_tags" id="search-tags">
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>
   </div>
@@ -120,6 +129,7 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
         max: 'The number of tags cannot exceed %s.' 
       }
   });
+  $(".inputTags-field")[0].placeholder = "Select tags..";
 </script>
 </body>
 
