@@ -3,28 +3,16 @@
 {% block title %} Dribbbl {% endblock %}
 
 {% block content %}
-    <div class="pure-menu" id="floating-rules-side">
-        <span class="pure-menu-heading">Eat your vegetables</span>
-    </div>
 
-    <div class="post-gallery pure-g">
-        {% for post, tag, image, comment in zip(posts, tags, images, comments) %}
-        <div class="post-container pure-u-1 pure-u-md-1-2">
-            {{post_widget(post, tag, image, comment)}}
-        </div>
-        {% endfor %}
+<div class="post-gallery pure-g">
+    {% for post, tag, image, comment in zip(posts, tags, images, comments) %}
+    <div class="post-container pure-u-1 pure-u-md-1-2">
+        {{post_widget(post, tag, image, comment)}}
     </div>
+    {% endfor %}
+</div>
 
-    <div id="pagination">
-        {% if page_num > 1 %}
-            <a class="pure-button" id="previousPageBtn" href="{{ url_for('landing_page', page=page_num-1) }}">
-                <i class="fa fa-solid fa-arrow-left"></i>
-            </a>
-        {% elif page_num < final_page %}
-            <a class="pure-button" id="nextPageBtn" href="{{ url_for('landing_page', page=page_num+1) }}">
-                <i class="fa fa-solid fa-arrow-right"></i>
-            </a>
-        {%endif%}
-    </div>
+{{pagination_widget(page_num, final_page)}}
+
 {% endblock %}
 </html>

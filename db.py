@@ -69,7 +69,7 @@ def edit_username(user_id, username):
         cur.execute("""UPDATE users SET username = %s WHERE u_id = %s""", (username, user_id))
 
 ## POST
-def get_posts(page = 1, post_per_page = 10):
+def get_posts(page = 1, post_per_page = 12):
     ''' note -- result can be used as list of dictionaries'''
     limit = post_per_page
     offset = (page-1)*post_per_page
@@ -198,7 +198,7 @@ def get_comments(post_id):
              WHERE post = %s""", (post_id,))
         return cur.fetchall()
 
-def get_comment_counts(page = 1, post_per_page = 10):
+def get_comment_counts(page = 1, post_per_page = 12):
     limit = post_per_page
     offset = (page-1)*post_per_page
     with get_db_cursor() as cur:
@@ -210,18 +210,44 @@ def get_comment_counts(page = 1, post_per_page = 10):
         return [c[0] for c in cur.fetchall()]
 
 # SEARCH 
-def get_search(query):
-    with get_db_cursor() as cur:
-        cur.execute("""SELECT post_id, title, textcat_all(tag_name || ',') FROM
-   (SELECT * FROM posts LEFT JOIN tagged ON post_id=post WHERE title @@ to_tsquery(%s) OR descrip @@ to_tsquery(%s)) AS joinedTags
-    LEFT JOIN tags ON tag=tag_id
-    GROUP BY post_id, title, upload_time ORDER BY upload_time DESC""", (query,query))
-        return cur.fetchall()
-        
 # def get_search(query):
 #     with get_db_cursor() as cur:
-#         cur.execute("""SELECT * 
-#         FROM posts 
-#         WHERE title @@ to_tsquery(%s) OR descrip @@ to_tsquery(%s)
-#         order by  upload_time DESC""", (query, query))
+#         cur.execute("""SELECT post_id, title, textcat_all(tag_name || ',') FROM
+#    (SELECT * FROM posts LEFT JOIN tagged ON post_id=post WHERE title @@ to_tsquery(%s) OR descrip @@ to_tsquery(%s)) AS joinedTags
+#     LEFT JOIN tags ON tag=tag_id
+#     GROUP BY post_id, title, upload_time ORDER BY upload_time DESC""", (query,query))
 #         return cur.fetchall()
+        
+def get_search(query, tags=[]):
+    with get_db_cursor() as cur:
+        if tags == []:
+            cur.execute("""SELECT * 
+            FROM posts 
+            WHERE title @@ to_tsquery(%s) OR descrip @@ to_tsquery(%s)
+            order by upload_time DESC""", (query, query))
+        else:
+            cur.execute("""SELECT p.* 
+            FROM posts p, tags t, tagged tp
+            WHERE tp.tag = t.tag_id
+            AND (p.title @@ to_tsquery(%s) OR p.descrip @@ to_tsquery(%s))
+            AND t.tag_name = ANY(%s)
+            AND p.post_id = tp.post
+            GROUP BY p.post_id
+            ORDER BY upload_time DESC""", (query, query, tags,))
+            #current_app.logger.info(f"searching by tags: " + str(tags))
+        return cur.fetchall()
+
+def get_search_tag_only(tags=[]):
+     with get_db_cursor() as cur:
+        current_app.logger.info(f"searching by tags: " + str(tags))
+        if tags == []:
+            cur.execute("""SELECT * FROM posts order by upload_time DESC""",)
+        else:
+            cur.execute("""SELECT p.* 
+            FROM posts p, tags t, tagged tp
+            WHERE tp.tag = t.tag_id
+            AND t.tag_name = ANY(%s)
+            AND p.post_id = tp.post
+            GROUP BY p.post_id
+            ORDER BY upload_time DESC""", (tags,))
+        return cur.fetchall()

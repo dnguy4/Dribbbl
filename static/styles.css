@@ -31,6 +31,8 @@
 
 .post-edit-btn {
     float: right;
+    text-decoration: none;
+    color: inherit;
 }
 
 .post-img.pure-img {
@@ -45,7 +47,6 @@
 
 #nextPageBtn {
     float: right;
-    margin: 0 2rem;
 }
 #prevPageBtn {
     float: left;

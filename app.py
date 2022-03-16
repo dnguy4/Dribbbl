@@ -113,7 +113,7 @@ def get_tags_and_images(posts):
 @app.route('/')
 def landing_page():
     page = max(request.args.get('page', 1, type=int), 1)
-    final_page = math.ceil(db.get_num_of_posts()/10)
+    final_page = math.ceil(db.get_num_of_posts()/12)
     posts = db.get_posts(page=page)
     tags, images = get_tags_and_images(posts)
     comments = db.get_comment_counts(page=page)
@@ -156,19 +156,21 @@ def update_username(username):
 
 @app.route('/search', methods=['GET'])
 def search():
-    search_query = request.args.get('search')
-    if search_query:
-        tags = db.get_search(search_query+":*")
-    else:
-        tags = db.get_tags()
-    
     page = max(request.args.get('page', 1, type=int), 1)
-    final_page = math.ceil(len(tags) / 12)
-    tags = tags[(page-1)*12 : page*12]
+    search_query = request.args.get('search')
+    search_tags = request.args.get('search-tags', "").split(",")
+    if search_query:
+        posts = db.get_search(search_query+":*", search_tags)
+    else:
+        posts = db.get_search_tag_only(search_tags)
 
-    for i in range(len(tags)):
-        tags[i]['textcat_all'] = tags[i]['textcat_all'][:-1]
-    return render_template("search.html", tags=tags, userinfo=session.get('profile', None),
+    final_page = math.ceil(len(posts) / 12)
+    posts = posts[(page-1)*12 : page*12]
+    
+    tags, images = get_tags_and_images(posts)
+    comments = db.get_comment_counts(page=page)
+    return render_template('search.html', userinfo=session.get("profile", None), 
+        posts=posts, tags=tags, images=images, comments=comments,
         page_num=page, final_page=final_page)
 
 @app.route('/post/<int:post_id>', methods=['GET'])
