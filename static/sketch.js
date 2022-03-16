@@ -43,6 +43,7 @@ function setup() {
         },
         destroy: function($elem) {
           if ($elem.tags.length < 1) {
+            $("#stacked-selected-tag").val('');
             $("#drawing-selection").hide();
             currentTag = '';
           }
@@ -51,6 +52,7 @@ function setup() {
           if ($elem.tags.length > 0 && $elem.tags[0] != currentTag) {
             $elem.next().removeClass("alert-error"); //Remove error from div
             currentTag = $elem.tags[0];
+            $("#stacked-selected-tag").val(currentTag);
             // wordPool is shared in wordPool.js
             let words = wordPool[currentTag];
             //https://stackoverflow.com/questions/19269545/how-to-get-a-number-of-random-elements-from-an-array
@@ -78,7 +80,7 @@ function setup() {
 
 function submitPost() {
   let valid = $('#drawing-title-form')[0].reportValidity();
-  if ($("#drawing-selection").is(":hidden")){
+  if (!$("#stacked-selected-tag").val()){
     $(".drawing-settings-box .inputTags-list").addClass("alert-error")
     valid = false;
   }

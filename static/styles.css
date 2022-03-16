@@ -496,6 +496,10 @@ div .alert-error {
     display: none;
 }
 
+#stacked-selected-tag {
+    pointer-events: none;
+}
+
 .individual-words input {
     display: inline;
 }
