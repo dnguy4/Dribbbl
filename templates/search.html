@@ -50,7 +50,7 @@ img{
             {% endif %}
 
         <a href="{{url_for('solver_page', post_id=tag['post_id'])}}">
-            <img src="{{url_for("view_post", post_id=tag['post_id'])}}">
+            <img src="{{url_for("view_post", post_id=tag['post_id'])}}" class="searchImg">
         </a>
         </div>
         {% endfor %}
