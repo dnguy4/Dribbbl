@@ -8,6 +8,9 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
 <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+  
+
 <!-- JQuery -->
 <script
   src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -91,6 +94,65 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
 {%- endmacro %}
 
 <body>
+  <nav>
+    <div class="menu-icon">
+       <span class="fas fa-bars"></span>
+    </div>
+    <div class="logo">
+       Dribble
+    </div>
+    <div class="nav-items">
+       <li><a href="{{ url_for('landing_page') }}">Home</a></li>
+       <li><a href="{{ url_for('drawing_page') }}">Create a Drawing</a></li>
+       {% if userinfo and userinfo['name'] %}
+        <li><a href="{{ url_for('profile_page', username=userinfo['name']) }}">
+          <i class="fa fa-solid fa-user"></i> {{userinfo['name']}}</a></li>
+        <li><a class="active"  href="{{ url_for('logout') }}">Logout</a> </li>
+        {% else %}
+        <li><a class="active" href="{{ url_for('login') }}">Login</a></li>
+       {% endif %}
+    </div>
+    <div class="search-icon">
+       <span class="fas fa-search"></span>
+    </div>
+    <div class="cancel-icon">
+       <span class="fas fa-times"></span>
+    </div>
+    
+    <form action="{{ url_for('search') }}"  method="GET">
+      <input type="text" class="search-data" placeholder="Search.." name="search">
+      <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+ </nav>
+
+ <script>
+    const menuBtn = document.querySelector(".menu-icon span");
+    const searchBtn = document.querySelector(".search-icon");
+    const cancelBtn = document.querySelector(".cancel-icon");
+    const items = document.querySelector(".nav-items");
+    const form = document.querySelector("form");
+    menuBtn.onclick = ()=>{
+      items.classList.add("active");
+      menuBtn.classList.add("hide");
+      searchBtn.classList.add("hide");
+      cancelBtn.classList.add("show");
+    }
+    cancelBtn.onclick = ()=>{
+      items.classList.remove("active");
+      menuBtn.classList.remove("hide");
+      searchBtn.classList.remove("hide");
+      cancelBtn.classList.remove("show");
+      form.classList.remove("active");
+      cancelBtn.style.color = "#ff3d00";
+    }
+    searchBtn.onclick = ()=>{
+      form.classList.add("active");
+      searchBtn.classList.add("hide");
+      cancelBtn.classList.add("show");
+    }
+ </script>
+
+  <!--
 <div class="topnav">
 
     {% if userinfo and userinfo['name'] %}
@@ -108,7 +170,13 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>
   </div>
+
 </div>
+-->
+
+
+
+
 
     <div id="content">
     {% block content %}
@@ -116,7 +184,7 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
     {% endblock %}
     </div>
 
-<script>
+<!-- <script>
   $('#search-tags').inputTags({
       max: 2,
       autocomplete: {
@@ -133,7 +201,7 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
       }
   });
   $(".inputTags-field")[0].placeholder = "Select tags..";
-</script>
+</script> -->
 </body>
 
 </html>
