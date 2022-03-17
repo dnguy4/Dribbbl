@@ -39,22 +39,25 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
 </head>
 
 {% macro tag_widget(tag) -%}
+<i class="fa fa-solid fa-tags"></i>
 <span>
-  {% for t in tag['textcat_all'].split(",") %}
-  <a class="post-tag-link" href="{{url_for('search', search_tags=t|string)}}">
-    {{t}}{{ ", " if not loop.last else "" }}</a>
-  {% endfor %}
+  {% if tag['textcat_all'] != '' %}
+    {% for t in tag['textcat_all'].split(",") %}
+    <a class="hide-link-style" href="{{url_for('search', search_tags=t|string)}}">
+      {{t}}{{ ", " if not loop.last else "" }}</a>
+    {% endfor %}
+  {% else %}
+    No tags
+  {% endif %}
 </span>
 {%- endmacro %}
 
 {% macro post_widget(post, tag, image, num_comment) -%}
 <div class="post">
   <div class="post-infobar">
-      <span>{{post['title']}}</span>
-      {% if tag['textcat_all'] != '' %}
-          <i class="fa fa-solid fa-tags"></i>
-          {{ tag_widget(tag) }}
-      {% endif %}
+      <span>{{post['title']}}</span>    
+      {{ tag_widget(tag) }}
+
       {% if userinfo and userinfo['user_id'] == post['author'] %}
       <a href="{{url_for('editing_page', post_id=post['post_id'])}}" class="post-edit-btn">
         <i class="fa fa-edit"></i></a>
@@ -64,7 +67,7 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
       <img class="post-img pure-img" src="data:;base64,{{ image }}">
   </a>
   <div class="post-footer">
-      <a href="{{url_for('solver_page', post_id=post['post_id'])}}">
+      <a class="hide-link-style" href="{{url_for('solver_page', post_id=post['post_id'])}}">
         <i class="fa fa-solid fa-comments"></i>
         <span>{{num_comment}} comments</span>
         <!-- Check with kluver about extensions, pluralize for example -->

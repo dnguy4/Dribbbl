@@ -24,7 +24,7 @@
 .post>* {
     margin: 1rem 0;
 }
-.post-tag-link {
+.hide-link-style {
     text-decoration: none;
     color: inherit;
 }
@@ -44,10 +44,6 @@
     margin    : auto;
 }
 
-.post-footer > * {
-    text-decoration: none;
-    color: inherit;
-}
 #nextPageBtn {
     float: right;
 }

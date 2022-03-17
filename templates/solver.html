@@ -47,15 +47,9 @@
                         <div class="solver_description_inside_container">
                             <p>Description: <i>{{post['descrip'] if post['descrip'] else "No description."}}</i></p>
                             <p>By: 
-                                <a href="/user/{{author[0][1]}}">{{author[0][1]}}</a>
+                                <a class="hide-link-style" href="/user/{{author[0][1]}}">{{author[0][1]}}</a>
                             </p>
-                            {% if tags['textcat_all'] != '' %}
-                            <i class="fa fa-solid fa-tags"></i>
-                            <span>{{tags['textcat_all']}}</span>
-                            {% else %}
-                            <i class="fa fa-solid fa-tags"></i>
-                            <span>No tags</span>
-                            {% endif %}
+                            {{ tag_widget(tags) }}
                         </div>
                     </div>
                 </div>
