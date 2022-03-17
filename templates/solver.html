@@ -36,7 +36,7 @@
                                 <button id="solver_close_hint_btn" type="button">X</button>
                                 <div id="solver_hint_content" class="solver_hint_content">
                                     <div id="solver_hint_confirmation">
-                                        <p>The author does not provide hint</p>
+                                        <p>The author did not provide a hint.</p>
                                     </div>
                                 </div>
                             </div>
@@ -120,13 +120,14 @@
     });
     
     if ("{{post['solved']}}".toLowerCase() === "true" ) {
-        $(".solver_other_user_answers").hide()
+        $(".solver_other_user_answers").hide();
     }
 
-    $('#toggleComments').click(function(){
+    if ("{{post['show_comment']}}".toLowerCase() === "true" ) {
+        $('#toggleComments').click(function(){
         $('.solver_other_user_answers').slideToggle('slow');
         $('.rotate').toggleClass("down");
-    });
-    
+        });
+    }
 </script>
 {% endblock %}

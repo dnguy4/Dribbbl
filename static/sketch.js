@@ -86,10 +86,29 @@ function submitPost() {
   }
   
   if (valid){
-    let confirmation = confirm('Are you sure you want to submit your drawing?');
-    if (confirmation) {
-      saveCanvastoDataURL();
-    }
+    $("#dialog-text").text(`You will be able to edit the settings 
+      and delete your post later, but you will not be 
+      able to add new tags or redraw your post.`)
+    let og = mode;
+    mode = -1;
+    $("#dialog-confirm").dialog({
+      title: "Submit your post?",
+      resizable: false,
+      height: "auto",
+      width: 400,
+      modal: true,
+      buttons: {
+          "Submit": function() {
+            saveCanvastoDataURL();
+            mode = og;
+            $( this ).dialog( "close" );
+          },
+          Cancel: function() {
+            mode = og;
+              $( this ).dialog( "close" );
+          }
+      }
+    });
   }
 }
 
@@ -140,7 +159,7 @@ function draw() {
     pg.stroke(colorPicker.color());
     pg.fill(colorPicker.color());
   }
-  else {
+  else if (mode == 1) {
     eraser.style('background-color', '#ff5c5c');
     pg.stroke('#ffffff');
     pg.fill('#ffffff');
@@ -149,11 +168,12 @@ function draw() {
 }
 
 function mouseClicked(){
-  pg.circle(mouseX,mouseY,1);
+  if (mode != -1)
+    pg.circle(mouseX,mouseY,1);
 } 
 
 function mouseDragged(){
-  if (drawing){
+  if (drawing && mode != -1){
     pg.line(mouseX, mouseY, pmouseX, pmouseY);
     return false;
   }
@@ -174,9 +194,26 @@ function switchEraser() {
 }
 
 function resetCanvas() {
-  let confirmReset = confirm("Do you want to reset your drawing?");
-  if (confirmReset) {
-    pg.background('#ffffff');
-    image(pg, 0,0);
-  }
+  $("#dialog-text").text(`Do you want to clear the canvas?`)
+  let og = mode;
+  mode = -1;
+  $("#dialog-confirm").dialog({
+    title: "Reset your drawing?",
+    resizable: false,
+    height: "auto",
+    width: 400,
+    modal: true,
+    buttons: {
+        Confirm: function() {
+          pg.background('#ffffff');
+          image(pg, 0,0);
+          setTimeout(() => mode=og, 200)
+          $( this ).dialog( "close" );
+        },
+        Cancel: function() {
+            $( this ).dialog( "close" );
+            setTimeout(() => mode=og, 200)
+        }
+    }
+  });
 }

@@ -82,7 +82,13 @@ Make a Drawing!
       </div>
     </div>
 
+    <div id="dialog-confirm">
+        <p id="dialog-text">
+        </p>
+    </div>
+
     <script>
+        $("#dialog-confirm").hide();
         var alltags = {{tags|safe}}
         importTags(alltags);
     </script>
