@@ -27,9 +27,8 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
 <script src="{{url_for('static', filename='wordPool.js')}}"></script>
 
 <!-- Responsive Tags -->
-<script src="{{url_for('static', filename='jquery.tagsinput-revisited.js')}}"></script>
-<link rel="stylesheet" href="{{url_for('static', filename='jquery.tagsinput-revisited.css')}}">
-
+<!-- <script src="{{url_for('static', filename='jquery.tagsinput-revisited.js')}}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='jquery.tagsinput-revisited.css')}}"> -->
 <script src="{{url_for('static', filename='inputTags.jquery.min.js')}}"></script>
 <link rel="stylesheet" href="{{url_for('static', filename='inputTags.min.css')}}"> 
 
@@ -42,12 +41,11 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
 </head>
 
 {% macro tag_widget(tag) -%}
-<i class="fa fa-solid fa-tags"></i>
 <span>
   {% if tag['textcat_all'] != '' %}
     {% for t in tag['textcat_all'].split(",") %}
-    <a class="hide-link-style" href="{{url_for('search', search_tags=t|string)}}">
-      {{t}}{{ ", " if not loop.last else "" }}</a>
+    <a class="post-tags hide-link-style" href="{{url_for('search', search_tags=t|string)}}">
+      {{t}}</a>
     {% endfor %}
   {% else %}
     No tags
@@ -58,7 +56,7 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
 {% macro post_widget(post, tag, image, num_comment) -%}
 <div class="post">
   <div class="post-infobar">
-      <span>{{post['title']}}</span>    
+      <p>{{post['title']}}</p>    
       {{ tag_widget(tag) }}
 
       {% if userinfo and userinfo['user_id'] == post['author'] %}

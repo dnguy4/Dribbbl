@@ -29,6 +29,17 @@ img{
 .post>* {
     margin: 1rem 0;
 }
+.post-tags {
+    background-color: #19bc9c;
+    border-radius: 3px;
+    color: #fff;
+    margin: 2px;
+    opacity: 1;
+    padding: 3px 8px;
+    position: relative;
+    text-align: center;
+}
+
 .hide-link-style {
     text-decoration: none;
     color: inherit;
@@ -92,24 +103,27 @@ img{
 }
 
 
+.alert-btn, .alert {
+    border-radius: 0.3rem;
+    border-style : solid;
+    border-width : 0.06rem;
+}
+
 .alert {
     width        : 10rem;
     margin       : 1rem;
     padding      : 0 1rem;
-    border-radius: 0.3rem;
-    border-style : solid;
-    border-width : 0.06rem;
     visibility   : hidden;
 }
 
 /* https://codepen.io/sandervolbeda/pen/YbBByY */
-div .alert-success {
+div .alert-success, .alert-btn .alert-success {
     background-color: rgba(227, 253, 235, 1);
     border-color    : rgba(38, 179, 3, 1);
     color           : rgba(60, 118, 61, 1);
 }
 
-div .alert-error {
+div .alert-error, .alert-btn .alert-error {
     background-color: rgba(248, 215, 218, 1);
     border-color    : rgba(220, 53, 69, 1);
     color           : rgba(114, 28, 36, 1);
