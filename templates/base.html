@@ -41,14 +41,26 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
 <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
+{% macro tag_widget(tag) -%}
+<i class="fa fa-solid fa-tags"></i>
+<span>
+  {% if tag['textcat_all'] != '' %}
+    {% for t in tag['textcat_all'].split(",") %}
+    <a class="hide-link-style" href="{{url_for('search', search_tags=t|string)}}">
+      {{t}}{{ ", " if not loop.last else "" }}</a>
+    {% endfor %}
+  {% else %}
+    No tags
+  {% endif %}
+</span>
+{%- endmacro %}
+
 {% macro post_widget(post, tag, image, num_comment) -%}
 <div class="post">
   <div class="post-infobar">
-      <span>{{post['title']}}</span>
-      {% if tag['textcat_all'] != '' %}
-          <i class="fa fa-solid fa-tags"></i>
-          <span>{{tag['textcat_all']}}</span>
-      {% endif %}
+      <span>{{post['title']}}</span>    
+      {{ tag_widget(tag) }}
+
       {% if userinfo and userinfo['user_id'] == post['author'] %}
       <a href="{{url_for('editing_page', post_id=post['post_id'])}}" class="post-edit-btn">
         <i class="fa fa-edit"></i></a>
@@ -58,12 +70,25 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
       <img class="post-img pure-img" src="data:;base64,{{ image }}">
   </a>
   <div class="post-footer">
-      <a href="{{url_for('solver_page', post_id=post['post_id'])}}">
+      <a class="hide-link-style" href="{{url_for('solver_page', post_id=post['post_id'])}}">
         <i class="fa fa-solid fa-comments"></i>
         <span>{{num_comment}} comments</span>
-        <!-- Check with kluver about extensions, pluralize for example -->
       </a>
   </div>
+</div>
+{%- endmacro %}
+
+{% macro pagination_widget(page_num, final_page) -%}
+<div id="pagination">
+  {% if page_num > 1 %}
+      <a class="pure-button" id="previousPageBtn" href="{{ url_for(request.endpoint, page=page_num-1, **request.view_args) }}">
+          <i class="fa fa-solid fa-arrow-left"></i>
+      </a>
+  {% elif page_num < final_page %}
+      <a class="pure-button" id="nextPageBtn" href="{{ url_for(request.endpoint, page=page_num+1, **request.view_args) }}">
+          <i class="fa fa-solid fa-arrow-right"></i>
+      </a>
+  {%endif%}
 </div>
 {%- endmacro %}
 
@@ -95,6 +120,9 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
     
     <form action="{{ url_for('search') }}"  method="GET">
       <input type="text" class="search-data" placeholder="Search.." name="search">
+      <select name="search_tags" id="search_tags">
+        <option>all</option>
+      </select>
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>
  </nav>
@@ -124,31 +152,14 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
       searchBtn.classList.add("hide");
       cancelBtn.classList.add("show");
     }
+
+    let tags = Object.keys(wordPool);
+    tags.forEach(tag => $('#search_tags').append($('<option>', {
+      value: tag,
+      text: tag
+    })));
+
  </script>
-
-  <!--
-<div class="topnav">
-
-    {% if userinfo and userinfo['name'] %}
-    <a class="active"  href="{{ url_for('logout') }}">Logout</a>
-    <a href="{{ url_for('profile_page', username=userinfo['name']) }}">{{userinfo['name']}}</a>
-    {% else %}
-        <a class="active" href="{{ url_for('login') }}">Login</a>
-    {% endif %}
-    <a href="{{ url_for('landing_page') }}">Home</a>
-  <a href="{{ url_for('drawing_page') }}">Create a Drawing</a>
-  <div class="search-container">
-    <form action="{{ url_for('search') }}"  method="GET">
-      <input type="text" placeholder="Search.." name="search">
-      <input type="text" placeholder="Select your tags.." name="search-tags" id="search-tags">
-      <button type="submit"><i class="fa fa-search"></i></button>
-    </form>
-  </div>
-
-</div>
--->
-
-
 
 
 
@@ -158,23 +169,6 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
     {% endblock %}
     </div>
 
-<script>
-  $('#search-tags').inputTags({
-      max: 2,
-      autocomplete: {
-        values: Object.keys(wordPool),
-        only: true
-      },
-      errors: { 
-        empty: 'Input field is empty.',
-        exists:'This tag already exists.',
-        autocomplete_only: 'Please enter one of the suggested tags.',
-        minLength: 'Your tag should have at least %s characters.',
-        maxLength: 'Your tag should have at most %s characters.',
-        max: 'The number of tags cannot exceed %s.' 
-      }
-  });
-</script>
 </body>
 
 </html>

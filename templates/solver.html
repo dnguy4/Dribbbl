@@ -36,7 +36,7 @@
                                 <button id="solver_close_hint_btn" type="button">X</button>
                                 <div id="solver_hint_content" class="solver_hint_content">
                                     <div id="solver_hint_confirmation">
-                                        <p>The author does not provide hint</p>
+                                        <p>The author did not provide a hint.</p>
                                     </div>
                                 </div>
                             </div>
@@ -47,15 +47,9 @@
                         <div class="solver_description_inside_container">
                             <p>Description: <i>{{post['descrip'] if post['descrip'] else "No description."}}</i></p>
                             <p>By: 
-                                <a href="/user/{{author[0][1]}}">{{author[0][1]}}</a>
+                                <a class="hide-link-style" href="/user/{{author[0][1]}}">{{author[0][1]}}</a>
                             </p>
-                            {% if tags['textcat_all'] != '' %}
-                            <i class="fa fa-solid fa-tags"></i>
-                            <span>{{tags['textcat_all']}}</span>
-                            {% else %}
-                            <i class="fa fa-solid fa-tags"></i>
-                            <span>No tags</span>
-                            {% endif %}
+                            {{ tag_widget(tags) }}
                         </div>
                     </div>
                 </div>
@@ -126,13 +120,14 @@
     });
     
     if ("{{post['solved']}}".toLowerCase() === "true" ) {
-        $(".solver_other_user_answers").hide()
+        $(".solver_other_user_answers").hide();
     }
 
-    $('#toggleComments').click(function(){
+    if ("{{post['show_comment']}}".toLowerCase() === "true" ) {
+        $('#toggleComments').click(function(){
         $('.solver_other_user_answers').slideToggle('slow');
         $('.rotate').toggleClass("down");
-    });
-    
+        });
+    }
 </script>
 {% endblock %}

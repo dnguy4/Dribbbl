@@ -113,7 +113,7 @@ def get_tags_and_images(posts):
 @app.route('/')
 def landing_page():
     page = max(request.args.get('page', 1, type=int), 1)
-    final_page = math.ceil(db.get_num_of_posts()/10)
+    final_page = math.ceil(db.get_num_of_posts()/12)
     posts = db.get_posts(page=page)
     tags, images = get_tags_and_images(posts)
     comments = db.get_comment_counts(page=page)
@@ -156,31 +156,27 @@ def update_username(username):
 
 @app.route('/search', methods=['GET'])
 def search():
-    name2=""
-    name1= request.args.get('search')
-    name1=name1.split()
-    print("hey",type(name1))
-    print("hey",name1)
-    with db.get_db_cursor() as cur:
-        # posts = db.get_posts()
-        tags = db.get_tags()
-        search_query = request.args.get('search')
-        if search_query:
-            print(search_query)
-            tags = db.get_search(search_query+":*")
-            print(tags)
-        for i in range(len(tags)):
-            tags[i]['textcat_all'] = tags[i]['textcat_all'][:-1]
-        
-        # tags['textcat_all'] = [t[:-1] for t in tags['textcat_all']]
-
-        # for tag in tags:
-        #     # print(tag)
-        #     # print(tag['post_id'])
-        #     tag_list.append(tag['textcat_all'][:-1])
-        #     # tag_list = tag['textcat_all'].split(',')[:-1]
-        print(tags)
-    return render_template("search.html", tags=tags)
+    page = max(request.args.get('page', 1, type=int), 1)
+    search_query = request.args.get('search', '')
+    search_tags = request.args.get('search_tags', '')
+    if search_query != '': #regular search
+        posts = db.get_search(search_query+":*", search_tags)
+        final_page = math.ceil(len(posts) / 12)
+        posts = posts[(page-1)*12 : page*12]
+    elif search_tags != 'all': #tag only search
+        posts = db.get_search_tag_only(search_tags)
+        final_page = math.ceil(len(posts) / 12)
+        posts = posts[(page-1)*12 : page*12]
+    else: #show all posts
+        posts = db.get_posts(page=page)
+        final_page = math.ceil(db.get_num_of_posts()/12)
+    
+    
+    tags, images = get_tags_and_images(posts)
+    comments = db.get_comment_counts(page=page)
+    return render_template('search.html', userinfo=session.get("profile", None), 
+        posts=posts, tags=tags, images=images, comments=comments,
+        page_num=page, final_page=final_page, search_query=search_query, search_tags=search_tags)
 
 @app.route('/post/<int:post_id>', methods=['GET'])
 def solver_page(post_id):
@@ -201,16 +197,12 @@ def solver_page(post_id):
 @app.route('/post/<int:post_id>', methods=['POST'])
 @requires_auth
 def add_comment(post_id):
-    post = db.get_post(post_id)
-    #allow comments only if not yet solved
-    if not post or post['solved']:
-        return redirect(url_for('solver_page', post_id=post_id))
-    # #Limit 1 comment per user?
     comment_author =  session['profile']['user_id']
     content = request.form.get("answer", "").lower().strip()
     db.add_comment(post_id, comment_author, content)
 
     # Check if it was the solution
+    post = db.get_post(post_id)
     if post['solution'] == content:
         db.mark_post_solved(True, post_id)
     return redirect(url_for('solver_page', post_id=post_id))
