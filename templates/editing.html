@@ -17,13 +17,7 @@ Edit
             </div>
             <div class="image-details">
                 <p>By: <i>{{author[0][1]}}</i></p>
-                {% if tags['textcat_all'] != '' %}
-                <i class="fa fa-solid fa-tags"></i>
-                <span>{{tags['textcat_all']}}</span>
-                {% else %}
-                <i class="fa fa-solid fa-tags"></i>
-                <span>No tags</span>  
-                {% endif %}
+                {{tag_widget(tags)}}
             </div>
         </div>
     </div>

@@ -24,6 +24,17 @@
 .post>* {
     margin: 1rem 0;
 }
+.post-tags {
+    background-color: #19bc9c;
+    border-radius: 3px;
+    color: #fff;
+    margin: 2px;
+    opacity: 1;
+    padding: 3px 8px;
+    position: relative;
+    text-align: center;
+}
+
 .hide-link-style {
     text-decoration: none;
     color: inherit;
