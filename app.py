@@ -58,7 +58,8 @@ def callback_handling():
     #useful keys: nickname, name, picture
     session['profile'] = {
         'user_id': userinfo['sub'],
-        'name': userinfo['name'],
+        #'name': userinfo['name'],
+        'name': userinfo['email'],
         'picture': userinfo['picture'],
         'email': userinfo['email']
     }

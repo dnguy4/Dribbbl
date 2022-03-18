@@ -1,6 +1,4 @@
-img{
-    border-radius:30px;
-}
+
 .post-gallery {
     left           : 2rem;
     justify-content: space-evenly;
@@ -58,6 +56,7 @@ img{
     max-height: 100%;
     width     : 100%;
     margin    : auto;
+    border-radius:30px;
 }
 
 #nextPageBtn {
@@ -135,10 +134,10 @@ div .alert-error, .alert-btn .alert-error {
 
 
 /* ============================================================= */
-.titleS{
+/* .titleS{
     border: 4px  black solid;
     border-radius: 20px;
-}
+} */
 .solver_content {
     width : 100%;
     height: 100%;
@@ -194,7 +193,6 @@ div .alert-error, .alert-btn .alert-error {
 .solved {
     border-style: solid;
     border-color: orangered;
-    border:10px;
 }
 
 .solver_author_content {
@@ -229,7 +227,6 @@ div .alert-error, .alert-btn .alert-error {
     margin-left : auto;
     margin-right: auto;
     width       : 90%;
-    border-style: solid;
     border-width: 1px;
     aspect-ratio: 4 / 3;
 }
