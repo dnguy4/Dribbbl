@@ -23,6 +23,7 @@ img{
     /* text-align   : center; */
     margin          : 0 auto;
     border-radius: 30px;
+
 }
 
 .post>* {
@@ -804,6 +805,7 @@ nav{
     width:70%;
     margin: 3em 0 auto;
     color: white;
+    border-radius: 30px;
 }
 
 .drawing-settings-form {
