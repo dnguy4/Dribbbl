@@ -87,24 +87,27 @@
 }
 
 
+.alert-btn, .alert {
+    border-radius: 0.3rem;
+    border-style : solid;
+    border-width : 0.06rem;
+}
+
 .alert {
     width        : 10rem;
     margin       : 1rem;
     padding      : 0 1rem;
-    border-radius: 0.3rem;
-    border-style : solid;
-    border-width : 0.06rem;
     visibility   : hidden;
 }
 
 /* https://codepen.io/sandervolbeda/pen/YbBByY */
-div .alert-success {
+div .alert-success, .alert-btn .alert-success {
     background-color: rgba(227, 253, 235, 1);
     border-color    : rgba(38, 179, 3, 1);
     color           : rgba(60, 118, 61, 1);
 }
 
-div .alert-error {
+div .alert-error, .alert-btn .alert-error {
     background-color: rgba(248, 215, 218, 1);
     border-color    : rgba(220, 53, 69, 1);
     color           : rgba(114, 28, 36, 1);

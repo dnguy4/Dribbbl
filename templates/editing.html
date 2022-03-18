@@ -46,8 +46,9 @@ Edit
                 <label for="editing-see-guesses" class="pure-checkbox">
                     <input type="checkbox" id="editing-see-guesses" name="see-guesses"/> Users can see other people's guesses. 
                 </label>
-                <button type="submit" class="pure-button" 
-                onclick="submitPost()">Submit</button>
+                <button type="submit" class="pure-button primary alert-btn alert-success">Save</button>
+                <button type="button" class="pure-button alert-btn alert-error">
+                    <i class="fa fa-solid fa-trash"></i></button>
             </fieldset>
         </form>
       </div>
@@ -57,29 +58,11 @@ Edit
     </div>
 </div>
 
+<script src="{{url_for('static', filename='editing.js') }}">
+</script>
+
 <script>
-    $( "#dialog-confirm" ).hide()
-    $('#delete-post').click(function(){
-        $( "#dialog-confirm" ).dialog({
-        resizable: false,
-        height: "auto",
-        width: 400,
-        modal: true,
-        buttons: {
-            "Delete": function() {
-                $.post(window.location.href, {"delete-post": true}).done(function(data){
-                    window.location.href="/user/{{userinfo['name']}}";
-                });
-                $( this ).dialog( "close" );
-            },
-            Cancel: function() {
-                $( this ).dialog( "close" );
-            }
-        }
-        });
-    } );
-    $('#editing-see-guesses').prop('checked', {{post['show_comment']}})
-    
+    setup("{{userinfo['name']}}", {{post['show_comment'] | tojson}})
 </script>
 
 {% endblock %}
