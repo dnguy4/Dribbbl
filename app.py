@@ -121,11 +121,11 @@ def landing_page():
         posts=posts, tags=tags, images=images, comments=comments,
         page_num=page, final_page=final_page)
 
-@app.route('/user/<username>')
+@app.route('/user/<username>' , methods=['GET'])
 def profile_page(username):
     uid = db.get_uid(username)
     is_current_user =  session.get("profile") and session['profile']['user_id'] == uid
-    if request.method == 'GET' and uid != None:
+    if uid != None:
         posts = db.get_posts_by_author(uid)
         tags, images = get_tags_and_images(posts)
         comments = db.get_comment_counts()
