@@ -158,20 +158,16 @@ def update_username(username):
 def search():
     page = max(request.args.get('page', 1, type=int), 1)
     search_query = request.args.get('search', '')
-    #   search_tags = request.args.get('search_tags', '').split(",")
     search_tags = request.args.get('search_tags', '')
-    #   if search_tags == ['']:
-    #       search_tags = []
-    #   app.logger.info("My tags are: " + str(search_tags))
-    if search_query != '':
+    if search_query != '': #regular search
         posts = db.get_search(search_query+":*", search_tags)
         final_page = math.ceil(len(posts) / 12)
         posts = posts[(page-1)*12 : page*12]
-    elif search_tags[0] != 'all':
+    elif search_tags != 'all': #tag only search
         posts = db.get_search_tag_only(search_tags)
         final_page = math.ceil(len(posts) / 12)
         posts = posts[(page-1)*12 : page*12]
-    else:
+    else: #show all posts
         posts = db.get_posts(page=page)
         final_page = math.ceil(db.get_num_of_posts()/12)
     
@@ -201,16 +197,12 @@ def solver_page(post_id):
 @app.route('/post/<int:post_id>', methods=['POST'])
 @requires_auth
 def add_comment(post_id):
-    post = db.get_post(post_id)
-    #allow comments only if not yet solved
-    if not post or post['solved']:
-        return redirect(url_for('solver_page', post_id=post_id))
-    # #Limit 1 comment per user?
     comment_author =  session['profile']['user_id']
     content = request.form.get("answer", "").lower().strip()
     db.add_comment(post_id, comment_author, content)
 
     # Check if it was the solution
+    post = db.get_post(post_id)
     if post['solution'] == content:
         db.mark_post_solved(True, post_id)
     return redirect(url_for('solver_page', post_id=post_id))

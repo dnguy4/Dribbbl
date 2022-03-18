@@ -222,8 +222,6 @@ div .alert-error {
     line-height  : 40%;
 }
 
-.solver_user_input_div button {}
-
 .solver_button_success {
     color        : white;
     border-radius: 4px;
@@ -692,12 +690,6 @@ nav{
 
 .drawing-settings-box .inputTags-autocomplete-item {
     color: black;
-}
-
-@media (max-width: 604px) {
-    .search-container .inputTags-list {
-        display: inline-block !important;
-    }
 }
 
 .drawing-area {
