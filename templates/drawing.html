@@ -33,7 +33,7 @@ Make a Drawing!
             <form class="drawing-title-form pure-form pure-form-stacked" id="drawing-title-form">
                 <fieldset>
                     <label for="title">Title</label>
-                    <input id="stacked-drawing-title" name="title"required/>
+                    <input id="stacked-drawing-title" name="title" required/>
                     <label for="Description">Description</label>
                     <textarea id="stacked-drawing-description" name="description" rows="4" cols="22"></textarea>
                 </fieldset>
@@ -82,7 +82,13 @@ Make a Drawing!
       </div>
     </div>
 
+    <div id="dialog-confirm">
+        <p id="dialog-text">
+        </p>
+    </div>
+
     <script>
+        $("#dialog-confirm").hide();
         var alltags = {{tags|safe}}
         importTags(alltags);
     </script>

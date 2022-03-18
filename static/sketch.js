@@ -43,6 +43,7 @@ function setup() {
         },
         destroy: function($elem) {
           if ($elem.tags.length < 1) {
+            $("#stacked-selected-tag").val('');
             $("#drawing-selection").hide();
             currentTag = '';
           }
@@ -51,6 +52,7 @@ function setup() {
           if ($elem.tags.length > 0 && $elem.tags[0] != currentTag) {
             $elem.next().removeClass("alert-error"); //Remove error from div
             currentTag = $elem.tags[0];
+            $("#stacked-selected-tag").val(currentTag);
             // wordPool is shared in wordPool.js
             let words = wordPool[currentTag];
             //https://stackoverflow.com/questions/19269545/how-to-get-a-number-of-random-elements-from-an-array
@@ -78,16 +80,35 @@ function setup() {
 
 function submitPost() {
   let valid = $('#drawing-title-form')[0].reportValidity();
-  if ($("#drawing-selection").is(":hidden")){
+  if (!$("#stacked-selected-tag").val()){
     $(".drawing-settings-box .inputTags-list").addClass("alert-error")
     valid = false;
   }
   
   if (valid){
-    let confirmation = confirm('Are you sure you want to submit your drawing?');
-    if (confirmation) {
-      saveCanvastoDataURL();
-    }
+    $("#dialog-text").text(`You will be able to edit the settings 
+      and delete your post later, but you will not be 
+      able to change your tags or redraw your post.`)
+    let og = mode;
+    mode = -1;
+    $("#dialog-confirm").dialog({
+      title: "Submit your post?",
+      resizable: false,
+      height: "auto",
+      width: 400,
+      modal: true,
+      buttons: {
+          "Submit": function() {
+            saveCanvastoDataURL();
+            mode = og;
+            $( this ).dialog( "close" );
+          },
+          Cancel: function() {
+            mode = og;
+              $( this ).dialog( "close" );
+          }
+      }
+    });
   }
 }
 
@@ -147,11 +168,12 @@ function draw() {
 }
 
 function mouseClicked(){
-  pg.circle(mouseX,mouseY,1);
+  if (mode != -1)
+    pg.circle(mouseX,mouseY,1);
 } 
 
 function mouseDragged(){
-  if (drawing){
+  if (drawing && mode != -1){
     pg.line(mouseX, mouseY, pmouseX, pmouseY);
     return false;
   }
@@ -172,9 +194,26 @@ function switchEraser() {
 }
 
 function resetCanvas() {
-  let confirmReset = confirm("Do you want to reset your drawing?");
-  if (confirmReset) {
-    pg.background('#ffffff');
-    image(pg, 0,0);
-  }
+  $("#dialog-text").text(`Do you want to clear the canvas?`)
+  let og = mode;
+  mode = -1;
+  $("#dialog-confirm").dialog({
+    title: "Reset your drawing?",
+    resizable: false,
+    height: "auto",
+    width: 400,
+    modal: true,
+    buttons: {
+        Confirm: function() {
+          pg.background('#ffffff');
+          image(pg, 0,0);
+          setTimeout(() => mode=og, 200)
+          $( this ).dialog( "close" );
+        },
+        Cancel: function() {
+            $( this ).dialog( "close" );
+            setTimeout(() => mode=og, 200)
+        }
+    }
+  });
 }

@@ -6,12 +6,14 @@
 {% block content %}
 <div>
     <div class="user-profile">
-        <button id="editUsernameBtn" class="pure-button {{'pure-button-disabled' if not is_me}}">Edit</button>
+        {% if is_me %}
+        <button id="editUsernameBtn" class="pure-button">Edit</button>
+        {% endif %}
         <b>Username:</b> <span id="username">{{username}}</span>
         <span id="overlapAlert" class="alert">Filler</span>
     </div>
 
-    <h2 class="gallery-label">Posts</h2>
+    <h2 class="gallery-label">Posts by {{username}}</h2>
     <div class="post-gallery pure-g">
         
         {% for post, tag, image, comment in zip(posts, tags, images, comments) %}
@@ -20,6 +22,16 @@
         </div>
         {% endfor %}
     </div>
+
+    <div class="err404msg">
+        {% if is_me and posts|length == 0  %}
+            <button class="pure-button" onclick="location.href='{{url_for('drawing_page')}}';">
+                <i class="fa fa-pencil"></i>Make a post!</button>
+        {% elif posts|length == 0 %}
+            No posts yet.
+        {% endif %}
+    </div>
+    
    
 </div>
 <script src="/static/profile.js"></script>
