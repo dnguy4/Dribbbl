@@ -1,3 +1,6 @@
+img{
+    border-radius:30px;
+}
 .post-gallery {
     left           : 2rem;
     justify-content: space-evenly;
@@ -19,6 +22,7 @@
     padding         : 1rem 2rem;
     /* text-align   : center; */
     margin          : 0 auto;
+    border-radius: 30px;
 }
 
 .post>* {
@@ -131,6 +135,10 @@ div .alert-error, .alert-btn .alert-error {
 
 
 /* ============================================================= */
+.titleS{
+    border: 4px  black solid;
+    border-radius: 20px;
+}
 .solver_content {
     width : 100%;
     height: 100%;
@@ -153,6 +161,10 @@ div .alert-error, .alert-btn .alert-error {
 @media (max-width: 1080px) and (min-width: 768px) {
     .solver_container {
         width           : 40rem;
+        height          : fit-content;
+        background-color: darkslategrey;
+        color           : white;
+        border-radius: 30px;
     }
 }
 
@@ -160,6 +172,10 @@ div .alert-error, .alert-btn .alert-error {
 @media (min-width: 1080px) {
     .solver_container {
         width           : 60rem;
+        height          : fit-content;
+        background-color: darkslategrey;
+        color           : white;
+        border-radius: 30px;
     }
 }
 
@@ -167,13 +183,18 @@ div .alert-error, .alert-btn .alert-error {
 @media (max-width: 768px) {
     .solver_container {
         width           : 80vw;
+        height          : fit-content;
+        background-color: darkslategrey;
+        color           : white;
+        border-radius: 30px;
     }
 }
 
 
 .solved {
     border-style: solid;
-    border-color: rgba(38, 179, 3, 1);
+    border-color: orangered;
+    border:10px;
 }
 
 .solver_author_content {
@@ -448,6 +469,16 @@ div .alert-error, .alert-btn .alert-error {
 }
 
 /*---Sai-----------------------------------------------------------------*/
+
+.searchImg{
+ width: 300px;
+}
+
+.pure-g{
+    justify-content: space-evenly;
+}
+
+
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap');
 
 nav{
@@ -696,6 +727,16 @@ nav{
 
 /*-------------------------------------------------------------------*/
 /* Julia's section */
+#defaultCanvas0{
+    border-radius: 30px;
+}
+.search-container .inputTags-list {
+    display: inline !important;
+}
+
+.search-container .inputTags-error {
+    display: inline !important;
+}
 
 .search-query {
     text-align: center;
@@ -704,6 +745,7 @@ nav{
 
 .drawing-settings-box .inputTags-autocomplete-item {
     color: black;
+    border-radius: 30px;
 }
 
 .drawing-area {
@@ -711,6 +753,7 @@ nav{
     margin          : 3em 2% auto auto;
     width           : 70%;
     color           : white;
+    border-radius: 30px;
 }
 
 .drawing-header {
@@ -718,6 +761,8 @@ nav{
     text-align      : center;
     padding         : 0.7em;
     color           : white;
+    border-radius: 30px;
+    
 }
 
 .drawing-canvas .p5Canvas {
