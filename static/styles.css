@@ -685,12 +685,9 @@ nav{
 /*-------------------------------------------------------------------*/
 /* Julia's section */
 
-.search-container .inputTags-list {
-    display: inline !important;
-}
-
-.search-container .inputTags-error {
-    display: inline !important;
+.search-query {
+    text-align: center;
+    padding-top: 1em;
 }
 
 .drawing-settings-box .inputTags-autocomplete-item {
@@ -817,19 +814,9 @@ nav{
     right   : 3%;
 }
 
-/* .editing-settings-form {
-    padding: 10%;
-} */
-
 .image-details {
     padding: 3%;
 }
-
-/* 
-.solution-box {
-    padding-top: 3%;
-    margin-left: 10%;
-} */
 
 /* for making solution word to appear *fancy*
 .solution-word {

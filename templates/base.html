@@ -120,6 +120,9 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
     </div>
     
     <form action="{{ url_for('search') }}"  method="GET">
+      <select name="search_tags" id="search_tags">
+        <option>all</option>
+      </select>
       <input type="text" class="search-data" placeholder="Search.." name="search">
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>
@@ -150,6 +153,13 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
       searchBtn.classList.add("hide");
       cancelBtn.classList.add("show");
     }
+
+    let tags = Object.keys(wordPool);
+    tags.forEach(tag => $('#search_tags').append($('<option>', {
+      value: tag,
+      text: tag
+    })));
+
  </script>
 
   <!--

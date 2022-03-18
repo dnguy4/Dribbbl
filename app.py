@@ -158,16 +158,16 @@ def update_username(username):
 def search():
     page = max(request.args.get('page', 1, type=int), 1)
     search_query = request.args.get('search', '')
-    search_tags = request.args.get('search_tags', '').split(",")
-    if search_tags == ['']:
-        search_tags = []
-    app.logger.info("My tags are: " + str(search_tags))
-        
+    #   search_tags = request.args.get('search_tags', '').split(",")
+    search_tags = request.args.get('search_tags', '')
+    #   if search_tags == ['']:
+    #       search_tags = []
+    #   app.logger.info("My tags are: " + str(search_tags))
     if search_query != '':
         posts = db.get_search(search_query+":*", search_tags)
         final_page = math.ceil(len(posts) / 12)
         posts = posts[(page-1)*12 : page*12]
-    elif search_tags != []:
+    elif search_tags[0] != 'all':
         posts = db.get_search_tag_only(search_tags)
         final_page = math.ceil(len(posts) / 12)
         posts = posts[(page-1)*12 : page*12]
@@ -180,7 +180,7 @@ def search():
     comments = db.get_comment_counts(page=page)
     return render_template('search.html', userinfo=session.get("profile", None), 
         posts=posts, tags=tags, images=images, comments=comments,
-        page_num=page, final_page=final_page)
+        page_num=page, final_page=final_page, search_query=search_query, search_tags=search_tags)
 
 @app.route('/post/<int:post_id>', methods=['GET'])
 def solver_page(post_id):

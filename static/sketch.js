@@ -88,7 +88,7 @@ function submitPost() {
   if (valid){
     $("#dialog-text").text(`You will be able to edit the settings 
       and delete your post later, but you will not be 
-      able to add new tags or redraw your post.`)
+      able to change your tags or redraw your post.`)
     let og = mode;
     mode = -1;
     $("#dialog-confirm").dialog({

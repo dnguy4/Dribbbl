@@ -230,7 +230,7 @@ def get_search(query, tags=[]):
             FROM posts p, tags t, tagged tp
             WHERE tp.tag = t.tag_id
             AND (p.title @@ to_tsquery(%s) OR p.descrip @@ to_tsquery(%s))
-            AND t.tag_name = ANY(%s)
+            AND t.tag_name = (%s)
             AND p.post_id = tp.post
             GROUP BY p.post_id
             ORDER BY upload_time DESC""", (query, query, tags,))
@@ -246,7 +246,7 @@ def get_search_tag_only(tags=[]):
             cur.execute("""SELECT p.* 
             FROM posts p, tags t, tagged tp
             WHERE tp.tag = t.tag_id
-            AND t.tag_name = ANY(%s)
+            AND t.tag_name = (%s)
             AND p.post_id = tp.post
             GROUP BY p.post_id
             ORDER BY upload_time DESC""", (tags,))
