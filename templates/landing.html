@@ -3,8 +3,11 @@
 {% block title %} Dribbbl {% endblock %}
 
 {% block content %}
-    <div class="pure-menu" id="floating-rules-side">
-        <span class="pure-menu-heading">Eat your vegetables</span>
+
+<div class="post-gallery pure-g">
+    {% for post, tag, image, comment in zip(posts, tags, images, comments) %}
+    <div class="post-container pure-u-1 pure-u-md-1-2 pure-u-lg-1-3">
+        {{post_widget(post, tag, image, comment)}}
     </div>
 
     <div class="post-gallery pure-g">

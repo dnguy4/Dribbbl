@@ -1,3 +1,16 @@
+.post-title {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.post-title:hover {
+    text-decoration: underline;
+}
+
+.tag-spacing {
+    margin-top: 15px;
+}
+
 .post-gallery {
     left           : 2rem;
     justify-content: center;
@@ -15,14 +28,31 @@
     color: white;
     aspect-ratio    : 4 / 3;
     max-width       : 30rem;
-    border          : 3px solid black;
+    /*border          : 3px solid black;*/
     padding         : 1rem 2rem;
     /* text-align   : center; */
     margin          : 0 auto;
+    border-radius: 40px;
 }
 
 .post>* {
     margin: 1rem 0;
+}
+.post-tags {
+    background-color:#0c9b7e;
+    border-radius: 3px;
+    color: #fff;
+    margin: 2px;
+    opacity: 1;
+    padding: 3px 8px;
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.hide-link-style {
+    text-decoration: none;
+    color: inherit;
 }
 
 .post:hover {
@@ -690,6 +720,15 @@ nav{
     display: inline !important;
 }
 
+.inputTags-list {
+    color: #0c9b7e;
+}
+
+.search-query {
+    text-align: center;
+    padding-top: 1em;
+}
+
 .drawing-settings-box .inputTags-autocomplete-item {
     color: black;
 }
@@ -708,11 +747,7 @@ nav{
 }
 
 .drawing-header {
-<<<<<<< HEAD
-    background-color: black;
-=======
     background-color: darkslategrey ;
->>>>>>> 50aa60244d8f717d84a35e86d978e6f0e82ff71a
     text-align      : center;
     padding         : 0.7em;
     color           : white;
@@ -767,17 +802,10 @@ nav{
 }
 
 .drawing-settings-box {
-<<<<<<< HEAD
-    background-color: black;
-    width           : 70%;
-    margin          : 3em 0 auto;
-    color           : white;
-=======
     background-color: darkslategrey;
     width:70%;
     margin: 3em 0 auto;
     color: white;
->>>>>>> 50aa60244d8f717d84a35e86d978e6f0e82ff71a
 }
 
 .drawing-settings-form {
@@ -786,7 +814,7 @@ nav{
 
 .drawing-settings-form .pure-radio {
     width           : 50%;
-    background-color: #2196F3;
+    background-color: orangered;
     margin-bottom   : 1em;
     text-align      : center;
     display         : inline-block !important;

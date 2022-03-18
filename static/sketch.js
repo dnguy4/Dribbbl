@@ -36,7 +36,7 @@ function setup() {
 
   function importTags() {
     $('#stacked-drawing-tags').inputTags({
-      max: 5,
+      max: 3,
         autocomplete: {
           values: Object.keys(wordPool),
           only: true
@@ -138,8 +138,8 @@ function draw() {
     pg.stroke(colorPicker.color());
     pg.fill(colorPicker.color());
   }
-  else {
-    eraser.style('background-color', '#ff5c5c');
+  else if (mode == 1) {
+    eraser.style('background-color', 'orangered');
     pg.stroke('#ffffff');
     pg.fill('#ffffff');
   }

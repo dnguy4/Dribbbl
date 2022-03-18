@@ -51,8 +51,10 @@ Make a Drawing!
             <fieldset>
                 <legend>Settings</legend>
                 <label for="drawing-tags">Select your tags to receive a word to draw:</label>
-                <p>You can select multiple tags, but the word selection depends on the first tag in your list.</p>
-                <input id="stacked-drawing-tags" name="drawing-tags" required/>
+                <p>You can select up to 3 tags, but the word selection depends on the first tag in your list.</p>
+                <input id="stacked-drawing-tags" name="drawing-tags"/>
+                <label for="selected-tag">Your word category is:</label>
+                <input id="stacked-selected-tag" name="selected-tag" readonly required/>
                 <div id="drawing-selection">
                     <label for="drawing-select-word">Select the word based on your tags:</label>
                     <div class="individual-words">
