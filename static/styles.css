@@ -820,6 +820,7 @@ nav{
 .drawing-button:hover {
     background-color:#0b7c65 !important;
     color: white !important;
+    cursor: pointer;
 }
 
 /*
