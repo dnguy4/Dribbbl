@@ -36,7 +36,7 @@ function hintProvided() {
                     width: 400,
                     modal: true,
                     buttons: {
-                        Cancel: function () {
+                        Close: function () {
                             $(this).dialog("close");
                         }
                     }
@@ -47,4 +47,17 @@ function hintProvided() {
             }
         }
     });
+}
+
+function setupComments(solved, show_comment) {
+    if (solved) {
+        $(".solver_other_user_answers").hide();
+    }
+
+    if (show_comment) {
+        $('#toggleComments').click(function(){
+            $('.solver_other_user_answers').slideToggle('slow');
+            $('.rotate').toggleClass("down");
+        });
+    }
 }

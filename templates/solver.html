@@ -92,4 +92,10 @@
         </div>
     </div>
 </div>
+<script>
+    var solved = {{post['solved'] | tojson}}
+    var show_comment = {{post['show_comment'] | tojson}}
+    setupComments(solved, show_comment);
+</script>
+
 {% endblock %}

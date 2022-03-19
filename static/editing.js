@@ -23,6 +23,6 @@ function setup(show_comment) {
 
     $( "#dialog-confirm" ).hide();
     $('#delete-post').click(deletePost);
-    $('.pure-button, .alert-btn, .alert-error').click(deletePost);
+    $('.pure-button.alert-btn.alert-error').click(deletePost);
     $('#editing-see-guesses').prop('checked', show_comment);
 }
