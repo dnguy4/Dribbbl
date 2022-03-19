@@ -7,7 +7,7 @@ import io
 import psycopg2.errors
 from base64 import b64encode
 from flask import Flask, render_template, request, g, redirect, url_for, \
-    jsonify, send_file, session, flash, abort
+    jsonify, send_file, session, flash, abort, current_app
 from authlib.integrations.flask_client import OAuth
 from functools import wraps
 
@@ -147,7 +147,7 @@ def update_username(username):
         try:
             db.edit_username(uid, new_username)
             session['profile']['name'] = new_username
-            session.modifed = True
+            session.modified = True
             return redirect(url_for('profile_page', username=new_username))
         except psycopg2.Error as e:
             #print(e.pgerror)
