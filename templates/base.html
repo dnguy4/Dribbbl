@@ -56,13 +56,17 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
 {% macro post_widget(post, tag, image, num_comment) -%}
 <div class="post">
   <div class="post-infobar">
-      <p>{{post['title']}}</p>    
-      {{ tag_widget(tag) }}
-
-      {% if userinfo and userinfo['user_id'] == post['author'] %}
+    <a class="post-title" href="{{url_for('solver_page', post_id=post['post_id'])}}">
+      <span>{{post['title']}}</span>  
+    </a>
+    {% if userinfo and userinfo['user_id'] == post['author'] %}
       <a href="{{url_for('editing_page', post_id=post['post_id'])}}" class="post-edit-btn">
-        <i class="fa fa-edit"></i></a>
-      {%endif%}
+      <i class="fa fa-edit"></i></a>
+    {%endif%}
+    <br>
+    <div class="tag-spacing">
+      {{ tag_widget(tag) }}
+    </div>
   </div>
   <a href="{{url_for('solver_page', post_id=post['post_id'])}}">
       <img class="post-img pure-img" src="data:;base64,{{ image }}">
@@ -96,7 +100,7 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
        <span class="fas fa-bars"></span>
     </div>
     <div class="logo">
-       Dribble
+       Dribbble
     </div>
     <div class="nav-items">
        <li><a href="{{ url_for('landing_page') }}">Home</a></li>

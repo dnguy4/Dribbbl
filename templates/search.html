@@ -9,14 +9,13 @@
         <h1>Showing all posts: </h1>
     {% elif search_query == '' %}
         <h1>Searching for all posts from &#8220{{search_tags}}&#8220: </h1>
-    {% elif search_tags == all %}
+    {% elif search_tags == 'all' %}
         <h1>Searching for &#8220{{search_query}}&#8220 from all categories: </h1>  
     {% else %}
         <h1>Searching for &#8220{{search_query}}&#8220 from &#8220{{search_tags}}&#8220: </h1>
     {% endif %}
 </div>
 
-        <!---->>
 <div class="post-gallery pure-g">
     {% for post, tag, image, comment in zip(posts, tags, images, comments) %}
     <div class="post-container pure-u-1 pure-u-md-1-2 pure-u-lg-1-3" >
