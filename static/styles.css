@@ -9,11 +9,13 @@
 
 .tag-spacing {
     margin-top: 15px;
+    min-height:3em;
 }
 
 img{
     border-radius:30px;
 }
+
 .post-gallery {
     left           : 2rem;
     justify-content: space-evenly;
@@ -51,6 +53,10 @@ img{
     position: relative;
     text-align: center;
     white-space: nowrap;
+
+}
+.post-tags:hover {
+    background-color: #0b7c65;
 }
 
 .hide-link-style {
@@ -58,14 +64,11 @@ img{
     color: inherit;
 }
 
-.post:hover {
-    cursor: pointer;
-}
-
 .post-edit-btn {
     float: right;
     text-decoration: none;
     color: inherit;
+    cursor: pointer;
 }
 
 .post-img.pure-img {
@@ -541,6 +544,7 @@ nav{
     font-weight: 500;
     text-decoration: none;
   }
+  
   nav .nav-items li a:hover{
     /*color: #ff3d00;*/
   }
@@ -783,12 +787,11 @@ nav{
 }
 
 .drawing-header {
-    background-color: darkslategrey ;
+    background-color: darkslategrey;
     text-align      : center;
-    padding         : 0.7em;
+    padding-top         : 0.7em;
     color           : white;
     border-radius: 30px;
-    
 }
 
 .drawing-canvas .p5Canvas {
@@ -797,41 +800,101 @@ nav{
 }
 
 .drawing-panel {
-    margin-top : 1em;
-    margin-left: 3%;
+    margin: 1em 2em;
     overflow   : auto;
-    min-height : 2em;
-    height     : auto;
+    display    : inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    border-radius: 5px;
 }
 
-.drawing-panel input {
-    display       : inline;
-    margin-right  : 1%;
-    vertical-align: middle;
+.drawing-button {
+    color: white;
+    font-size: 1em;
+    margin: 0.5em;
+    height: 2em;
+    width: 3em;
+    border-radius: 5px;
 }
 
-.drawing-panel button {
-    display       : inline;
-    margin-right  : 1%;
-    vertical-align: middle;
+.drawing-button:hover {
+    background-color:#0b7c65 !important;
+    color: white !important;
 }
+
+/*
+.drawing-button:active {
+    background-color:orangered !important;
+}*/
 
 .drawing-brush-size {
-    display: inline;
+    display: inline-flex;
+    align-items: center;
+    margin-right: 0.3em;
 }
 
 .drawing-brush-size .pure-radio {
-    display         : inline;
-    margin-right    : 1%;
-    padding         : 1%;
-    background-color: grey;
-    vertical-align  : middle;
-    color           : black;
+    width: 2.5em;
+    height: 2.5em;
+    display         : inline-flex;
+    align-items     : center;
+    justify-content : center;
+    background-color: #0c9b7e;
+    color           : white;
+    cursor          : pointer;
+    border-radius   : 5px;
+} 
+
+/* brush sizes */
+label[for='size-1'] i {
+    font-size: 3px;
+}
+label[for='size-5'] i {
+    font-size: 0.4em;
+}
+label[for='size-10'] i {
+    font-size: 0.8em;
+}
+label[for='size-30'] i {
+    font-size: 1.1em;
+}
+label[for='size-50'] i {
+    font-size: 1.5em;
+}
+
+/*
+    Code for making radio buttons look like regular buttons
+    was references from this post:
+    https://stackoverflow.com/questions/16242980/making-radio-buttons-look-like-buttons-instead
+*/
+
+.drawing-brush-size input[type="radio"],
+#drawing-selection  input[type="radio"] {
+    opacity: 0.01;
+    z-index: 100;
+}
+  
+.drawing-brush-size input[type="radio"]:checked+label,
+#drawing-selection input[type="radio"]:checked+label {
+    background: orangered;
+}
+  
+.drawing-brush-size label[class="pure-radio"]:hover,
+#drawing-selection label[class="pure-radio"]:hover {
+    background: #0b7c65;
+    cursor: pointer;
+}
+
+/*
+    End section for making radio buttons look like regular buttons
+*/
+
+.label-spacing {
+    margin-top: 1em !important;
 }
 
 .drawing-title-form {
     margin: 0 5% 5%;
-
 }
 
 .drawing-title-form textarea {
@@ -844,6 +907,7 @@ nav{
     width:70%;
     margin: 3em 0 auto;
     color: white;
+    border-radius: 20px;
 }
 
 .drawing-settings-form {
@@ -852,14 +916,22 @@ nav{
 
 .drawing-settings-form .pure-radio {
     width           : 50%;
-    background-color: orangered;
+    line-height     : 2em;
+    background-color: #0c9b7e;
     margin-bottom   : 1em;
     text-align      : center;
+    vertical-align  : middle;
+    border-radius   : 3px;
     display         : inline-block !important;
 }
 .drawing-settings-form legend {
     color: white;
     font-size: 1.5rem;
+}
+
+.drawing-submit {
+    background-color: orangered;
+    color: white;
 }
 
 #drawing-selection {
@@ -895,10 +967,11 @@ nav{
     padding: 3%;
 }
 
-/* for making solution word to appear *fancy*
 .solution-word {
+    font-size: 2em;
+    margin-left: 1em;
 }
-*/
+
 
 @media (max-width: 1023px) {
     .drawing-settings-box {
