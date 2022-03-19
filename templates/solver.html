@@ -2,6 +2,11 @@
 {% block title %} Solver {% endblock %}
 
 {% block content %}
+<script src="{{
+    url_for('static', filename='solver.js') }}">
+</script>
+
+
 <div class="solver_content">
     <div class="pure-g">
         <div class="pure-u-1">
@@ -17,30 +22,18 @@
                     <div class="solver_picture">
                         <img class="post-img pure-img" src="{{url_for("view_post", post_id=post['post_id'])}}">
                         {% if post['hint']%}
-                            <div class="solver_hint" id="solver_hint_container">
-                                <button id="solver_close_hint_btn" type="button">X</button>
-                                <div id="solver_hint_content" class="solver_hint_content">
-                                    <div id="solver_hint_confirmation">
-                                        <p>Do you really want to see the hint?</p>
-                                        <button id="solver_hint_yes" type="button">Yes</button>
-                                        <button id="solver_hint_no" type="button">No</button>
-                                    </div>
-                                    <div id="solver_actual_hint">
-                                        <p>{{post['hint']}}</p>
-                                    </div>
-                                </div>
+                            <button id="solver_hint_btn" type="button" onclick="hintProvided()">Hint</button>
+                            <div id="dialog-confirm">
+                                <p id="dialog-text">
+                                </p>
+                                <p id="solver_actual_hint">{{post['hint']}}</p>
                             </div>
-                            <button id="solver_hint_btn" type="button">Hint</button>
                         {% else %}
-                            <div class="solver_hint" id="solver_hint_container">
-                                <button id="solver_close_hint_btn" type="button">X</button>
-                                <div id="solver_hint_content" class="solver_hint_content">
-                                    <div id="solver_hint_confirmation">
-                                        <p>The author did not provide a hint.</p>
-                                    </div>
-                                </div>
+                            <button id="solver_hint_btn" type="button" onclick="noHintProvided()">Hint</button>
+                            <div id="dialog-confirm">
+                                <p id="dialog-text">
+                                </p>
                             </div>
-                            <button id="solver_hint_btn" type="button">Hint</button>
                         {% endif %}
                     </div>
                     <div class="solver_description_div">
@@ -99,35 +92,4 @@
         </div>
     </div>
 </div>
-<script>
-
-    $("#solver_hint_btn").click(function(){
-        $("#solver_hint_container").show();
-    });
-    $("#solver_close_hint_btn").click(function(){
-        $("#solver_hint_confirmation").show();
-        $("#solver_hint_container").hide();
-        $("#solver_actual_hint").hide();
-    });
-    $("#solver_hint_yes").click(function(){
-        $("#solver_hint_confirmation").hide();
-        $("#solver_actual_hint").show();
-    });
-    $("#solver_hint_no").click(function(){
-        $("#solver_hint_confirmation").show();
-        $("#solver_hint_container").hide();
-        $("#solver_actual_hint").hide();
-    });
-    
-    if ("{{post['solved']}}".toLowerCase() === "true" ) {
-        $(".solver_other_user_answers").hide();
-    }
-
-    if ("{{post['show_comment']}}".toLowerCase() === "true" ) {
-        $('#toggleComments').click(function(){
-        $('.solver_other_user_answers').slideToggle('slow');
-        $('.rotate').toggleClass("down");
-        });
-    }
-</script>
 {% endblock %}
