@@ -16,6 +16,10 @@
                         <i class="fa fa-solid fa-check solver_title_checkmark">
                             Solved by {{solver}}</i>
                     {% endif %}
+                    {% if userinfo and userinfo['user_id'] == post['author'] %}
+                    <a href="{{url_for('editing_page', post_id=post['post_id'])}}" class="post-edit-btn">
+                    <i class="fa fa-edit"></i></a>
+                    {%endif%}
                     <div class="solver_title">
                         <h1 class="titleS">{{post['title']}}</h1>
                     </div>

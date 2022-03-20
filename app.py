@@ -70,7 +70,9 @@ def callback_handling():
         return redirect(url_for("profile_page", username=userinfo['email']))
     else:
         session['profile']['name'] = username
-        return redirect(url_for("landing_page"))
+        if session.get("redirect_to"):
+            redirect(session["redirect_to"])
+        return redirect(url_for("landing_page")) 
 
 
 @app.route("/login")
@@ -89,14 +91,18 @@ def requires_auth(f):
   @wraps(f)
   def decorated(*args, **kwargs):
     if 'profile' not in session:
-      # Redirect to Login page here
-      return redirect('/login')
+      #https://stackoverflow.com/questions/3686465/flask-werkzeug-how-to-return-previous-page-after-login/3686541
+      #By Will McCutchen
+    #   next_url = request.url
+    #   login_url = '%s?next=%s' % (url_for('login'), next_url)
+      session["redirect_to"] = request.url
+      return redirect(url_for('login'))
     return f(*args, **kwargs)
 
   return decorated
 
 
-def get_tags_and_images(posts):
+def get_tags_images_n_comments(posts):
     images = []
     post_ids = []
     for post in posts:
@@ -104,10 +110,11 @@ def get_tags_and_images(posts):
         images.append(b64encode(post['post_image']).decode("utf-8"))
     
     tags = db.get_tags(post_ids)
+    comments = db.get_comment_counts(post_ids)
     for i in range(len(tags)):
         tags[i]['textcat_all'] = tags[i]['textcat_all'][:-1]
 
-    return tags, images
+    return tags, images, comments
 
 ###### Routes ######
 
@@ -116,8 +123,7 @@ def landing_page():
     page = max(request.args.get('page', 1, type=int), 1)
     final_page = math.ceil(db.get_num_of_posts()/12)
     posts = db.get_posts(page=page)
-    tags, images = get_tags_and_images(posts)
-    comments = db.get_comment_counts(page=page)
+    tags, images, comments = get_tags_images_n_comments(posts)
     return render_template('landing.html', userinfo=session.get("profile", None), 
         posts=posts, tags=tags, images=images, comments=comments,
         page_num=page, final_page=final_page)
@@ -128,8 +134,7 @@ def profile_page(username):
     is_current_user =  session.get("profile") and session['profile']['user_id'] == uid
     if uid != None:
         posts = db.get_posts_by_author(uid)
-        tags, images = get_tags_and_images(posts)
-        comments = db.get_comment_counts()
+        tags, images, comments = get_tags_images_n_comments(posts)
         return render_template("profile.html", posts=posts, tags=tags, images=images, comments=comments,
             username=username, is_me=is_current_user, userinfo=session.get('profile', None))
     else:
@@ -173,8 +178,7 @@ def search():
         final_page = math.ceil(db.get_num_of_posts()/12)
     
     
-    tags, images = get_tags_and_images(posts)
-    comments = db.get_comment_counts(page=page)
+    tags, images, comments = get_tags_images_n_comments(posts)
     return render_template('search.html', userinfo=session.get("profile", None), 
         posts=posts, tags=tags, images=images, comments=comments,
         page_num=page, final_page=final_page, search_query=search_query, search_tags=search_tags)
