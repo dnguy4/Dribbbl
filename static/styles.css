@@ -242,7 +242,7 @@ div .alert-error,
 }
 
 .solver_title_checkmark {
-    float: right;
+    float: left;
 }
 
 .solver_picture {
