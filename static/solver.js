@@ -80,6 +80,21 @@ function comment_more_setting(comment_id) {
         }
     });
 }
+function comment_more_setting_answer(comment_id) {
+    $("#dialog-text").text(`You cannot delete this comment since this is the answer.`)
+    $("#dialog-confirm").dialog({
+        title: "Delete comment?",
+        resizable: false,
+        height: "auto",
+        width: 400,
+        modal: true,
+        buttons: {
+            Cancel: function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+}
 
 function setupComments(solved, show_comment) {
     if (solved) {

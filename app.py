@@ -222,7 +222,6 @@ def add_comment(post_id):
 @app.route('/post/deleteComment/', methods=['POST'])
 @requires_auth
 def delete_comment():
-
     commentId = request.form['comment_id']
     comment = db.get_comment_details(commentId)
     comment_user_id = comment[0]["u_id"]
