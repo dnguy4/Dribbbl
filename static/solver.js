@@ -1,4 +1,3 @@
-
 $("#dialog-confirm").hide();
 function noHintProvided() {
     $("#dialog-text").text(`The author did not provide a hint.`)
@@ -43,6 +42,39 @@ function hintProvided() {
                 });
             },
             "No": function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+}
+
+function comment_more_setting(comment_id) {
+    $("#dialog-text").text(`Are you sure you want to delete this comment?`)
+    $("#dialog-confirm").dialog({
+        title: "Delete comment?",
+        resizable: false,
+        height: "auto",
+        width: 400,
+        modal: true,
+        buttons: {
+            "Yes": function() {
+                $.ajax({
+                    type: 'POST',
+                    url: "/post/deleteComment/",
+                    data: {
+                        'comment_id': comment_id
+                    }
+                })
+                .done(function( msg ) {
+                  if(msg == "Success"){
+                    $("#solver_each_user_all_data_"+comment_id).remove()
+                  } else {
+                    alert("Deleting comment unsuccessful!");
+                  }
+                });
+                $( this ).dialog( "close" );
+            },
+            Cancel: function () {
                 $(this).dialog("close");
             }
         }

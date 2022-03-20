@@ -68,7 +68,7 @@
                         <!-- Get data from database and do for loop here -->
                         {% if post['show_comment'] %}
                             {% for comment in comments %}
-                            <div class="solver_each_user_all_data">
+                            <div class="solver_each_user_all_data" id="solver_each_user_all_data_{{comment['comment_id']}}">
                                 <div class="solver_each_user_profile">
                                     <!-- profile pic -->
                                     <img class="solver_profile_pic"
@@ -76,9 +76,19 @@
                                         alt="profile-pic">
                                 </div>
                                 <div class="solver_each_user_answer_div {{'solved' if comment['content'] == post['solution']}}">
+                                    <!-- if comment['user_id'] == self.user_id then have option for delete -->
                                     <p class="solver_username"><b>{{comment['username']}}</b></p>
                                     <p class="solver_answer">{{comment['content']}}</p>
                                 </div>
+                                <!-- <div class="solver_more_button_div"> -->
+                                {% if userinfo %} 
+                                    {% if comment['u_id'] == userinfo['user_id'] %}
+                                    <div class="solver_more_button_div" onclick="comment_more_setting({{comment['comment_id']}})"> 
+                                        <span class="solver_comment_delete_button">delete</span>
+                                    </div>
+                                    {%endif%}    
+                                {%endif%}
+                                <!-- </div> -->
                             </div>
                             {% else %}
                             <h1 class="solver_title">No comments yet.</h1>

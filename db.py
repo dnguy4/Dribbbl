@@ -107,6 +107,11 @@ def delete_post(post_id):
         current_app.logger.info("Trying to delete %s", post_id)
         cur.execute("""DELETE FROM posts WHERE post_id = %s""", (post_id,))
 
+def delete_comment(comment_id):
+     with get_db_cursor(True) as cur:
+        current_app.logger.info("Trying to delete comment with id: %s", comment_id)
+        cur.execute("""DELETE FROM COMMENTS WHERE comment_id = %s""", (comment_id,))
+
 def mark_post_solved(solved, post_id):
     with get_db_cursor(True) as cur:
         cur.execute("""UPDATE posts SET solved = %s WHERE post_id = %s""", 
@@ -196,6 +201,12 @@ def get_comments(post_id):
     with get_db_cursor() as cur:
         cur.execute("""SELECT * FROM comments LEFT JOIN users ON u_id = author
              WHERE post = %s""", (post_id,))
+        return cur.fetchall()
+
+def get_comment_details(comment_id):
+    with get_db_cursor() as cur:
+        cur.execute("""SELECT * FROM comments LEFT JOIN users ON u_id = author
+             WHERE comment_id = %s""", (comment_id,))
         return cur.fetchall()
 
 def get_comment_counts(page = 1, post_per_page = 12):
