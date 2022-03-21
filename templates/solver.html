@@ -71,7 +71,7 @@
                     <div class="solver_other_user_answers">
                         {% if post['show_comment'] %}
                             {% for comment in comments %}
-                            <div class="solver_each_user_all_data">
+                                <div class="solver_each_user_all_data" id="solver_each_user_all_data_{{comment['comment_id']}}">
                                 <div class="solver_each_user_profile">
                                     <!-- profile pic -->
                                     <img class="solver_profile_pic"
@@ -82,6 +82,19 @@
                                     <p class="solver_username"><b>{{comment['username']}}</b></p>
                                     <p class="solver_answer">{{comment['content']}}</p>
                                 </div>
+                                {% if userinfo %} 
+                                    {% if comment['u_id'] == userinfo['user_id'] %}
+                                        {% if post['solved'] == true and post['solution'] == comment['content']%}
+                                            <div class="solver_more_button_div" onclick="comment_more_setting_answer({{comment['comment_id']}})"> 
+                                                <span class="solver_comment_delete_button">delete</span>
+                                            </div>
+                                        {% else %}
+                                            <div class="solver_more_button_div" onclick="comment_more_setting({{comment['comment_id']}})"> 
+                                                <span class="solver_comment_delete_button">delete</span>
+                                            </div>
+                                        {%endif%}
+                                    {%endif%}    
+                                {%endif%}
                             </div>
                             {% else %}
                             <h1 class="solver_title">No comments yet.</h1>
