@@ -41,6 +41,12 @@ function setup() {
   reset.addClass('drawing-button-reset');
   $(reset.elt).html('<i class="fa fa-solid fa-trash"></i>');
   reset.style('background-color', '#0c9b7e')
+
+  loadImage('/static/notallowed.png', img => {
+    pg.image(img, 0, 0);
+    noLoop();
+    mode = -1;
+  })
 }
 
   function importTags() {
@@ -58,6 +64,11 @@ function setup() {
           }
         },
         change: function($elem) {
+          if (currentTag === '' && mode === -1){
+            loop();
+            pg.background('#ffffff');
+            mode = 0;
+          }
           if ($elem.tags.length > 0 && $elem.tags[0] != currentTag) {
             $elem.next().removeClass("alert-error"); //Remove error from div
             currentTag = $elem.tags[0];
@@ -109,11 +120,10 @@ function submitPost() {
       buttons: {
           "Submit": function() {
             saveCanvastoDataURL();
-            mode = og;
             $( this ).dialog( "close" );
           },
           Cancel: function() {
-            mode = og;
+              setTimeout(() => mode=og, 200)
               $( this ).dialog( "close" );
           }
       }
@@ -133,7 +143,6 @@ function saveCanvastoDataURL() {
   canvas.canvas.toBlob(blob => {
     formData.append('post_image', blob);
 
-    // prevent sending if drawing doesn't have tags/word selected and title?
     $.ajax({
       type: 'POST',
       url: "drawing",
@@ -154,7 +163,6 @@ function windowResized() {
   width = Math.round(width);
   height = Math.round(height);
   canvas = resizeCanvas(width, height);
-  background('#ffffff');
   var newPg = createGraphics(width, height);
   newPg.image(pg, 0, 0, width, height);
   pg = newPg;
@@ -199,7 +207,7 @@ function mouseReleased() {
 }
 
 function switchEraser() {
-  mode = !mode;
+  if (mode !== -1) mode = !mode;
 }
 
 function resetCanvas() {
