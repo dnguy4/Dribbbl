@@ -501,9 +501,13 @@ div .alert-error,
 }
 
 #toggleComments {
-    background-color: orangered;
+    background-color: #ff3d00;
     padding         : 1rem;
     margin          : 0;
+}
+#toggleComments:hover {
+    background-color: #e63600;
+    cursor: pointer;
 }
 
 /*---Sai-----------------------------------------------------------------*/

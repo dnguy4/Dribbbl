@@ -56,7 +56,7 @@
                             <fieldset>
                                 <h3 id="toggleComments">
                                     <i class="fa fa-solid fa-caret-right rotate {{'down' if not post['solved']}}"></i>
-                                    Comments
+                                    Comments ({{comments|length}})
                                 </h3>
                                 <input type="text" class="pure-input-1 " id="answer" name="answer"
                                     placeholder="What do you think it is? {{'Must be logged in to comment.' if not userinfo}}" 
