@@ -43,7 +43,7 @@ function setup() {
   reset.style('background-color', '#0c9b7e')
 
   loadImage('/static/notallowed.png', img => {
-    pg.image(img, 0, 0);
+    pg.image(img, 0, 0, width, height);
     noLoop();
     mode = -1;
   })
@@ -162,6 +162,7 @@ function windowResized() {
   let height = width * 0.75;
   width = Math.round(width);
   height = Math.round(height);
+  
   canvas = resizeCanvas(width, height);
   var newPg = createGraphics(width, height);
   newPg.image(pg, 0, 0, width, height);

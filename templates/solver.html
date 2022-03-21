@@ -11,8 +11,7 @@
                 <div class="solver_author_content">
                     {% if post['solved'] %}
                     <div class="solver_solved">
-                        <i class="fa fa-solid fa-check">
-                            Solved by {{solver}}</i>
+                        <i class="fa fa-solid fa-check"></i> Solved by {{solver}}
                     </div>
                     {% endif %} {% if userinfo and userinfo['user_id'] == post['author'] %}
                     <a href="{{url_for('editing_page', post_id=post['post_id'])}}" class="post-edit-btn">
@@ -43,6 +42,7 @@
                             <p>By:
                                 <a class="hide-link-style" href="/user/{{author[0][1]}}">{{author[0][1]}}</a>
                             </p>
+                            <br>
                             {{ tag_widget(tags) }}
                         </div>
                     </div>
@@ -75,11 +75,11 @@
                             </div>
                             {% if userinfo %} {% if comment['u_id'] == userinfo['user_id'] %} {% if post['solved'] == true and post['solution'] == comment['content']%}
                             <div class="solver_more_button_div" onclick="comment_more_setting_answer({{comment['comment_id']}})">
-                                <span class="solver_comment_delete_button">delete</span>
+                                <span class="solver_comment_delete_button"><i class="fa fa-solid fa-trash"></i></span>
                             </div>
                             {% else %}
                             <div class="solver_more_button_div" onclick="comment_more_setting({{comment['comment_id']}})">
-                                <span class="solver_comment_delete_button">delete</span>
+                                <span class="solver_comment_delete_button"><i class="fa fa-solid fa-trash"></i></span>
                             </div>
                             {%endif%} {%endif%} {%endif%}
                         </div>

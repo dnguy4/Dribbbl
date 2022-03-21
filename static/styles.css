@@ -1,3 +1,11 @@
+#content, button, input, select, textarea,
+.pure-g [class *= "pure-u"] {
+    font-family:Source Sans Pro;
+    font-style:normal;
+    font-weight:500;
+    src:url(http://fonts.gstatic.com/s/sourcesanspro/v18/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZMkids18E.ttf) format("truetype")
+}
+
 .post-title {
     color: #ffffff;
     text-decoration: none;
@@ -116,7 +124,7 @@ img {
     height: fit-content;
     width: 100%;
     overflow: auto;
-    margin: 2rem 1rem;
+    margin: 2rem 5em;
     padding-left: 30px;
 }
 
@@ -131,6 +139,7 @@ img {
     border-radius: 0.3rem;
     border-style: solid;
     border-width: 0.06rem;
+    
 }
 
 .alert {
@@ -159,7 +168,7 @@ div .alert-error,
 
 #editUsernameBtn {
     /*float : right;*/
-    margin: 0 2rem;
+    margin: 0 1rem;
 }
 
 
@@ -231,6 +240,7 @@ div .alert-error,
 .solved {
     border-style: solid;
     border-color: orangered;
+    border-width: 4px;
 }
 
 .solver_author_content {
@@ -240,7 +250,8 @@ div .alert-error,
     /* width         : 50em; */
     width: 90%;
     height: auto;
-    border-bottom: 0.5rem black solid;
+    border-bottom: 0.4rem #191818 solid;
+    
 }
 
 .solver_users_content {
@@ -270,7 +281,7 @@ div .alert-error,
     margin-right: auto;
     width: 90%;
     height: auto;
-    line-height: 40%;
+    line-height: 50%;
     text-decoration: none;
     color: inherit;
 }
@@ -352,6 +363,10 @@ div .alert-error,
     border-radius: 50%;
     background-color: rgb(28, 184, 65);
     margin-top: 0.4em;
+    margin-right: 0.3em;
+
+    padding: 0.4em;
+    color: white;
 }
 
 #solver_close_hint_btn {
@@ -421,8 +436,7 @@ div .alert-error,
 }
 
 .solver_solved {
-    margin-left: 5%;
-    margin-right: 5%;
+    margin: 1% 5%;
 }
 
 
@@ -1081,3 +1095,4 @@ label[for='size-50'] i {
     font-size: 2rem;
     text-align: center;
 }
+
