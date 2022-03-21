@@ -58,8 +58,7 @@ def callback_handling():
     #useful keys: nickname, name, picture
     session['profile'] = {
         'user_id': userinfo['sub'],
-        #'name': userinfo['name'],
-        'name': userinfo['email'],
+        'name': userinfo['email'], #set to email by default for uniqueness
         'picture': userinfo['picture'],
         'email': userinfo['email']
     }
@@ -70,14 +69,16 @@ def callback_handling():
         return redirect(url_for("profile_page", username=userinfo['email']))
     else:
         session['profile']['name'] = username
-        if session.get("redirect_to"):
-            redirect(session["redirect_to"])
+        if session.get("redirect_to", None) != None:
+            return redirect(session["redirect_to"])
         return redirect(url_for("landing_page")) 
 
 
 @app.route("/login")
 def login():
-      return auth0.authorize_redirect(redirect_uri=url_for("callback_handling", _external=True))
+    if session.get("redirect_to", None) == None: #redirect to previous page if not accessing thru requires_auth
+        session['redirect_to'] = request.referrer
+    return auth0.authorize_redirect(redirect_uri=url_for("callback_handling", _external=True))
 
 @app.route('/logout')
 def logout():
@@ -91,10 +92,6 @@ def requires_auth(f):
   @wraps(f)
   def decorated(*args, **kwargs):
     if 'profile' not in session:
-      #https://stackoverflow.com/questions/3686465/flask-werkzeug-how-to-return-previous-page-after-login/3686541
-      #By Will McCutchen
-    #   next_url = request.url
-    #   login_url = '%s?next=%s' % (url_for('login'), next_url)
       session["redirect_to"] = request.url
       return redirect(url_for('login'))
     return f(*args, **kwargs)
