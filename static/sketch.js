@@ -24,19 +24,28 @@ function setup() {
   
   colorPicker = createColorPicker('#000000');
   colorPicker.parent('panel-p5-container');
-  
-  eraser = createButton('Eraser');
+  colorPicker.addClass('drawing-button');
+  colorPicker.style('background-color', 'white')
+    
+  eraser = createButton();
   eraser.mouseClicked(switchEraser);
   eraser.parent('panel-p5-container');
+  eraser.addClass('drawing-button');
+  eraser.addClass('drawing-button-eraser');
+  $(eraser.elt).html('<i class="fa fa-solid fa-eraser"></i>');
 
-  reset = createButton('Reset');
+  reset = createButton();
   reset.mouseClicked(resetCanvas);
   reset.parent('panel-p5-container');
+  reset.addClass('drawing-button');
+  reset.addClass('drawing-button-reset');
+  $(reset.elt).html('<i class="fa fa-solid fa-trash"></i>');
+  reset.style('background-color', '#0c9b7e')
 }
 
   function importTags() {
     $('#stacked-drawing-tags').inputTags({
-      max: 5,
+      max: 3,
         autocomplete: {
           values: Object.keys(wordPool),
           only: true
@@ -155,12 +164,12 @@ function windowResized() {
 function draw() {
   pg.strokeWeight(brushSize);
   if (mode == 0) {
-    eraser.style('background-color', '#c0c0c0');
+    eraser.style('background-color', '#0c9b7e');
     pg.stroke(colorPicker.color());
     pg.fill(colorPicker.color());
   }
   else if (mode == 1) {
-    eraser.style('background-color', '#ff5c5c');
+    eraser.style('background-color', 'orangered');
     pg.stroke('#ffffff');
     pg.fill('#ffffff');
   }

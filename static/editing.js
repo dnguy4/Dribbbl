@@ -1,5 +1,6 @@
-function setup(username, show_comment) {
-    console.log(show_comment)
+var username;
+
+function setup(show_comment) {
     function deletePost(){
         $( "#dialog-confirm" ).dialog({
         resizable: false,
@@ -22,9 +23,6 @@ function setup(username, show_comment) {
 
     $( "#dialog-confirm" ).hide();
     $('#delete-post').click(deletePost);
-    $('.pure-button, .alert-btn, .alert-error').click(deletePost);
+    $('.pure-button.alert-btn.alert-error').click(deletePost);
     $('#editing-see-guesses').prop('checked', show_comment);
 }
-
-
-

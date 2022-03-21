@@ -107,6 +107,11 @@ def delete_post(post_id):
         current_app.logger.info("Trying to delete %s", post_id)
         cur.execute("""DELETE FROM posts WHERE post_id = %s""", (post_id,))
 
+def delete_comment(comment_id):
+     with get_db_cursor(True) as cur:
+        current_app.logger.info("Trying to delete comment with id: %s", comment_id)
+        cur.execute("""DELETE FROM COMMENTS WHERE comment_id = %s""", (comment_id,))
+
 def mark_post_solved(solved, post_id):
     with get_db_cursor(True) as cur:
         cur.execute("""UPDATE posts SET solved = %s WHERE post_id = %s""", 
@@ -198,29 +203,27 @@ def get_comments(post_id):
              WHERE post = %s""", (post_id,))
         return cur.fetchall()
 
-def get_comment_counts(page = 1, post_per_page = 12):
-    limit = post_per_page
-    offset = (page-1)*post_per_page
+def get_comment_details(comment_id):
+    with get_db_cursor() as cur:
+        cur.execute("""SELECT * FROM comments LEFT JOIN users ON u_id = author
+             WHERE comment_id = %s""", (comment_id,))
+        return cur.fetchall()
+
+def get_comment_counts(post_ids):
     with get_db_cursor() as cur:
         cur.execute("""
            SELECT count(comments.post) as number_of_comments
             from posts left join comments on posts.post_id = comments.post
-            GROUP BY posts.post_id ORDER BY posts.upload_time DESC limit %s offset %s""", 
-            (limit, offset))
+            WHERE post_id = ANY (%s)
+            GROUP BY posts.post_id ORDER BY posts.upload_time DESC""", 
+            (post_ids, ))
         return [c[0] for c in cur.fetchall()]
 
 # SEARCH 
-# def get_search(query):
-#     with get_db_cursor() as cur:
-#         cur.execute("""SELECT post_id, title, textcat_all(tag_name || ',') FROM
-#    (SELECT * FROM posts LEFT JOIN tagged ON post_id=post WHERE title @@ to_tsquery(%s) OR descrip @@ to_tsquery(%s)) AS joinedTags
-#     LEFT JOIN tags ON tag=tag_id
-#     GROUP BY post_id, title, upload_time ORDER BY upload_time DESC""", (query,query))
-#         return cur.fetchall()
         
-def get_search(query, tags=[]):
+def get_search(query, tags='all'):
     with get_db_cursor() as cur:
-        if tags == []:
+        if tags == 'all':
             cur.execute("""SELECT * 
             FROM posts 
             WHERE title @@ to_tsquery(%s) OR descrip @@ to_tsquery(%s)
