@@ -83,13 +83,13 @@ function comment_more_setting(comment_id) {
 function comment_more_setting_answer(comment_id) {
     $("#dialog-text").text(`You cannot delete this comment since this is the answer.`)
     $("#dialog-confirm").dialog({
-        title: "Delete comment?",
+        title: "Can't delete solution",
         resizable: false,
         height: "auto",
         width: 400,
         modal: true,
         buttons: {
-            Cancel: function () {
+            Close: function () {
                 $(this).dialog("close");
             }
         }
@@ -99,12 +99,19 @@ function comment_more_setting_answer(comment_id) {
 function setupComments(solved, show_comment) {
     if (solved) {
         $(".solver_other_user_answers").hide();
+        $('#toggleComments span').text("Show")
     }
 
     if (show_comment) {
         $('#toggleComments').click(function(){
             $('.solver_other_user_answers').slideToggle('slow');
             $('.rotate').toggleClass("down");
+            if  ($('.rotate').hasClass("down")) {
+                $('#toggleComments span').text("Hide")
+            }       
+            else {
+                $('#toggleComments span').text("Show")
+            }   
         });
     }
 }

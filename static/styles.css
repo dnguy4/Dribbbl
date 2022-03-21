@@ -523,16 +523,17 @@ div .alert-error,
     display: none;
 }
 
+
+/* https://stackoverflow.com/questions/56560307/rotate-fontawesome-arrow-icon-when-the-accordion-is-active */
 .rotate {
     -moz-transition: all 0.2s ease;
     -webkit-transition: all 0.2s ease;
     transition: all 0.2s ease;
 }
-
 .rotate.down {
-    -moz-transform: rotate(90deg);
-    -webkit-transform: rotate(90deg);
-    transform: rotate(90deg);
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
 }
 
 #toggleComments {

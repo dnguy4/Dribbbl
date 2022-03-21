@@ -52,8 +52,8 @@
                         <form class="pure-form" id="userSolveAns" name="userSolveAns" method="POST">
                             <fieldset>
                                 <h3 id="toggleComments">
-                                    <i class="fa fa-solid fa-caret-right rotate {{'down' if not post['solved']}}"></i>
-                                    Comments ({{comments|length}})
+                                    <i class="fa fa-solid fa-caret-down rotate {{'down' if not post['solved']}}"></i>
+                                    <span>Hide</span> Comments ({{comments|length}})
                                 </h3>
                                 <input type="text" class="pure-input-1 " id="answer" name="answer" placeholder="What do you think it is? {{'Must be logged in to comment.' if not userinfo}}" maxlength="50" pattern="[A-Za-z ]+" {{ 'disabled' if not userinfo}} title="Only letters and spaces allowed"
                                     required>
@@ -96,16 +96,8 @@
     </div>
 </div>
 <script>
-    var solved = {
-        {
-            post['solved'] | tojson
-        }
-    }
-    var show_comment = {
-        {
-            post['show_comment'] | tojson
-        }
-    }
+    var solved = {{ post['solved'] | tojson }}
+    var show_comment = {{ post['show_comment'] | tojson }}
     setupComments(solved, show_comment);
 </script>
 
