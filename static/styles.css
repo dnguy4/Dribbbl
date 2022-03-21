@@ -1,6 +1,7 @@
 .post-title {
     color          : #ffffff;
     text-decoration: none;
+    font-weight:bold;
 }
 
 .post-title:hover {
@@ -115,10 +116,13 @@ img {
     width   : 100%;
     overflow: auto;
     margin  : 2rem 1rem;
+    padding-left: 30px;
 }
 
 .gallery-label {
     margin: 0rem 1rem;
+    padding-top: 30px;
+    text-align: center;
 }
 
 
@@ -152,7 +156,7 @@ div .alert-error,
 }
 
 #editUsernameBtn {
-    float : right;
+    /*float : right;*/
     margin: 0 2rem;
 }
 

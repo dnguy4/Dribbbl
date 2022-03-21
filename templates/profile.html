@@ -5,15 +5,16 @@
 
 {% block content %}
 <div>
+    <h2 class="gallery-label">Posts by {{username}}</h2>
     <div class="user-profile">
+        <b>Username:</b> <span id="username">{{username}}</span>
         {% if is_me %}
         <button id="editUsernameBtn" class="pure-button">Edit</button>
         {% endif %}
-        <b>Username:</b> <span id="username">{{username}}</span>
         <span id="overlapAlert" class="alert">Filler</span>
     </div>
 
-    <h2 class="gallery-label">Posts by {{username}}</h2>
+    
     <div class="post-gallery pure-g">
         
         {% for post, tag, image, comment in zip(posts, tags, images, comments) %}
