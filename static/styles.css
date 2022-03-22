@@ -92,9 +92,18 @@ img {
     float: right;
 }
 
+#nextPageBtn:hover {
+    color: #e63600
+}
+
 #prevPageBtn {
     float: left;
 }
+
+#prevPageBtn:hover {
+    color: #e63600
+}
+
 
 #floating-rules-side {
     display: inline-block;
@@ -1099,5 +1108,25 @@ label[for='size-50'] i {
 .err404msg {
     font-size: 2rem;
     text-align: center;
+}
+
+/* Footer */
+.footer-bar{
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    right: 0;
+    background-color: #171c24;
+}
+
+.page-button{
+
+    margin: 0 .75rem ;
+
+}
+
+.arrow{
+    font-size: 1.75rem;
+    color: #ff4500
 }
 
