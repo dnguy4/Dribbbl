@@ -81,12 +81,14 @@ integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aeh
 {% macro pagination_widget(page_num, final_page) -%}
 <div id="pagination">
   {% if page_num > 1 %}
-      <a class="pure-button" id="previousPageBtn" href="{{ url_for(request.endpoint, page=page_num-1, **request.view_args) }}">
+      <a class="arrow" id="prevPageBtn" href="{{  modify_query(page = page_num-1) }}">
           <i class="fa fa-solid fa-arrow-left"></i>
       </a>
-  {% elif page_num < final_page %}
-      <a class="pure-button" id="nextPageBtn" href="{{ url_for(request.endpoint, page=page_num+1, **request.view_args) }}">
-          <i class="fa fa-solid fa-arrow-right"></i>
+  {% endif %}
+  <!-- <div id="pageCenter">Test</div> -->
+  {% if page_num < final_page %}
+      <a class="arrow" id="nextPageBtn" href="{{  modify_query(page = page_num + 1) }}">
+        <i class="fa fa-solid fa-arrow-right "></i>
       </a>
   {%endif%}
 </div>

@@ -2,7 +2,7 @@ import json
 import os
 import math
 import re
-import urllib
+from urllib.parse import urlencode
 import io
 import psycopg2.errors
 from base64 import b64encode
@@ -86,7 +86,7 @@ def logout():
     session.clear()
     # Redirect user to logout endpoint
     params = {'returnTo': url_for('landing_page', _external=True), 'client_id': auth0clientid}
-    return redirect(auth0.api_base_url + '/v2/logout?' + urllib.parse.urlencode(params))
+    return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
 
 
 def requires_auth(f):
@@ -98,6 +98,17 @@ def requires_auth(f):
     return f(*args, **kwargs)
 
   return decorated
+
+#https://stackoverflow.com/questions/31120921/modify-query-parameters-in-current-get-request-for-new-url
+#By davidism, used to return a modified version of the current url
+@app.template_global()
+def modify_query(**new_values):
+    args = request.args.copy()
+
+    for key, value in new_values.items():
+        args[key] = value
+
+    return '{}?{}'.format(request.path, urlencode(args))
 
 
 def get_tags_images_n_comments(posts):
@@ -114,8 +125,8 @@ def get_tags_images_n_comments(posts):
 
     return tags, images, comments
 
-###### Routes ######
 
+###### Routes ######
 
 @app.route('/')
 def landing_page():
