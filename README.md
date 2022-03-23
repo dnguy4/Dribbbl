@@ -42,9 +42,6 @@ $env:FLASK_APP = "app.py"
 
 ## Screenshots of Site
 
-**[Add a screenshot of each key page (around 4)](https://stackoverflow.com/questions/10189356/how-to-add-screenshot-to-readmes-in-github-repository)
-along with a very brief caption:**
-
 ![](siteImages/web1.png)
 The landing page of our website.
 
