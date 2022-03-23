@@ -30,13 +30,14 @@ $env:FLASK_APP = "app.py"
 
 * Getting and displaying the tags for each post on a page involved complicated SQL.
 * Storing and retrieving user-drawn images from a Canvas required some work with data urls and image blobs.
-* 
+* Making the website responsive for smaller screen sizes. 
+* The search results can be viewed page by page, which was tricky because we needed to re-use and update our query strings for the correct page.
 
 ## Testing Notes
 
 **Is there anything special we need to know in order to effectively test your app? (optional):**
 
-* ...
+* N/A
 
 
 ## Screenshots of Site
@@ -77,4 +78,4 @@ Please do not document required libraries. or libraries that are mentioned in th
 relied on external code, expertise, or anything else, please disclose that
 here:**
 
-...
+ * Small snippets of code were used throughout the project for bug fixes and/or feature implementations. All of the code snippets taken have a comment with a link to the source.  
