@@ -46,7 +46,16 @@ $env:FLASK_APP = "app.py"
 along with a very brief caption:**
 
 ![](siteImages/web1.png)
+The landing page of our website.
 
+![](siteImages/web2.png)
+This is the drawing page where users customize their drawing.
+
+![](siteImages/web3.png)
+The search page which allows for text and tag-based searching.
+
+![](siteImages/web4.png)
+This is the solver page where users can make guesses to drawings.
 
 ## Mock-up 
 
