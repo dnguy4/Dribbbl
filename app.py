@@ -1,7 +1,6 @@
 from base64 import b64encode
 from functools import wraps
 import io
-import logging
 import os
 import math
 import re
@@ -37,10 +36,6 @@ auth0 = oauth.register(
 )
 # https://stackoverflow.com/questions/5208252/ziplist1-list2-in-jinja2
 app.jinja_env.globals.update(zip=zip)
-
-# https://testdriven.io/blog/flask-render-deployment/
-# Set flask app to use gunicorn logger
-app.logging.handlers.extender(logging.getLogger('gunicorn.error').handlers)
 
 @app.errorhandler(404)
 def page_not_found(e):
