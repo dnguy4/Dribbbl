@@ -1,18 +1,21 @@
+from base64 import b64encode
+from functools import wraps
+import io
 import logging
 import os
 import math
 import re
 from urllib.parse import urlencode
-import io
+
+from dotenv import load_dotenv
 import psycopg2.errors
-from base64 import b64encode
 from flask import Flask, render_template, request, g, redirect, url_for, \
     jsonify, send_file, session, flash, abort, current_app
 from authlib.integrations.flask_client import OAuth
-from functools import wraps
 
 import db
 
+load_dotenv()
 app = Flask(__name__)
 app.secret_key = "can be anything, just random"
 oauth = OAuth(app)
