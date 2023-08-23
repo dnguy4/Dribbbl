@@ -1,18 +1,20 @@
-import logging
+from base64 import b64encode
+from functools import wraps
+import io
 import os
 import math
 import re
 from urllib.parse import urlencode
-import io
+
+from dotenv import load_dotenv
 import psycopg2.errors
-from base64 import b64encode
 from flask import Flask, render_template, request, g, redirect, url_for, \
     jsonify, send_file, session, flash, abort, current_app
 from authlib.integrations.flask_client import OAuth
-from functools import wraps
 
 import db
 
+load_dotenv()
 app = Flask(__name__)
 app.secret_key = "can be anything, just random"
 oauth = OAuth(app)
@@ -31,13 +33,10 @@ auth0 = oauth.register(
     client_kwargs={
         'scope': 'openid profile email',
     },
+    server_metadata_url=f'https://{auth0domain}/.well-known/openid-configuration'
 )
 # https://stackoverflow.com/questions/5208252/ziplist1-list2-in-jinja2
 app.jinja_env.globals.update(zip=zip)
-
-# https://testdriven.io/blog/flask-render-deployment/
-# Set flask app to use gunicorn logger
-app.logging.handlers.extender(logging.getLogger('gunicorn.error').handlers)
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -264,7 +263,7 @@ def editing_page(post_id):
 def view_post(post_id):
     post_row = db.get_post(post_id)
     stream = io.BytesIO(post_row["post_image"])
-    return send_file(stream, attachment_filename=post_row["title"])
+    return send_file(stream, download_name=post_row["title"])
 
 
 @app.route('/drawing')
