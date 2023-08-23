@@ -33,3 +33,10 @@ create table COMMENTS (
     content text,
     upload_time timestamp default now()
 );
+
+CREATE AGGREGATE textcat_all(
+  basetype    = text,
+  sfunc       = textcat,
+  stype       = text,
+  initcond    = ''
+);
