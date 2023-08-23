@@ -33,6 +33,7 @@ auth0 = oauth.register(
     client_kwargs={
         'scope': 'openid profile email',
     },
+    server_metadata_url=f'https://{auth0domain}.well-known/openid-configuration'
 )
 # https://stackoverflow.com/questions/5208252/ziplist1-list2-in-jinja2
 app.jinja_env.globals.update(zip=zip)
