@@ -6,7 +6,7 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 
 * Team Name: Oysters
 * App Name: Dribbbl
-* App Link: <https://dribbbl.herokuapp.com>
+* App Link: <https://dribbbl.onrender.com> (Slow to start up due to Render's free tier)
 
 ### Students
 
