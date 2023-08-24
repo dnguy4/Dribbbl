@@ -29,7 +29,10 @@
     No posts found.
 </div>
 {% endif %}
-
-{{pagination_widget(page_num, final_page)}}
+<div class="footer-bar">
+    <div class="page-button">
+        {{pagination_widget(page_num, final_page)}}
+    </div>
+</div>
 
 {% endblock %}

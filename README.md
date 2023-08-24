@@ -30,22 +30,29 @@ $env:FLASK_APP = "app.py"
 
 * Getting and displaying the tags for each post on a page involved complicated SQL.
 * Storing and retrieving user-drawn images from a Canvas required some work with data urls and image blobs.
-* 
+* Making the website responsive for smaller screen sizes. 
+* The search results can be viewed page by page, which was tricky because we needed to re-use and update our query strings for the correct page.
 
 ## Testing Notes
 
 **Is there anything special we need to know in order to effectively test your app? (optional):**
 
-* ...
+* N/A
 
 
 ## Screenshots of Site
 
-**[Add a screenshot of each key page (around 4)](https://stackoverflow.com/questions/10189356/how-to-add-screenshot-to-readmes-in-github-repository)
-along with a very brief caption:**
+![](siteImages/web1.png)
+The landing page of our website.
 
-![](https://media.giphy.com/media/o0vwzuFwCGAFO/giphy.gif)
+![](siteImages/web2.png)
+This is the drawing page where users customize their drawing.
 
+![](siteImages/web3.png)
+The search page which allows for text and tag-based searching.
+
+![](siteImages/web4.png)
+This is the solver page where users can make guesses to drawings.
 
 ## Mock-up 
 
@@ -77,4 +84,4 @@ Please do not document required libraries. or libraries that are mentioned in th
 relied on external code, expertise, or anything else, please disclose that
 here:**
 
-...
+ * Small snippets of code were used throughout the project for bug fixes and/or feature implementations. All of the code snippets taken have a comment with a link to the source.  

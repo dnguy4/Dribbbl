@@ -1,9 +1,13 @@
+@font-face {
+    font-family:Source Sans Pro;
+    font-style:oblique;
+    font-weight:500;
+    src:url(https://fonts.gstatic.com/s/sourcesanspro/v18/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZMkids18E.ttf) format("truetype")
+}
+
 #content, button, input, select, textarea,
 .pure-g [class *= "pure-u"] {
-    font-family:Source Sans Pro;
-    font-style:normal;
-    font-weight:500;
-    src:url(http://fonts.gstatic.com/s/sourcesanspro/v18/6xKwdSBYKcSV-LCoeQqfX1RYOo3qPZZMkids18E.ttf) format("truetype")
+    font-family: Source Sans Pro;
 }
 
 .post-title {
@@ -92,9 +96,18 @@ img {
     float: right;
 }
 
+#nextPageBtn:hover {
+    color: #e63600
+}
+
 #prevPageBtn {
     float: left;
 }
+
+#prevPageBtn:hover {
+    color: #e63600
+}
+
 
 #floating-rules-side {
     display: inline-block;
@@ -1099,5 +1112,25 @@ label[for='size-50'] i {
 .err404msg {
     font-size: 2rem;
     text-align: center;
+}
+
+/* Footer */
+.footer-bar{
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    right: 0;
+    background-color: #171c24;
+}
+
+.page-button{
+
+    margin: 0 .75rem ;
+
+}
+
+.arrow{
+    font-size: 1.75rem;
+    color: #ff4500
 }
 

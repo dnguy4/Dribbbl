@@ -27,7 +27,7 @@
     <div class="err404msg">
         {% if is_me and posts|length == 0  %}
             <button class="pure-button" onclick="location.href='{{url_for('drawing_page')}}';">
-                <i class="fa fa-pencil"></i>Make a post!</button>
+                Make a post!</button>
         {% elif posts|length == 0 %}
             No posts yet.
         {% endif %}
